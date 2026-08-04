@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --indigo: #6D4DE0;
+  --violet: #8B5CF6;
+  --teal: #1FC7C0;
+  --teal-light: #3AD9C9;
+  --ink: #141833;
+  --gray: #5C6478;
+  --gray-light: #8A90A3;
+  --bg-top: #F4F2FF;
+  --bg-mid: #EEF2FF;
+  --bg-bot: #EAF9F7;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --line: rgba(20, 24, 51, 0.08);
+  --shadow: 0 20px 50px -18px rgba(80, 60, 200, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--ink);
+  background: linear-gradient(160deg, #F4F2FF 0%, #EEF2FF 45%, #EAF9F7 100%);
+  min-height: 100vh;
+}
+
+/* Gradient text utility */
+.grad-text {
+  background: linear-gradient(100deg, var(--indigo), var(--teal));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bg-brand-gradient {
+  background: linear-gradient(100deg, var(--indigo), var(--teal));
+}
+
+/* 3D Card utilities */
+.perspective-800 {
+  perspective: 800px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Flip card */
+.flip-card {
+  perspective: 1000px;
+}
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 20px;
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Tilt card hover */
+.tilt-card {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease;
+}
+.tilt-card:hover {
+  transform: perspective(800px) rotateX(4deg) rotateY(-4deg) scale(1.03);
+  box-shadow: 0 24px 44px -18px rgba(109, 77, 224, 0.35);
+}
+
+/* 3D Extrusion for float cards */
+.card-extrusion-left {
+  box-shadow: -6px 8px 0px rgba(109, 77, 224, 0.12), 0 20px 40px -15px rgba(80, 60, 200, 0.25);
+}
+.card-extrusion-right {
+  box-shadow: 6px 8px 0px rgba(31, 199, 192, 0.12), 0 20px 40px -15px rgba(80, 60, 200, 0.25);
+}
+
+/* Scrollbar hiding */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--indigo);
+  outline-offset: 2px;
+}
+
+/* Section divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(109, 77, 224, 0.15), rgba(31, 199, 192, 0.15), transparent);
+}

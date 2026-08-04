@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedAorticX Healthtek — Empowering Healthcare Through Innovative Tech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#6D4DE0;
+    --violet:#8B5CF6;
+    --teal:#1FC7C0;
+    --teal-light:#3AD9C9;
+    --ink:#141833;
+    --gray:#5C6478;
+    --gray-light:#8A90A3;
+    --bg-top:#F4F2FF;
+    --bg-mid:#EEF2FF;
+    --bg-bot:#EAF9F7;
+    --card-bg:rgba(255,255,255,0.85);
+    --line:rgba(20,24,51,0.08);
+    --shadow:0 20px 50px -18px rgba(80,60,200,0.25);
+    --r:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Plus Jakarta Sans',sans-serif;
+    color:var(--ink);
+    background:linear-gradient(160deg,var(--bg-top) 0%, var(--bg-mid) 45%, var(--bg-bot) 100%);
+    overflow-x:hidden;
+  }
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;}
+  .wrap{max-width:1360px;margin:0 auto;padding:0 48px;}
+  img{max-width:100%;display:block;}
+
+  .grad-text{
+    background:linear-gradient(100deg,var(--indigo),var(--teal));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:15px 26px;border-radius:14px;font-weight:600;font-size:0.95rem;
+    border:none;cursor:pointer;transition:transform .2s, box-shadow .2s;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{
+    background:linear-gradient(100deg,var(--indigo),var(--teal));
+    color:#fff;box-shadow:0 14px 30px -10px rgba(109,77,224,0.55);
+  }
+  .btn-ghost{
+    background:#fff;color:var(--ink);
+    box-shadow:0 4px 14px -6px rgba(20,24,51,0.15);
+  }
+  .btn-ghost .play{
+    width:22px;height:22px;border-radius:50%;background:var(--indigo);
+    color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;
+  }
+
+  /* ---------------- NAV ---------------- */
+  header.nav{
+    position:sticky;top:0;z-index:100;
+    background:rgba(244,242,255,0.72);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    height:86px;
+  }
+  .logo{display:flex;align-items:center;gap:10px;}
+  .logo img{height:52px;width:auto;}
+  .nav-links{display:flex;align-items:center;gap:34px;}
+  .nav-links a{
+    font-size:0.94rem;font-weight:500;color:var(--ink);
+    position:relative;padding-bottom:6px;
+  }
+  .nav-links a.active{color:var(--indigo);font-weight:600;}
+  .nav-links a.active::after{
+    content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+    width:6px;height:6px;border-radius:50%;background:var(--indigo);
+  }
+  .nav-right{display:flex;align-items:center;gap:14px;}
+  .hamburger{
+    width:46px;height:46px;border-radius:50%;background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 14px -6px rgba(20,24,51,0.18);cursor:pointer;
+  }
+  .hamburger span{display:block;width:16px;height:2px;background:var(--ink);position:relative;}
+  .hamburger span::before,.hamburger span::after{
+    content:'';position:absolute;left:0;width:16px;height:2px;background:var(--ink);
+  }
+  .hamburger span::before{top:-5px;} .hamburger span::after{top:5px;}
+
+  /* ---------------- HERO ---------------- */
+  section.hero{position:relative;padding:76px 0 40px;overflow:visible;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#fff;padding:9px 18px 9px 14px;border-radius:999px;
+    font-size:0.82rem;font-weight:500;box-shadow:0 4px 14px -6px rgba(20,24,51,0.15);
+    margin-bottom:22px;
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(100deg,var(--indigo),var(--violet));}
+  h1.hero-h{
+    font-size:clamp(2.2rem,3.6vw,3.15rem);
+    font-weight:800;line-height:1.14;letter-spacing:-0.01em;
+    margin-bottom:22px;
+  }
+  .hero-sub{color:var(--gray);font-size:1.02rem;max-width:480px;line-height:1.65;margin-bottom:30px;}
+  .hero-actions{display:flex;gap:16px;margin-bottom:44px;}
+  .stat-row{display:flex;gap:36px;flex-wrap:wrap;}
+  .stat-item{display:flex;align-items:center;gap:12px;}
+  .stat-ico{
+    width:44px;height:44px;border-radius:50%;background:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+    box-shadow:0 4px 14px -6px rgba(20,24,51,0.15);flex-shrink:0;
+  }
+  .stat-num{font-weight:800;font-size:1.15rem;line-height:1.1;}
+  .stat-lbl{font-size:0.76rem;color:var(--gray-light);}
+
+  /* ---------------- HERO VISUAL ---------------- */
+  .hero-visual{position:relative;height:560px;}
+  .podium{
+    position:absolute;left:50%;bottom:30px;transform:translateX(-50%);
+    width:340px;height:60px;
+    background:linear-gradient(180deg,#ffffff,#dfe3fb);
+    border-radius:50%;
+    box-shadow:0 30px 60px -20px rgba(109,77,224,0.45), inset 0 2px 0 #fff;
+  }
+  .podium::before{
+    content:'';position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
+    width:260px;height:40px;border-radius:50%;
+    background:linear-gradient(180deg,#eef0ff,#c9cff5);
+  }
+  .doc-canvas-wrap{
+    position:absolute;left:50%;bottom:64px;transform:translateX(-50%);
+    width:340px;height:460px;z-index:3;
+  }
+  .doc-canvas-wrap canvas{width:100% !important;height:100% !important;display:block;}
+  .glow-ring{
+    position:absolute;left:50%;top:8%;transform:translateX(-50%);
+    width:400px;height:400px;border-radius:50%;
+    background:radial-gradient(circle,rgba(109,77,224,0.14) 0%, rgba(31,199,192,0.08) 55%, transparent 75%);
+    z-index:0;
+  }
+
+  .float-card{
+    position:absolute;background:var(--card-bg);backdrop-filter:blur(10px);
+    border-radius:14px;padding:12px 16px;box-shadow:var(--shadow);
+    z-index:5;min-width:150px;
+    animation:floaty 5s ease-in-out infinite;
+  }
+  .float-card .fc-title{font-size:0.7rem;color:var(--gray-light);margin-bottom:4px;}
+  .float-card .fc-val{font-size:1.05rem;font-weight:800;display:flex;align-items:center;gap:6px;}
+  .float-card .fc-up{color:#1FAE6B;font-size:0.8rem;font-weight:700;}
+  .float-card .fc-sub{font-size:0.68rem;color:var(--gray-light);}
+  .float-card.icon-card{display:flex;align-items:center;gap:12px;min-width:190px;}
+  .fc-icobox{
+    width:38px;height:38px;border-radius:10px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:1.05rem;
+  }
+
+  .fc-1{top:16%;left:0;} 
+  .fc-2{top:36%;left:-3%;animation-delay:.6s;}
+  .fc-3{top:56%;left:2%;animation-delay:1.2s;}
+  .fc-4{top:20%;right:-2%;animation-delay:.3s;}
+  .fc-5{top:40%;right:-6%;animation-delay:.9s;}
+  .fc-6{top:60%;right:-2%;animation-delay:1.5s;}
+  .deco{position:absolute;z-index:4;filter:drop-shadow(0 8px 16px rgba(0,0,0,0.12));}
+  .deco-heart{top:6%;left:32%;width:52px;height:52px;background:#fff;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;animation:floaty 4.5s ease-in-out infinite;}
+  .deco-cross{top:2%;right:8%;width:60px;height:60px;background:linear-gradient(135deg,#5B7CF0,#6D4DE0);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;animation:floaty 5.5s ease-in-out infinite;animation-delay:.4s;}
+  .deco-pill{bottom:2%;right:2%;width:90px;height:34px;border-radius:20px;background:linear-gradient(90deg,#3AD9C9,#6D4DE0);animation:spin 8s linear infinite;}
+
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  @keyframes spin{0%{transform:rotate(-18deg);}50%{transform:rotate(8deg);}100%{transform:rotate(-18deg);}}
+
+  /* ---------------- SERVICES ---------------- */
+  section.services{padding:110px 0 130px;position:relative;}
+  .services-head{text-align:center;max-width:600px;margin:0 auto 56px;}
+  .eyebrow-pill{
+    display:inline-block;background:#fff;padding:7px 16px;border-radius:999px;
+    font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:var(--indigo);
+    box-shadow:0 4px 14px -6px rgba(20,24,51,0.15);margin-bottom:18px;text-transform:uppercase;
+  }
+  .services-head h2{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;}
+  .services-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+  }
+  .s-card{
+    background:#fff;border-radius:20px;padding:32px 26px;
+    box-shadow:0 10px 30px -14px rgba(20,24,51,0.12);
+    transition:transform .25s, box-shadow .25s;
+  }
+  .s-card:hover{transform:translateY(-6px);box-shadow:0 24px 44px -18px rgba(109,77,224,0.3);}
+  .s-ico{
+    width:58px;height:58px;border-radius:16px;margin-bottom:20px;
+    display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  }
+  .s-card h3{font-size:1.12rem;font-weight:700;margin-bottom:10px;}
+  .s-card p{color:var(--gray);font-size:0.9rem;line-height:1.6;margin-bottom:18px;}
+  .s-arrow{
+    width:36px;height:36px;border-radius:50%;background:#F2F1FF;
+    display:flex;align-items:center;justify-content:center;color:var(--indigo);
+    font-size:0.95rem;transition:background .2s, color .2s;
+  }
+  .s-card:hover .s-arrow{background:linear-gradient(100deg,var(--indigo),var(--teal));color:#fff;}
+
+  @media (max-width:980px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-visual{display:none;}
+    .nav-links{display:none;}
+    .services-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:620px){
+    .wrap{padding:0 22px;}
+    .services-grid{grid-template-columns:1fr;}
+    .hero-actions{flex-direction:column;}
+    .stat-row{gap:22px;}
+  }
+  :focus-visible{outline:2px solid var(--indigo);outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="logo"><img src="assets/logo.png" alt="MedAorticX Healthtek"></a>
+    <nav class="nav-links">
+      <a href="#" class="active">Home</a>
+      <a href="#">About Us</a>
+      <a href="#services">Services</a>
+      <a href="#">Solutions</a>
+      <a href="#">Projects</a>
+      <a href="#">Resources ▾</a>
+    </nav>
+    <div class="nav-right">
+      <a href="#" class="btn btn-primary" style="padding:12px 20px;">Contact Us →</a>
+      <div class="hamburger"><span></span></div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="badge"><span class="dot"></span>Welcome to MedAorticX HealthTek</span>
+      <h1 class="hero-h">Empowering Healthcare<br>Through <span class="grad-text">Innovative Tech</span></h1>
+      <p class="hero-sub">We build smart, secure and scalable healthcare solutions that simplify operations, enhance patient care and drive better outcomes.</p>
+      <div class="hero-actions">
+        <a href="#services" class="btn btn-primary">Explore Services →</a>
+        <a href="#" class="btn btn-ghost"><span class="play">▶</span> See Our Work →</a>
+      </div>
+      <div class="stat-row">
+        <div class="stat-item"><span class="stat-ico">🏥</span><div><div class="stat-num">50+</div><div class="stat-lbl">Projects Delivered</div></div></div>
+        <div class="stat-item"><span class="stat-ico">🤝</span><div><div class="stat-num">30+</div><div class="stat-lbl">Happy Clients</div></div></div>
+        <div class="stat-item"><span class="stat-ico">⏱️</span><div><div class="stat-num">10+</div><div class="stat-lbl">Years of Experience</div></div></div>
+        <div class="stat-item"><span class="stat-ico">🎧</span><div><div class="stat-num">24/7</div><div class="stat-lbl">Support Available</div></div></div>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="glow-ring"></div>
+      <div class="podium"></div>
+
+      <!-- Three.js stylized 3D doctor — procedural low-poly figure, idle animation -->
+      <div id="doc3d" class="doc-canvas-wrap"></div>
+
+      <span class="deco deco-heart">❤️</span>
+      <span class="deco deco-cross">✚</span>
+      <span class="deco deco-pill"></span>
+
+      <div class="float-card fc-1">
+        <div class="fc-title">Patient Analytics</div>
+        <div class="fc-val">+28% <span class="fc-up">▲</span></div>
+        <div class="fc-sub">vs last month</div>
+      </div>
+      <div class="float-card fc-2">
+        <div class="fc-title">Appointments</div>
+        <div class="fc-val">1,245</div>
+        <div class="fc-sub">This Month</div>
+      </div>
+      <div class="float-card fc-3">
+        <div class="fc-title">Revenue Growth</div>
+        <div class="fc-val">+18.6%</div>
+        <div class="fc-sub">vs last month</div>
+      </div>
+
+      <div class="float-card icon-card fc-4">
+        <span class="fc-icobox" style="background:#E9EEFF;">📋</span>
+        <div><div style="font-weight:700;font-size:0.88rem;">Medical Records</div><div class="fc-sub">Secure &amp; Compliant</div></div>
+      </div>
+      <div class="float-card icon-card fc-5">
+        <span class="fc-icobox" style="background:#E6FBF6;">🛡️</span>
+        <div><div style="font-weight:700;font-size:0.88rem;">Data Security</div><div class="fc-sub">HIPAA Compliant</div></div>
+      </div>
+      <div class="float-card icon-card fc-6">
+        <span class="fc-icobox" style="background:#EAFBEE;">✅</span>
+        <div><div style="font-weight:700;font-size:0.88rem;">System Status</div><div class="fc-sub">All Systems Operational</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="services-head">
+      <span class="eyebrow-pill">What We Do</span>
+      <h2>Our Core <span class="grad-text">Services</span></h2>
+    </div>
+    <div class="services-grid">
+      <div class="s-card">
+        <div class="s-ico" style="background:linear-gradient(135deg,#DCE4FF,#C7D2FF);">🏥</div>
+        <h3>Hospital Management</h3>
+        <p>Complete hospital management systems to automate operations and improve efficiency.</p>
+        <div class="s-arrow">→</div>
+      </div>
+      <div class="s-card">
+        <div class="s-ico" style="background:linear-gradient(135deg,#EAD9FF,#D8C2FF);">📁</div>
+        <h3>EHR Solutions</h3>
+        <p>Secure and interoperable Electronic Health Record solutions.</p>
+        <div class="s-arrow">→</div>
+      </div>
+      <div class="s-card">
+        <div class="s-ico" style="background:linear-gradient(135deg,#D6F0FF,#C0E4FF);">📱</div>
+        <h3>Telemedicine</h3>
+        <p>Connect doctors and patients anytime, anywhere with our platforms.</p>
+        <div class="s-arrow">→</div>
+      </div>
+      <div class="s-card">
+        <div class="s-ico" style="background:linear-gradient(135deg,#FFE3D6,#FFD0C2);">💰</div>
+        <h3>Medical Billing</h3>
+        <p>Accurate billing solutions to ensure faster payments and compliance.</p>
+        <div class="s-arrow">→</div>
+      </div>
+      <div class="s-card">
+        <div class="s-ico" style="background:linear-gradient(135deg,#DCE9FF,#C7DAFF);">🧠</div>
+        <h3>AI Healthcare</h3>
+        <p>AI-powered solutions for smarter diagnosis and predictive analytics.</p>
+        <div class="s-arrow">→</div>
+      </div>
+      <div class="s-card">
+        <div class="s-ico" style="background:linear-gradient(135deg,#E0F5FF,#C9EAFF);">📲</div>
+        <h3>Mobile Apps</h3>
+        <p>Custom mobile apps for patients and healthcare providers.</p>
+        <div class="s-arrow">→</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var mount = document.getElementById('doc3d');
+  if (!mount || !window.THREE) return;
+
+  var W = 340, H = 460;
+  var scene = new THREE.Scene();
+
+  var camera = new THREE.PerspectiveCamera(32, W / H, 0.1, 100);
+  camera.position.set(0, 1.35, 7.2);
+  camera.lookAt(0, 1.1, 0);
+
+  var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(W, H);
+  mount.appendChild(renderer.domElement);
+
+  // ---- lighting: brand-tinted rim + soft key ----
+  scene.add(new THREE.AmbientLight(0xffffff, 0.65));
+  var key = new THREE.DirectionalLight(0xffffff, 0.9);
+  key.position.set(2, 4, 4);
+  scene.add(key);
+  var rimIndigo = new THREE.PointLight(0x6d4de0, 1.1, 12);
+  rimIndigo.position.set(-3, 2, -2);
+  scene.add(rimIndigo);
+  var rimTeal = new THREE.PointLight(0x1fc7c0, 1.1, 12);
+  rimTeal.position.set(3, 1, -2);
+  scene.add(rimTeal);
+
+  var doctor = new THREE.Group();
+
+  var skin = new THREE.MeshStandardMaterial({ color: 0xE7B792, roughness: 0.55 });
+  var coat = new THREE.MeshStandardMaterial({ color: 0xFAFBFF, roughness: 0.35, metalness: 0.05 });
+  var coatShade = new THREE.MeshStandardMaterial({ color: 0xDCE1F5, roughness: 0.4 });
+  var trouser = new THREE.MeshStandardMaterial({ color: 0x3C4A66, roughness: 0.6 });
+  var hairMat = new THREE.MeshStandardMaterial({ color: 0x241B14, roughness: 0.5 });
+  var metal = new THREE.MeshStandardMaterial({ color: 0xB9C2D6, metalness: 0.7, roughness: 0.3 });
+  var shirtBlue = new THREE.MeshStandardMaterial({ color: 0x5B7CF0, roughness: 0.5 });
+
+  // Head
+  var head = new THREE.Mesh(new THREE.SphereGeometry(0.42, 24, 24), skin);
+  head.position.set(0, 3.05, 0);
+  doctor.add(head);
+
+  // Hair (simple cap)
+  var hair = new THREE.Mesh(new THREE.SphereGeometry(0.44, 24, 24, 0, Math.PI * 2, 0, Math.PI * 0.55), hairMat);
+  hair.position.set(0, 3.14, 0);
+  doctor.add(hair);
+
+  // Neck
+  var neck = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.16, 0.22, 16), skin);
+  neck.position.set(0, 2.66, 0);
+  doctor.add(neck);
+
+  // Torso (coat) — built from stacked cylinders since CapsuleGeometry isn't available on r128
+  var torsoTop = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.58, 1.15, 20), coat);
+  torsoTop.position.set(0, 1.95, 0);
+  doctor.add(torsoTop);
+  var torsoBottom = new THREE.Mesh(new THREE.SphereGeometry(0.58, 20, 20), coat);
+  torsoBottom.position.set(0, 1.38, 0);
+  torsoBottom.scale.set(1, 0.55, 0.8);
+  doctor.add(torsoBottom);
+
+  // Coat lapels
+  var lapelL = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.9, 0.06), coatShade);
+  lapelL.position.set(-0.16, 2.05, 0.53);
+  lapelL.rotation.z = 0.18;
+  doctor.add(lapelL);
+  var lapelR = lapelL.clone();
+  lapelR.position.x = 0.16;
+  lapelR.rotation.z = -0.18;
+  doctor.add(lapelR);
+
+  // Shirt collar peek
+  var collar = new THREE.Mesh(new THREE.ConeGeometry(0.15, 0.22, 4), shirtBlue);
+  collar.position.set(0, 2.5, 0.3);
+  collar.rotation.x = 0.5;
+  doctor.add(collar);
+
+  // Arms — crossed pose, built as two angled cylinder pairs
+  function buildArm(sign){
+    var g = new THREE.Group();
+    var upper = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.12, 0.62, 14), coat);
+    upper.position.set(sign * 0.56, 2.05, 0);
+    upper.rotation.z = sign * -0.9;
+    g.add(upper);
+    var fore = new THREE.Mesh(new THREE.CylinderGeometry(0.115, 0.1, 0.6, 14), coat);
+    fore.position.set(sign * -0.02, 1.72, 0.28);
+    fore.rotation.set(1.15, 0, sign * -0.25);
+    g.add(fore);
+    var hand = new THREE.Mesh(new THREE.SphereGeometry(0.11, 12, 12), skin);
+    hand.position.set(sign * -0.28, 1.66, 0.5);
+    g.add(hand);
+    return g;
+  }
+  var armL = buildArm(1);
+  var armR = buildArm(-1);
+  doctor.add(armL, armR);
+
+  // Legs
+  function buildLeg(sign){
+    var leg = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.16, 1.3, 16), trouser);
+    leg.position.set(sign * 0.24, 0.35, 0);
+    return leg;
+  }
+  doctor.add(buildLeg(1), buildLeg(-1));
+
+  // Shoes
+  function buildShoe(sign){
+    var shoe = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.14, 0.42), hairMat);
+    shoe.position.set(sign * 0.24, -0.35, 0.08);
+    return shoe;
+  }
+  doctor.add(buildShoe(1), buildShoe(-1));
+
+  // Stethoscope: torus around neck + a hanging tube + earpiece bell
+  var steth = new THREE.Mesh(new THREE.TorusGeometry(0.28, 0.028, 10, 24, Math.PI * 1.5), metal);
+  steth.position.set(0, 2.55, 0.05);
+  steth.rotation.set(1.55, 0, 0.3);
+  doctor.add(steth);
+  var stethTube = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.55, 10), metal);
+  stethTube.position.set(0.12, 2.1, 0.42);
+  stethTube.rotation.set(0.3, 0, 0.15);
+  doctor.add(stethTube);
+  var stethBell = new THREE.Mesh(new THREE.SphereGeometry(0.07, 12, 12), metal);
+  stethBell.position.set(0.18, 1.85, 0.5);
+  doctor.add(stethBell);
+
+  var BASE_Y = -1.08;
+  doctor.position.y = BASE_Y;
+  doctor.scale.set(0.72, 0.72, 0.72);
+  scene.add(doctor);
+
+  // Soft contact shadow disc under the figure
+  var shadow = new THREE.Mesh(
+    new THREE.CircleGeometry(1.15, 32),
+    new THREE.MeshBasicMaterial({ color: 0x6D4DE0, transparent: true, opacity: 0.12 })
+  );
+  shadow.rotation.x = -Math.PI / 2;
+  shadow.position.y = -1.55 - 0.02;
+  scene.add(shadow);
+
+  var clock = new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+    var t = clock.getElapsedTime();
+    doctor.position.y = BASE_Y + Math.sin(t * 1.1) * 0.045;      // idle breathing bob
+    doctor.rotation.y = Math.sin(t * 0.45) * 0.32;               // gentle turn, faces both sides
+    armL.rotation.z = Math.sin(t * 1.1) * 0.02;
+    armR.rotation.z = Math.sin(t * 1.1 + Math.PI) * 0.02;
+    rimIndigo.intensity = 1.0 + Math.sin(t * 1.6) * 0.15;
+    rimTeal.intensity = 1.0 + Math.cos(t * 1.4) * 0.15;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', function(){
+    // canvas is CSS-scaled to its wrapper; internal resolution stays fixed for performance
+  });
+})();
+</script>
+</body>
+</html>
