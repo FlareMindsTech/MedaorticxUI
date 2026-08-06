@@ -26,29 +26,49 @@ export const FloatingCard3D = ({
           delay,
         },
       }}
-      className={`absolute z-[5] bg-white/90 backdrop-blur-sm rounded-[14px] px-4 py-3 shadow-card border border-white/80 ${positionClass}`}
+      className={`bg-white/95 backdrop-blur-md rounded-[14px] px-3 py-2.5 shadow-[0_8px_24px_-6px_rgba(99,102,241,0.12),0_2px_8px_rgba(0,0,0,0.03)] border border-slate-100 hover:shadow-lg transition-all ${positionClass || 'relative z-[10]'}`}
     >
-      {icon ? (
-        <div className="flex items-center gap-3 min-w-[190px]">
+      {icon && value ? (
+        /* Stat card with icon + value (left column cards) */
+        <div className="flex items-center gap-2.5 min-w-[145px]">
           <div
-            className="w-[38px] h-[38px] rounded-[10px] flex items-center justify-center text-lg flex-shrink-0"
+            className="w-[32px] h-[32px] rounded-[8px] flex items-center justify-center text-sm flex-shrink-0"
             style={{ background: iconBg || '#E9EEFF' }}
           >
             {icon}
           </div>
           <div className="min-w-0">
-            <div className="font-bold text-ink text-[0.88rem] leading-snug whitespace-nowrap">{title}</div>
-            <div className="text-[0.68rem] text-grayLight">{sub}</div>
+            <div className="text-[0.65rem] text-slate-400 mb-0.5 whitespace-nowrap">{title}</div>
+            <div className="text-[0.95rem] font-black text-ink flex items-center gap-1 leading-none">
+              {value}
+              {up && <span className="text-emerald-500 text-[0.7rem] font-bold">▲</span>}
+            </div>
+            <div className="text-[0.6rem] text-slate-400 mt-0.5 whitespace-nowrap">{sub}</div>
+          </div>
+        </div>
+      ) : icon ? (
+        /* Feature card with icon only (right column cards) */
+        <div className="flex items-center gap-2.5 min-w-[155px]">
+          <div
+            className="w-[32px] h-[32px] rounded-[8px] flex items-center justify-center text-sm flex-shrink-0"
+            style={{ background: iconBg || '#E9EEFF' }}
+          >
+            {icon}
+          </div>
+          <div className="min-w-0">
+            <div className="font-bold text-ink text-[0.82rem] leading-tight whitespace-nowrap">{title}</div>
+            <div className="text-[0.62rem] text-slate-400 mt-0.5 whitespace-nowrap">{sub}</div>
           </div>
         </div>
       ) : (
-        <div className="min-w-[150px]">
-          <div className="text-[0.7rem] text-grayLight mb-1 whitespace-nowrap">{title}</div>
-          <div className="text-[1.05rem] font-extrabold text-ink flex items-center gap-1.5 leading-none">
+        /* Value-only card (no icon) */
+        <div className="min-w-[130px]">
+          <div className="text-[0.65rem] text-slate-400 mb-1 whitespace-nowrap">{title}</div>
+          <div className="text-[0.95rem] font-black text-ink flex items-center gap-1 leading-none">
             {value}
-            {up && <span className="text-emerald-500 text-[0.8rem] font-bold">▲</span>}
+            {up && <span className="text-emerald-500 text-[0.7rem] font-bold">▲</span>}
           </div>
-          <div className="text-[0.68rem] text-grayLight mt-1 whitespace-nowrap">{sub}</div>
+          <div className="text-[0.62rem] text-slate-400 mt-1 whitespace-nowrap">{sub}</div>
         </div>
       )}
     </motion.div>

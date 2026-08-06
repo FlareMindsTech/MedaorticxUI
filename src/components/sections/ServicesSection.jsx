@@ -6,13 +6,26 @@ import { SERVICES } from '../../data/services';
 export const ServicesSection = () => {
   const [selectedService, setSelectedService] = useState(null);
 
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    card.style.setProperty('--shine-x', `${x}%`);
+    card.style.setProperty('--shine-y', `${y}%`);
+  };
+
   return (
-    <section id="services" className="py-24 relative">
-      <div className="max-w-[1360px] mx-auto px-6 md:px-12">
+    <section id="services" className="py-24 relative overflow-hidden">
+      {/* Floating 3D Background Orbs */}
+      <div className="floating-orb-slow w-96 h-96 bg-violet/20 top-20 right-[-150px]" />
+      <div className="floating-orb w-80 h-80 bg-teal/20 bottom-10 left-[-120px]" />
+
+      <div className="max-w-[1360px] mx-auto px-6 md:px-12 relative z-10">
         
         {/* Section Header */}
-        <Reveal className="text-center max-w-xl mx-auto mb-16">
-          <span className="inline-block bg-white px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-4">
+        <Reveal variant="scaleRotate" className="text-center max-w-xl mx-auto mb-16">
+          <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-4 border border-indigo/10">
             What We Do
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink">
@@ -20,61 +33,64 @@ export const ServicesSection = () => {
           </h2>
         </Reveal>
 
-        {/* 6 Interactive Service Cards with 3D Tilt Hover */}
+        {/* 6 Interactive Service Cards with 3D Tilt Hover & Mouse-Tracking Shine */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {SERVICES.map((service, index) => (
-            <motion.div
+            <Reveal
               key={service.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.45, delay: index * 0.08 }}
-              onClick={() => setSelectedService(service)}
-              className="tilt-card group bg-white rounded-[20px] p-6 sm:p-8 shadow-[0_10px_30px_-14px_rgba(20,24,51,0.12)] border border-ink/5 flex flex-col justify-between cursor-pointer"
+              variant={index % 2 === 0 ? "slideLeft" : "slideRight"}
+              delay={index * 0.08}
             >
-              <div>
-                <div
-                  className="w-14 h-14 rounded-2xl mb-5 flex items-center justify-center text-2xl shadow-sm transition-transform duration-300 group-hover:scale-110"
-                  style={{ background: service.gradient }}
-                >
-                  {service.icon}
+              <div
+                onMouseMove={handleMouseMove}
+                onClick={() => setSelectedService(service)}
+                className="tilt-card card-shine group bg-white/80 backdrop-blur-xl rounded-[24px] p-6 sm:p-8 shadow-3d border border-white/80 flex flex-col justify-between cursor-pointer h-full transition-all duration-300"
+              >
+                <div>
+                  <div
+                    className="w-14 h-14 rounded-2xl mb-5 flex items-center justify-center text-2xl shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+                    style={{ background: service.gradient }}
+                  >
+                    {service.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-ink mb-2.5 group-hover:text-indigo transition-colors">{service.title}</h3>
+                  <p className="text-muted text-sm leading-relaxed mb-6">{service.shortDesc}</p>
                 </div>
-                <h3 className="text-xl font-bold text-ink mb-2.5">{service.title}</h3>
-                <p className="text-muted text-sm leading-relaxed mb-6">{service.shortDesc}</p>
-              </div>
 
-              <div className="flex items-center justify-between pt-2">
-                <span className="text-xs font-semibold text-indigo opacity-0 group-hover:opacity-100 transition-opacity">
-                  Click to Expand
-                </span>
-                <div className="w-9 h-9 rounded-full bg-[#F2F1FF] flex items-center justify-center text-indigo text-sm group-hover:bg-brand-gradient group-hover:text-white transition-colors duration-200">
-                  →
+                <div className="flex items-center justify-between pt-2">
+                  <span className="text-xs font-semibold text-indigo opacity-0 group-hover:opacity-100 transition-opacity">
+                    Click to Expand
+                  </span>
+                  <div className="w-9 h-9 rounded-full bg-[#F2F1FF] flex items-center justify-center text-indigo text-sm group-hover:bg-brand-gradient group-hover:text-white group-hover:scale-110 transition-all duration-200">
+                    →
+                  </div>
                 </div>
               </div>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
 
-        {/* Expanded Modal for Detailed View */}
+        {/* Expanded Modal for Detailed View with 3D Scale Animation */}
         <AnimatePresence>
           {selectedService && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/40 backdrop-blur-sm">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/40 backdrop-blur-md">
               <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                className="bg-white rounded-3xl max-w-2xl w-full p-8 shadow-card relative border border-white/60"
+                initial={{ opacity: 0, scale: 0.85, rotateX: 10 }}
+                animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+                exit={{ opacity: 0, scale: 0.85, rotateX: -10 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="bg-white/95 backdrop-blur-2xl rounded-3xl max-w-2xl w-full p-8 shadow-3d relative border border-white/80"
               >
                 <button
                   onClick={() => setSelectedService(null)}
-                  className="absolute top-6 right-6 w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center font-bold text-ink hover:bg-gray-200 transition-colors"
+                  className="absolute top-6 right-6 w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center font-bold text-ink hover:bg-gray-200 hover:rotate-90 transition-all duration-200"
                 >
                   ✕
                 </button>
 
                 <div className="flex items-center gap-4 mb-6">
                   <div
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-sm"
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-md"
                     style={{ background: selectedService.gradient }}
                   >
                     {selectedService.icon}
@@ -92,8 +108,8 @@ export const ServicesSection = () => {
                 <h4 className="font-bold text-ink text-sm uppercase tracking-wider mb-4">Included Features & Modules:</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                   {selectedService.features.map((feat, fIdx) => (
-                    <div key={fIdx} className="flex items-center gap-2.5 text-sm font-semibold text-ink">
-                      <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">
+                    <div key={fIdx} className="flex items-center gap-2.5 text-sm font-semibold text-ink bg-indigo/5 p-2.5 rounded-xl">
+                      <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs flex-shrink-0">
                         ✓
                       </span>
                       {feat}
@@ -103,7 +119,7 @@ export const ServicesSection = () => {
 
                 <button
                   onClick={() => setSelectedService(null)}
-                  className="w-full py-3.5 rounded-xl font-bold text-white bg-brand-gradient shadow-btn-primary hover:opacity-95 transition-opacity text-sm"
+                  className="w-full py-3.5 rounded-xl font-bold text-white bg-brand-gradient shadow-btn-primary hover:opacity-95 hover:scale-[1.01] transition-all text-sm"
                 >
                   Close & Continue Exploring
                 </button>
