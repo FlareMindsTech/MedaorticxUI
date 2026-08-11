@@ -1,0 +1,8 @@
+# MedAorticX Healthtek — robots.txt
+# https://www.robotstxt.org/
+
+User-agent: *
+Allow: /
+
+# Sitemap (uncomment and update when deployed to production)
+# Sitemap: https://www.medaorticx.com/sitemap.xml

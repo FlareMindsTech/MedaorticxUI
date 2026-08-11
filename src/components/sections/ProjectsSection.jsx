@@ -8,29 +8,29 @@ export const ProjectsSection = () => {
   const caseStudies = [
     {
       id: 1,
-      client: 'Metro Health System',
-      category: 'Billing & EHR',
-      metric: '99.2%',
-      metricLabel: 'First-Pass Claim Approval',
-      desc: 'Integrated custom claim scrubber with legacy EHR resulting in $4.2M accelerated cash flow within 90 days.',
+      client: 'Multi-Specialty Health Network',
+      category: 'Medical Coding',
+      metric: '99.5%',
+      metricLabel: 'Coding Accuracy Achieved',
+      desc: 'Delivered specialty-specific medical coding support across multiple departments, significantly reducing claim rejections and improving first-pass acceptance rates.',
       gradient: 'from-indigo to-violet'
     },
     {
       id: 2,
-      client: 'Apex Surgical Network',
-      category: 'Telemedicine',
-      metric: '40%',
-      metricLabel: 'Reduction in No-Shows',
-      desc: 'Deployed automated SMS appointment reminders and WebRTC telehealth modules for over 45,000 active patients.',
+      client: 'Regional Hospital System',
+      category: 'Claims & Denial',
+      metric: '35%',
+      metricLabel: 'Reduction in Denials',
+      desc: 'Implemented comprehensive denial management and root-cause analysis workflows, recovering previously lost revenue and establishing preventative processes.',
       gradient: 'from-violet to-teal'
     },
     {
       id: 3,
-      client: 'CareFirst Provider Group',
-      category: 'AI Healthcare',
-      metric: '3.5x',
-      metricLabel: 'Faster Triage Speed',
-      desc: 'Implemented predictive clinical notes analyzer enabling emergency room doctors to triage incoming cases in under 4 minutes.',
+      client: 'Surgical Specialty Group',
+      category: 'Revenue Cycle',
+      metric: '28%',
+      metricLabel: 'Revenue Improvement',
+      desc: 'End-to-end revenue cycle optimization including charge capture review, A/R follow-up, and payment posting, resulting in measurable financial gains.',
       gradient: 'from-teal to-tealLight'
     }
   ];
@@ -50,25 +50,23 @@ export const ProjectsSection = () => {
 
   return (
     <section id="projects" className="py-24 relative overflow-hidden">
-      {/* Floating Orbs */}
-      <div className="floating-orb w-80 h-80 bg-indigo/20 top-20 left-[-100px]" />
-      <div className="floating-orb-slow w-72 h-72 bg-teal/20 bottom-10 right-[-80px]" />
+      {/* Section Content */}
 
       <div className="max-w-[1360px] mx-auto px-6 md:px-12 relative z-10">
         
         {/* Section Header */}
         <Reveal variant="scaleRotate" className="text-center max-w-3xl mx-auto mb-16">
           <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-4 border border-indigo/10">
-            Case Studies & Portfolio
+            Results & Impact
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink mb-6">
-            Proven Results in <span className="grad-text">Healthcare Tech</span>
+            Proven Results in <span className="grad-text">Healthcare RCM</span>
           </h2>
         </Reveal>
 
         {/* Filter Badges */}
         <div className="flex justify-center gap-3 mb-12 flex-wrap">
-          {['All', 'Billing & EHR', 'Telemedicine', 'AI Healthcare'].map((filter) => (
+          {['All', 'Medical Coding', 'Claims & Denial', 'Revenue Cycle'].map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
@@ -83,7 +81,7 @@ export const ProjectsSection = () => {
           ))}
         </div>
 
-        {/* 3D Interactive Case Study Cards */}
+        {/* Case Study Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((cs, idx) => (
@@ -118,7 +116,7 @@ export const ProjectsSection = () => {
 
                   <div className="px-8 pb-8 pt-0 flex items-center justify-between">
                     <span className="text-xs font-semibold text-grayLight">
-                      Verified Outcome Case
+                      Verified Outcome
                     </span>
                     <span className="w-8 h-8 rounded-full bg-indigo/10 text-indigo flex items-center justify-center text-sm font-bold group-hover:bg-brand-gradient group-hover:text-white group-hover:scale-110 transition-all duration-200">
                       →

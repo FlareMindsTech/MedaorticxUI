@@ -17,29 +17,30 @@ export const ServicesSection = () => {
 
   return (
     <section id="services" className="py-24 relative overflow-hidden">
-      {/* Floating 3D Background Orbs */}
-      <div className="floating-orb-slow w-96 h-96 bg-violet/20 top-20 right-[-150px]" />
-      <div className="floating-orb w-80 h-80 bg-teal/20 bottom-10 left-[-120px]" />
+      {/* Section Content */}
 
       <div className="max-w-[1360px] mx-auto px-6 md:px-12 relative z-10">
         
         {/* Section Header */}
-        <Reveal variant="scaleRotate" className="text-center max-w-xl mx-auto mb-16">
+        <Reveal variant="scaleRotate" className="text-center max-w-3xl mx-auto mb-16">
           <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-4 border border-indigo/10">
             What We Do
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink">
-            Our Core <span className="grad-text">Services</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink mb-4">
+            What We <span className="grad-text">Do</span>
           </h2>
+          <p className="text-muted text-base sm:text-lg leading-relaxed">
+            Our services are designed to support healthcare organizations across the revenue cycle, including:
+          </p>
         </Reveal>
 
-        {/* 6 Interactive Service Cards with 3D Tilt Hover & Mouse-Tracking Shine */}
+        {/* 10 Interactive Service Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {SERVICES.map((service, index) => (
             <Reveal
               key={service.id}
               variant={index % 2 === 0 ? "slideLeft" : "slideRight"}
-              delay={index * 0.08}
+              delay={(index % 6) * 0.06}
             >
               <div
                 onMouseMove={handleMouseMove}
@@ -57,7 +58,7 @@ export const ServicesSection = () => {
                   <p className="text-muted text-sm leading-relaxed mb-6">{service.shortDesc}</p>
                 </div>
 
-                <div className="flex items-center justify-between pt-2">
+                <div className="flex items-center justify-between pt-2 border-t border-indigo/5">
                   <span className="text-xs font-semibold text-indigo opacity-0 group-hover:opacity-100 transition-opacity">
                     Click to Expand
                   </span>
@@ -70,7 +71,11 @@ export const ServicesSection = () => {
           ))}
         </div>
 
-        {/* Expanded Modal for Detailed View with 3D Scale Animation */}
+        <p className="text-center text-muted text-sm mt-12 max-w-2xl mx-auto">
+          We work closely with our clients to understand their workflows, identify opportunities for improvement, and deliver solutions aligned with their operational needs.
+        </p>
+
+        {/* Expanded Modal */}
         <AnimatePresence>
           {selectedService && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/40 backdrop-blur-md">
@@ -97,7 +102,7 @@ export const ServicesSection = () => {
                   </div>
                   <div>
                     <h3 className="text-2xl font-extrabold text-ink">{selectedService.title}</h3>
-                    <span className="text-xs text-indigo font-semibold uppercase tracking-wider">Comprehensive Service Suite</span>
+                    <span className="text-xs text-indigo font-semibold uppercase tracking-wider">Revenue Cycle Support</span>
                   </div>
                 </div>
 
@@ -105,7 +110,7 @@ export const ServicesSection = () => {
                   {selectedService.fullDesc}
                 </p>
 
-                <h4 className="font-bold text-ink text-sm uppercase tracking-wider mb-4">Included Features & Modules:</h4>
+                <h4 className="font-bold text-ink text-sm uppercase tracking-wider mb-4">Core Capabilities:</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                   {selectedService.features.map((feat, fIdx) => (
                     <div key={fIdx} className="flex items-center gap-2.5 text-sm font-semibold text-ink bg-indigo/5 p-2.5 rounded-xl">
@@ -121,7 +126,7 @@ export const ServicesSection = () => {
                   onClick={() => setSelectedService(null)}
                   className="w-full py-3.5 rounded-xl font-bold text-white bg-brand-gradient shadow-btn-primary hover:opacity-95 hover:scale-[1.01] transition-all text-sm"
                 >
-                  Close & Continue Exploring
+                  Close & Continue
                 </button>
               </motion.div>
             </div>

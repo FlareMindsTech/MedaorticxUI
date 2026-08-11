@@ -1,7 +1,9 @@
+/* Import Tailwind layers first */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Variables */
 :root {
   --indigo: #6D4DE0;
   --violet: #8B5CF6;
@@ -16,19 +18,17 @@
   --card-bg: rgba(255, 255, 255, 0.85);
   --line: rgba(20, 24, 51, 0.08);
   --shadow: 0 20px 50px -18px rgba(80, 60, 200, 0.25);
+  --brand-gradient: linear-gradient(100deg, var(--indigo), var(--teal));
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-/* ─── Hardware Accelerated Animated Gradient Background ─── */
 @keyframes gradientShift {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
@@ -40,189 +40,58 @@ body {
   color: var(--ink);
   background: linear-gradient(160deg, #F4F2FF, #EEF2FF, #EAF9F7, #F0EEFF);
   background-size: 400% 400%;
-  animation: gradientShift 20s ease infinite;
+  animation: gradientShift 25s ease infinite;
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ─── Gradient Text ─── */
+/* Gradient text utility */
 .grad-text {
-  background: linear-gradient(100deg, var(--indigo), var(--teal));
+  background: var(--brand-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .bg-brand-gradient {
-  background: linear-gradient(100deg, var(--indigo), var(--teal));
+  background: var(--brand-gradient);
 }
 
-/* ─── 3D Card Utilities with Hardware Acceleration ─── */
-.perspective-800 {
-  perspective: 800px;
-}
-
-.transform-style-3d {
-  transform-style: preserve-3d;
-}
-
-.backface-hidden {
-  backface-visibility: hidden;
-}
-
-/* ─── Enhanced Flip Card (GPU-accelerated) ─── */
-.flip-card {
-  perspective: 1000px;
-}
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-.flip-card:hover .flip-card-inner {
-  transform: rotateY(180deg);
-}
-.flip-card-front,
-.flip-card-back {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  border-radius: 20px;
-  transform: translateZ(0);
-}
-.flip-card-back {
-  transform: rotateY(180deg);
-}
-
-/* ─── Hardware-Accelerated 3D Tilt Card ─── */
+/* 3D tilt and cards */
 .tilt-card {
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
   transform-style: preserve-3d;
   will-change: transform;
 }
+
 .tilt-card:hover {
   transform: perspective(800px) rotateX(3deg) rotateY(-3deg) translateZ(16px) scale(1.02);
-  box-shadow:
-    0 20px 40px -15px rgba(109, 77, 224, 0.25),
-    0 8px 16px -6px rgba(109, 77, 224, 0.1);
+  box-shadow: 0 20px 40px -15px rgba(109, 77, 224, 0.25), 0 8px 16px -6px rgba(109, 77, 224, 0.1);
 }
 
-/* ─── Mouse-Tracking Shine Effect (GPU Promoted) ─── */
-.card-shine {
-  position: relative;
-  overflow: hidden;
-}
-.card-shine::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at var(--shine-x, 50%) var(--shine-y, 50%),
-    rgba(109, 77, 224, 0.08) 0%,
-    transparent 60%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  will-change: opacity, transform;
-  transform: translateZ(0);
-}
-.card-shine:hover::after {
-  opacity: 1;
+.shadow-3d {
+  box-shadow: 0 4px 6px -1px rgba(20, 24, 51, 0.05), 0 10px 15px -3px rgba(109, 77, 224, 0.08), 0 20px 40px -10px rgba(109, 77, 224, 0.12);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-/* ─── Glassmorphic Section Panel (Optimized Blur) ─── */
+.shadow-3d:hover {
+  box-shadow: 0 8px 12px -2px rgba(20, 24, 51, 0.07), 0 16px 28px -4px rgba(109, 77, 224, 0.12), 0 24px 48px -12px rgba(109, 77, 224, 0.16);
+}
+
 .glass-section {
   position: relative;
 }
-.glass-section::before {
-  content: '';
-  position: absolute;
-  inset: 40px 5% 40px 5%;
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  z-index: -1;
-  pointer-events: none;
-  transform: translateZ(0);
-}
 
-/* ─── Optimized Floating Animated Orbs ─── */
-@keyframes floatOrb {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(0, -20px, 0) scale(1.05); }
-}
-@keyframes floatOrbSlow {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate3d(0, -15px, 0) scale(1.03) rotate(6deg); }
-}
-
-.floating-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(30px);
-  opacity: 0.25;
-  z-index: -1;
-  pointer-events: none;
-  animation: floatOrb 7s ease-in-out infinite;
-  will-change: transform;
-}
-.floating-orb-slow {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(35px);
-  opacity: 0.2;
-  z-index: -1;
-  pointer-events: none;
-  animation: floatOrbSlow 9s ease-in-out infinite;
-  will-change: transform;
-}
-
-/* ─── 3D Card Depth Shadows ─── */
-.shadow-3d {
-  box-shadow:
-    0 4px 6px -1px rgba(20, 24, 51, 0.05),
-    0 10px 15px -3px rgba(109, 77, 224, 0.08),
-    0 20px 40px -10px rgba(109, 77, 224, 0.12);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  will-change: transform, box-shadow;
-}
-.shadow-3d:hover {
-  box-shadow:
-    0 8px 12px -2px rgba(20, 24, 51, 0.07),
-    0 16px 28px -4px rgba(109, 77, 224, 0.12),
-    0 24px 48px -12px rgba(109, 77, 224, 0.16);
-}
-
-/* ─── Scrollbar Hiding ─── */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* ─── Focus ─── */
-:focus-visible {
-  outline: 2px solid var(--indigo);
-  outline-offset: 2px;
-}
-
-/* ─── Section Divider ─── */
-.section-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(109, 77, 224, 0.15), rgba(31, 199, 192, 0.15), transparent);
-}
-
-/* ─── Glassmorphic Form Container ─── */
-.glass-form {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 24px;
-  transform: translateZ(0);
+/* Disabled animations & floating effects on mobile viewports */
+@media (max-width: 1023px) {
+  .hero-anim,
+  .card-float,
+  .animate-pulse,
+  .animate-spin {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+  }
 }

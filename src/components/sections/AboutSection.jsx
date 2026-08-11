@@ -5,66 +5,81 @@ import { Reveal } from '../common/Reveal';
 export const AboutSection = () => {
   const [flippedCard, setFlippedCard] = useState(null);
 
-  const values = [
+  const approaches = [
     {
       id: 1,
-      icon: '🔒',
-      title: 'Uncompromised Security',
-      summary: 'HIPAA compliance & bank-grade encryption built-in.',
-      detail: 'Every layer of our data pipeline uses AES-256 encryption at rest and TLS 1.3 in transit with automated threat detection.'
+      icon: '🎯',
+      title: 'Accuracy First.',
+      detail: 'Healthcare revenue depends on getting the details right. We focus on accuracy, consistency, and quality at every stage of the process.'
     },
     {
       id: 2,
-      icon: '⚡',
-      title: 'Clinical Speed',
-      summary: 'Sub-second query responses for medical staff.',
-      detail: 'Engineered with low-latency indexing algorithms ensuring patient charts and code suggestions load in under 200ms.'
+      icon: '🤝',
+      title: 'Client-Centric Partnership.',
+      detail: "We don't believe in a one-size-fits-all approach. Every client has different workflows, specialties, challenges, and goals. We build our processes around those requirements."
     },
     {
       id: 3,
-      icon: '🤝',
-      title: 'Provider Centricity',
-      summary: 'Designed alongside certified medical coders.',
-      detail: 'Built directly from clinical observation of physician workflows to reduce administrative burnout and claim rejections.'
+      icon: '💼',
+      title: 'Experienced Professionals.',
+      detail: 'Our team brings practical knowledge of U.S. healthcare processes and medical coding, allowing us to understand the challenges our clients face and respond with industry-specific solutions.'
+    },
+    {
+      id: 4,
+      icon: '💡',
+      title: 'Technology & Innovation.',
+      detail: 'We continuously explore smarter workflows, automation, analytics, and technology-enabled solutions to improve efficiency and scalability.'
     }
   ];
 
   return (
     <section id="about" className="py-24 relative overflow-hidden glass-section">
-      {/* Floating 3D Background Orbs */}
-      <div className="floating-orb w-80 h-80 bg-indigo/30 top-10 left-[-100px]" />
-      <div className="floating-orb-slow w-96 h-96 bg-teal/25 bottom-10 right-[-120px]" />
+      {/* Section Content */}
 
       <div className="max-w-[1360px] mx-auto px-6 md:px-12 relative z-10">
         
         {/* Section Header */}
         <Reveal variant="scaleRotate" className="text-center max-w-3xl mx-auto mb-16">
           <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-4 border border-indigo/10">
-            About MedAorticX
+            About Us
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink mb-6">
-            Empowering Healthcare Through <span className="grad-text">Accurate Tech</span>
+            Transforming Healthcare Revenue Through <span className="grad-text">Expertise, Accuracy & Innovation</span>
           </h2>
+          <p className="text-muted text-base sm:text-lg leading-relaxed mb-4">
+            We are a healthcare Revenue Cycle Management company dedicated to helping healthcare providers and organizations simplify complex revenue processes, improve operational efficiency, and strengthen financial performance.
+          </p>
           <p className="text-muted text-base sm:text-lg leading-relaxed">
-            MedAorticX Healthtek bridges the gap between complex clinical workflows and modern computational intelligence.
+            Built by professionals with hands-on experience in U.S. healthcare and medical coding, our approach combines industry expertise, attention to detail, technology-driven workflows, and a commitment to delivering consistent results.
           </p>
         </Reveal>
 
-        {/* Interactive Mission / Vision 3D Tilt Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        {/* Who We Are Sub-block */}
+        <Reveal variant="fadeIn" className="bg-white/80 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-3d border border-white/80 max-w-4xl mx-auto mb-20 text-center">
+          <h3 className="text-2xl font-bold text-ink mb-4">Who We Are</h3>
+          <p className="text-muted leading-relaxed text-base mb-4 font-medium text-indigo">
+            We believe healthcare providers should be focused on what matters most — delivering quality patient care.
+          </p>
+          <p className="text-muted leading-relaxed text-base mb-4">
+            Behind every successful healthcare organization is a strong and efficient revenue cycle. From accurate medical coding to claims management and denial resolution, every step plays an important role in protecting revenue and maintaining a healthy financial operation.
+          </p>
+          <p className="text-muted leading-relaxed text-base">
+            Our team provides specialized healthcare support across key areas of the revenue cycle, helping clients reduce administrative complexity, improve accuracy, and create more efficient workflows.
+          </p>
+        </Reveal>
+
+        {/* Vision & Mission Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
           <Reveal variant="slideLeft" delay={0.1}>
             <div className="tilt-card card-shine bg-white/80 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-3d border border-white/80 h-full flex flex-col justify-between cursor-pointer group">
               <div>
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo/20 to-violet/20 text-indigo flex items-center justify-center text-3xl font-bold mb-6 shadow-inner group-hover:scale-110 transition-transform">
                   🎯
                 </div>
-                <h3 className="text-2xl font-bold text-ink mb-4 group-hover:text-indigo transition-colors">Our Mission</h3>
+                <h3 className="text-2xl font-bold text-ink mb-4 group-hover:text-indigo transition-colors">Our Vision</h3>
                 <p className="text-muted leading-relaxed text-base">
-                  To deliver zero-error medical coding platforms, intelligent EHR workflows, and automated revenue cycle management solutions that empower healthcare workers to focus on what matters most: patient care.
+                  To become a trusted global healthcare operations partner, recognized for excellence in medical coding, revenue cycle management, innovation, and client success.
                 </p>
-              </div>
-              <div className="pt-6 text-indigo font-semibold text-sm flex items-center gap-2 group-hover:translate-x-1 transition-transform">
-                Explore Mission Standards →
               </div>
             </div>
           </Reveal>
@@ -75,48 +90,49 @@ export const AboutSection = () => {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal/20 to-teal-light/20 text-teal flex items-center justify-center text-3xl font-bold mb-6 shadow-inner group-hover:scale-110 transition-transform">
                   🚀
                 </div>
-                <h3 className="text-2xl font-bold text-ink mb-4 group-hover:text-teal transition-colors">Our Vision</h3>
+                <h3 className="text-2xl font-bold text-ink mb-4 group-hover:text-teal transition-colors">Our Mission</h3>
                 <p className="text-muted leading-relaxed text-base">
-                  To become the global gold standard for healthcare software infrastructure, setting new benchmarks in HIPAA compliance, interoperability speed, and AI diagnostic accuracy.
+                  To empower healthcare organizations with accurate, efficient, and scalable revenue cycle solutions that improve financial performance while allowing healthcare professionals to focus on patient care.
                 </p>
-              </div>
-              <div className="pt-6 text-teal font-semibold text-sm flex items-center gap-2 group-hover:translate-x-1 transition-transform">
-                View Infrastructure Vision →
               </div>
             </div>
           </Reveal>
         </div>
 
-        {/* 3D Flipping Cards for Core Values */}
-        <Reveal variant="flipIn" className="mt-20">
+        {/* 4-Card Our Approach Grid */}
+        <Reveal variant="fadeIn" className="mt-12">
           <h3 className="text-2xl sm:text-3xl font-extrabold text-ink text-center mb-12">
-            Interactive <span className="grad-text">Core Values</span> (Hover/Tap to Flip)
+            Our <span className="grad-text">Approach</span>
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {values.map((v) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {approaches.map((app) => (
               <div
-                key={v.id}
-                className="flip-card h-[230px] cursor-pointer"
-                onClick={() => setFlippedCard(flippedCard === v.id ? null : v.id)}
+                key={app.id}
+                className="bg-white/85 backdrop-blur-xl p-6 rounded-3xl border border-white/80 shadow-3d flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
               >
-                <div className={`flip-card-inner ${flippedCard === v.id ? '[transform:rotateY(180deg)]' : ''}`}>
-                  {/* Front Side */}
-                  <div className="flip-card-front bg-white/90 backdrop-blur-md p-6 border border-white/60 shadow-3d flex flex-col items-center justify-center text-center">
-                    <div className="text-4xl mb-3 transform group-hover:scale-110 transition-transform">{v.icon}</div>
-                    <h4 className="font-bold text-ink text-lg mb-2">{v.title}</h4>
-                    <p className="text-xs text-grayLight">{v.summary}</p>
-                    <span className="mt-4 text-[0.7rem] text-indigo font-semibold uppercase tracking-wider bg-indigo/10 px-3 py-1 rounded-full">Hover/Tap to Flip 🔄</span>
+                <div>
+                  <div className="w-12 h-12 rounded-2xl bg-indigo/10 text-indigo flex items-center justify-center text-2xl mb-4 font-bold">
+                    {app.icon}
                   </div>
-
-                  {/* Back Side */}
-                  <div className="flip-card-back bg-brand-gradient text-white p-6 shadow-card-hover flex flex-col items-center justify-center text-center">
-                    <h4 className="font-bold text-white text-lg mb-3">{v.title}</h4>
-                    <p className="text-xs leading-relaxed opacity-95">{v.detail}</p>
-                  </div>
+                  <h4 className="font-bold text-ink text-lg mb-3">{app.title}</h4>
+                  <p className="text-muted text-sm leading-relaxed">{app.detail}</p>
                 </div>
               </div>
             ))}
+          </div>
+        </Reveal>
+
+        {/* Closing Partner Statement */}
+        <Reveal variant="fadeIn" className="mt-16 text-center max-w-3xl mx-auto bg-brand-gradient text-white p-8 sm:p-10 rounded-3xl shadow-3d">
+          <h3 className="text-2xl font-extrabold text-white mb-4">
+            More Than a Service Provider — Your RCM Partner
+          </h3>
+          <p className="text-white/90 leading-relaxed text-base mb-6">
+            We aim to build long-term relationships based on trust, transparency, accountability, and measurable performance. As we grow, our commitment remains simple:
+          </p>
+          <div className="inline-block bg-white/10 backdrop-blur-md px-6 py-3 rounded-full font-bold text-white tracking-wide text-sm sm:text-base border border-white/20">
+            Better Processes. Better Accuracy. Better Revenue. Better Healthcare.
           </div>
         </Reveal>
 

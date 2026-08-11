@@ -8,50 +8,48 @@ export const SolutionsSection = () => {
   const clientSolutions = [
     {
       id: 'hospitals',
-      title: 'Hospitals & Medical Networks',
+      title: 'Hospitals & Health Systems',
       icon: '🏥',
-      tagline: 'Scale operations across multi-facility networks without data silos.',
-      stats: '500+ Beds Supported',
+      tagline: 'Scale revenue cycle operations across multi-facility networks without workflow disruption.',
+      stats: 'Enterprise RCM',
       benefits: [
-        'Centralized inpatient and outpatient billing scrubbers',
-        'Cross-facility EHR interoperability via HL7 FHIR standards',
-        'Real-time bed allocation and triage analytics dashboard',
-        'Sub-second audit trail compliance for joint commission reviews'
+        'Centralized medical coding and billing oversight across departments',
+        'Claims management and denial resolution with root-cause analysis',
+        'Accounts receivable follow-up and payment posting at scale',
+        'Quality and compliance support aligned with regulatory requirements'
       ]
     },
     {
       id: 'clinics',
-      title: 'Specialty Clinics & Centers',
+      title: 'Specialty Clinics & Practices',
       icon: '⚕️',
-      tagline: 'Eliminate administrative overhead so specialists focus on patient care.',
-      stats: '1.5% Denial Rate Guarantee',
+      tagline: 'Reduce administrative complexity so specialists can focus on delivering quality patient care.',
+      stats: 'Specialty-Focused',
       benefits: [
-        'Automated patient appointment scheduling & SMS reminders',
-        'Direct claim scrubbing reducing claim denial rate under 1.5%',
-        'Integrated Telemedicine consultation platform',
-        'Custom clinical templates tailored per specialty'
+        'Specialty-specific medical coding with high accuracy rates',
+        'Eligibility and benefits verification before patient visits',
+        'Charge entry, charge review, and clean claim submission',
+        'Denial management and appeals tailored per specialty'
       ]
     },
     {
       id: 'provider-groups',
       title: 'Provider Groups & MSOs',
       icon: '🩺',
-      tagline: 'Maximize revenue optimization and physician clinical productivity.',
-      stats: '3.5x Faster Triage',
+      tagline: 'Streamline revenue operations and improve financial visibility across your provider network.',
+      stats: 'Multi-Provider',
       benefits: [
-        'Group-wide financial dashboards and performance metrics',
-        'AI medical coding assistant for rapid CPT/ICD-10 suggestion',
-        'Automated physician credentialing & payer contract tracking',
-        'HIPAA-compliant multi-provider messaging platform'
+        'Group-wide revenue cycle support and performance tracking',
+        'Standardized coding and billing workflows across providers',
+        'Payment posting reconciliation and A/R management',
+        'Scalable support that adapts to changing operational needs'
       ]
     }
   ];
 
   return (
     <section id="solutions" className="py-24 relative overflow-hidden glass-section">
-      {/* Floating 3D Background Orbs */}
-      <div className="floating-orb w-72 h-72 bg-teal/20 top-10 right-[-80px]" />
-      <div className="floating-orb-slow w-80 h-80 bg-indigo/25 bottom-10 left-[-90px]" />
+      {/* Section Content */}
 
       <div className="max-w-[1360px] mx-auto px-6 md:px-12 relative z-10">
         
@@ -61,7 +59,7 @@ export const SolutionsSection = () => {
             Tailored Solutions
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink mb-6">
-            Architected for Your <span className="grad-text">Specific Practice Needs</span>
+            Built for Your <span className="grad-text">Practice Needs</span>
           </h2>
         </Reveal>
 
@@ -83,7 +81,7 @@ export const SolutionsSection = () => {
           ))}
         </div>
 
-        {/* Animated Tab Content with 3D Depth */}
+        {/* Animated Tab Content */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -108,7 +106,7 @@ export const SolutionsSection = () => {
             </div>
 
             <div className="md:col-span-8 space-y-4">
-              <h4 className="font-bold text-ink text-sm uppercase tracking-wider">Solution Highlights & Core Benefits:</h4>
+              <h4 className="font-bold text-ink text-sm uppercase tracking-wider">How We Help:</h4>
               <div className="space-y-3">
                 {clientSolutions[activeTab].benefits.map((b, bIdx) => (
                   <motion.div

@@ -1,7 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 
-/** Flat 2D floating stat cards (matches medaorticx-homepage.html) */
+/** Flat 2D floating stat cards — pure CSS animations, no framer-motion */
 export const FloatingCard3D = ({
   title,
   value,
@@ -13,20 +12,9 @@ export const FloatingCard3D = ({
   delay = 0,
 }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: [0, -10, 0] }}
-      transition={{
-        opacity: { duration: 0.5, delay },
-        y: {
-          duration: 5,
-          repeat: Infinity,
-          repeatType: 'mirror',
-          ease: 'easeInOut',
-          delay,
-        },
-      }}
-      className={`bg-white/95 backdrop-blur-md rounded-[14px] px-3 py-2.5 shadow-[0_8px_24px_-6px_rgba(99,102,241,0.12),0_2px_8px_rgba(0,0,0,0.03)] border border-slate-100 hover:shadow-lg transition-all ${positionClass || 'relative z-[10]'}`}
+    <div
+      className={`card-float bg-white/95 backdrop-blur-md rounded-[14px] px-3 py-2.5 shadow-[0_8px_24px_-6px_rgba(99,102,241,0.12),0_2px_8px_rgba(0,0,0,0.03)] border border-slate-100 hover:shadow-lg transition-all ${positionClass || 'relative z-[10]'}`}
+      style={{ animationDelay: `${delay}s` }}
     >
       {icon && value ? (
         /* Stat card with icon + value (left column cards) */
@@ -71,6 +59,6 @@ export const FloatingCard3D = ({
           <div className="text-[0.62rem] text-slate-400 mt-1 whitespace-nowrap">{sub}</div>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };

@@ -12,16 +12,25 @@ export const Footer = () => {
       <div className="max-w-[1360px] mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-10">
 
         <div className="md:col-span-2 space-y-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center text-white font-extrabold text-lg shadow-md">
-              M
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-2xl bg-white border border-slate-100 shadow-sm inline-block">
+              <picture>
+                <source srcSet="/logo-footer.webp" type="image/webp" />
+                <img
+                  src="/logo-nav.png"
+                  alt="MedAorticX HealthTek Logo"
+                  width="112"
+                  height="56"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-12 sm:h-14 w-auto object-contain"
+                  style={{ mixBlendMode: 'multiply' }}
+                />
+              </picture>
             </div>
-            <span className="font-extrabold text-xl tracking-tight text-ink">
-              MedAortic<span className="text-indigo">X</span> Healthtek
-            </span>
           </div>
           <p className="text-muted text-sm max-w-md leading-relaxed">
-            Empowering healthcare providers through intelligent tech, accurate coding algorithms, and seamless digital transformation platforms.
+            We are a healthcare Revenue Cycle Management company dedicated to helping healthcare providers and organizations simplify complex revenue processes, improve operational efficiency, and strengthen financial performance.
           </p>
           <div className="text-xs text-grayLight">
             &copy; {new Date().getFullYear()} MedAorticX Healthtek. All rights reserved.

@@ -11,9 +11,7 @@ export const ContactSection = () => {
 
   return (
     <section id="contact" className="py-24 relative overflow-hidden glass-section">
-      {/* Floating 3D Background Orbs */}
-      <div className="floating-orb w-96 h-96 bg-indigo/25 top-10 right-[-120px]" />
-      <div className="floating-orb-slow w-80 h-80 bg-teal/20 bottom-10 left-[-100px]" />
+      {/* Section Content */}
 
       <div className="max-w-[1360px] mx-auto px-6 md:px-12 relative z-10">
         
@@ -23,7 +21,7 @@ export const ContactSection = () => {
             Get In Touch
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink mb-6">
-            Let's Transform Your <span className="grad-text">Healthcare Stack</span>
+            Let's Optimize Your <span className="grad-text">Revenue Cycle</span>
           </h2>
         </Reveal>
 
@@ -38,7 +36,7 @@ export const ContactSection = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-ink">Thank You for Reaching Out!</h3>
                 <p className="text-muted text-sm max-w-md mx-auto">
-                  Your message has been received. One of our clinical software specialists will contact you within 24 hours.
+                  Your message has been received. One of our revenue cycle specialists will contact you within 24 hours.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
@@ -83,7 +81,7 @@ export const ContactSection = () => {
                   <textarea
                     rows="4"
                     required
-                    placeholder="Tell us about your current EHR or medical coding challenges..."
+                    placeholder="Tell us about your revenue cycle management or medical coding needs..."
                     className="w-full px-4 py-3.5 rounded-xl border border-indigo/15 bg-white/70 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-sm shadow-inner"
                   ></textarea>
                 </div>

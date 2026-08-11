@@ -1,56 +1,92 @@
 export const SERVICES = [
   {
-    id: 'hospital-management',
-    icon: '🏥',
+    id: 'medical-coding',
+    title: 'Medical Coding',
+    shortDesc: 'Accurate ICD-10, CPT, and HCPCS coding to maintain compliance and optimize reimbursement.',
+    fullDesc: 'Comprehensive medical coding support across specialties, ensuring high accuracy, regulatory compliance, and seamless revenue flow.',
+    icon: '📊',
     gradient: 'linear-gradient(135deg, #DCE4FF, #C7D2FF)',
-    title: 'Hospital Management',
-    shortDesc: 'Complete hospital management systems to automate operations and improve efficiency.',
-    fullDesc: 'End-to-end clinical and administrative automation software engineered for high-volume enterprise hospitals and multi-specialty centers.',
-    features: ['Inpatient & Outpatient Care Modules', 'Bed Allocation & Asset Management', 'Pharmacy & Inventory Integration', 'Automated Patient Billing']
-  },
-  {
-    id: 'ehr-solutions',
-    icon: '📁',
-    gradient: 'linear-gradient(135deg, #EAD9FF, #D8C2FF)',
-    title: 'EHR Solutions',
-    shortDesc: 'Secure and interoperable Electronic Health Record solutions.',
-    fullDesc: 'FHIR-compliant Electronic Health Record platforms delivering seamless interoperability, real-time chart updating, and automated patient data syncing.',
-    features: ['HL7 FHIR Interoperability', 'Cloud-based Chart Management', 'Automated E-Prescriptions', 'Custom Clinical Workflows']
-  },
-  {
-    id: 'telemedicine',
-    icon: '📱',
-    gradient: 'linear-gradient(135deg, #D6F0FF, #C0E4FF)',
-    title: 'Telemedicine',
-    shortDesc: 'Connect doctors and patients anytime, anywhere with our platforms.',
-    fullDesc: 'HD encrypted video consultation suites integrated directly into provider EHRs with automated appointment scheduling and digital prescriptions.',
-    features: ['HD WebRTC Video Calls', 'Virtual Waiting Room Management', 'Integrated Digital Payments', 'Direct Prescription Dispatch']
+    features: ['ICD-10 & CPT Coding', 'Specialty-Specific Coding', 'Compliance Audits', 'Documentation Review']
   },
   {
     id: 'medical-billing',
-    icon: '💰',
-    gradient: 'linear-gradient(135deg, #FFE3D6, #FFD0C2)',
     title: 'Medical Billing',
-    shortDesc: 'Accurate billing solutions to ensure faster payments and compliance.',
-    fullDesc: 'AI-assisted medical coding and claim scrubber platform reducing claim denial rates to less than 1.5% while accelerating reimbursement speed.',
-    features: ['Automated Claims Scrubbing', 'ICD-10 & CPT Code Verification', 'Real-Time Eligibility Check', 'Denial Management Dashboard']
+    shortDesc: 'Streamlined billing operations to accelerate payment cycles and reduce claim rejections.',
+    fullDesc: 'End-to-end medical billing workflows designed to simplify administrative processes and maximize collections.',
+    icon: '💰',
+    gradient: 'linear-gradient(135deg, #EAD9FF, #D8C2FF)',
+    features: ['Claim Submission', 'Payer Follow-up', 'Patient Statements', 'Billing Reconciliation']
   },
   {
-    id: 'ai-healthcare',
-    icon: '🧠',
+    id: 'claims-management',
+    title: 'Claims Management',
+    shortDesc: 'End-to-end oversight from submission to resolution to prevent delayed revenues.',
+    fullDesc: 'Proactive management of claim life cycles to identify bottlenecks, resolve holds, and secure timely payments.',
+    icon: '📋',
+    gradient: 'linear-gradient(135deg, #D6F0FF, #C0E4FF)',
+    features: ['Claim Scrubbing', 'Clearinghouse Management', 'Submission Tracking', 'Rejection Resolution']
+  },
+  {
+    id: 'denial-management',
+    title: 'Denial Management',
+    shortDesc: 'Root-cause analysis and swift appeals to recover denied revenue.',
+    fullDesc: 'Specialized denial analysis and appeal strategies to turn rejections into paid revenue.',
+    icon: '🛡️',
+    gradient: 'linear-gradient(135deg, #FFE3D6, #FFD0C2)',
+    features: ['Root-Cause Analysis', 'Appeal Filing', 'Denial Tracking', 'Preventative Workflows']
+  },
+  {
+    id: 'ar-management',
+    title: 'Accounts Receivable Management',
+    shortDesc: 'Targeted follow-ups to resolve outstanding balances and increase cash flow.',
+    fullDesc: 'Dedicated A/R tracking and recovery strategies to reduce aging receivables and improve liquidity.',
+    icon: '📈',
     gradient: 'linear-gradient(135deg, #DCE9FF, #C7DAFF)',
-    title: 'AI Healthcare',
-    shortDesc: 'AI-powered solutions for smarter diagnosis and predictive analytics.',
-    fullDesc: 'Machine learning algorithms trained on clinical datasets to predict patient risk profiles, optimize triage workflows, and detect diagnostic anomalies.',
-    features: ['Diagnostic Anomaly Detection', 'Predictive Patient Triage', 'Natural Language Clinical Notes', 'Population Health Insights']
+    features: ['Aging A/R Recovery', 'Payer Escalations', 'Payment Tracking', 'Cash Flow Optimization']
   },
   {
-    id: 'mobile-apps',
-    icon: '📲',
+    id: 'charge-entry-review',
+    title: 'Charge Entry & Charge Review',
+    shortDesc: 'Meticulous review of charges prior to billing to ensure full revenue capture.',
+    fullDesc: 'Rigorous validation of clinical documentation and charge entries to eliminate missing or incorrect codes.',
+    icon: '✍️',
     gradient: 'linear-gradient(135deg, #E0F5FF, #C9EAFF)',
-    title: 'Mobile Apps',
-    shortDesc: 'Custom mobile apps for patients and healthcare providers.',
-    fullDesc: 'Intuitive iOS & Android applications empowering patients to manage appointments, view test results, and message care providers securely.',
-    features: ['Biometric Login Security', 'Push Notification Reminders', 'Lab Results & Imaging Viewer', 'Wearable Device Sync']
+    features: ['Charge Validation', 'Missing Charge Audits', 'Fee Schedule Check', 'Pre-Bill Auditing']
+  },
+  {
+    id: 'payment-posting',
+    title: 'Payment Posting',
+    shortDesc: 'Fast and precise posting of ERAs, EOBs, and patient payments.',
+    fullDesc: 'Automated and manual posting of electronic and paper payments to maintain transparent ledger records.',
+    icon: '💳',
+    gradient: 'linear-gradient(135deg, #EAE0FF, #D6C2FF)',
+    features: ['ERA & EOB Posting', 'Contractual Adjustment Checks', 'Patient Co-pay Posting', 'Balance Reconciliation']
+  },
+  {
+    id: 'eligibility-verification',
+    title: 'Eligibility & Benefits Verification',
+    shortDesc: 'Front-end verification of patient insurance to prevent claim denials.',
+    fullDesc: 'Pre-service verification of coverage, co-pays, deductibles, and pre-authorizations.',
+    icon: '🔍',
+    gradient: 'linear-gradient(135deg, #D6F7FF, #BEEFFF)',
+    features: ['Insurance Verification', 'Prior Authorization Check', 'Coverage Details Audit', 'Co-pay & Deductible Capture']
+  },
+  {
+    id: 'rcm-support',
+    title: 'Revenue Cycle Support',
+    shortDesc: 'Flexible administrative and operational assistance tailored to provider workflows.',
+    fullDesc: 'Scalable support teams providing specialized revenue cycle management assistance.',
+    icon: '⚙️',
+    gradient: 'linear-gradient(135deg, #FFEBD6, #FFDBB8)',
+    features: ['Operational Alignment', 'Workflow Automation', 'Staff Augmentation', 'Process Optimization']
+  },
+  {
+    id: 'quality-compliance',
+    title: 'Quality & Compliance Support',
+    shortDesc: 'Continuous audits and regulatory adherence to protect practice integrity.',
+    fullDesc: 'Rigorous compliance checking and quality standards ensuring adherence to U.S. healthcare guidelines.',
+    icon: '🏆',
+    gradient: 'linear-gradient(135deg, #E6FBF6, #C5F7EC)',
+    features: ['HIPAA Adherence', 'Coding Quality Audits', 'Regulatory Updates', 'Performance Monitoring']
   }
 ];

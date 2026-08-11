@@ -1,77 +1,112 @@
-import React, { useRef, useMemo, Suspense } from 'react';
-import * as THREE from 'three';
+import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { PerspectiveCamera } from '@react-three/drei';
-import { DoctorFigure } from '../hero/DoctorFigure';
+import { AdaptiveDpr, Float, Sparkles } from '@react-three/drei';
+import MedicalHelix from './MedicalHelix';
+import OrbitingAtoms from './OrbitingAtoms';
 
-function FloatingParticles() {
-  const groupRef = useRef();
-  const particles = useMemo(() => {
-    const items = [];
-    const shapes = ['cross', 'pill', 'ring', 'heart', 'sphere'];
-    for (let i = 0; i < 20; i++) {
-      items.push({
-        shape: shapes[i % shapes.length],
-        pos: [
-          (Math.random() - 0.5) * 12,
-          (Math.random() - 0.5) * 8,
-          (Math.random() - 0.5) * 6 - 2,
-        ],
-        rot: [Math.random() * Math.PI, Math.random() * Math.PI, 0],
-        scale: 0.08 + Math.random() * 0.15,
-        color: i % 3 === 0 ? '#6D4DE0' : i % 3 === 1 ? '#1FC7C0' : '#8B5CF6',
-      });
-    }
-    return items;
-  }, []);
-
+/**
+ * DoctorScene — Main 3D hero visual for MedAorticX.
+ *
+ * Renders a procedural DNA helix with orbiting medical-themed atoms,
+ * ambient particles, and brand-colored lighting. Fully self-contained
+ * Canvas component that can be lazy-loaded.
+ */
+const DoctorScene = () => {
   return (
-    <group ref={groupRef}>
-      {particles.map((p, i) => (
-        <mesh key={i} position={p.pos} rotation={p.rot} scale={p.scale}>
-          {p.shape === 'cross' && <boxGeometry args={[1.2, 0.35, 0.35]} />}
-          {p.shape === 'pill' && <capsuleGeometry args={[0.25, 0.8, 8, 16]} />}
-          {p.shape === 'ring' && <torusGeometry args={[0.4, 0.12, 8, 20]} />}
-          {p.shape === 'heart' && <sphereGeometry args={[0.4, 10, 10]} />}
-          {p.shape === 'sphere' && <dodecahedronGeometry args={[0.4, 0]} />}
-          <meshStandardMaterial
-            color={p.color}
-            roughness={0.4}
-            metalness={0.2}
-            transparent
-            opacity={0.25}
-          />
-        </mesh>
-      ))}
-    </group>
-  );
-}
+    <Canvas
+      camera={{ position: [0, 0.2, 4.2], fov: 40 }}
+      dpr={[1, 1.25]}
+      frameloop="always"
+      resize={{ scroll: false, debounce: { scroll: 0, resize: 0 } }}
+      gl={{
+        antialias: true,
+        alpha: true,
+        stencil: false,
+        depth: true,
+        powerPreference: 'high-performance',
+      }}
+      style={{
+        width: '100%',
+        height: '100%',
+        background: 'transparent',
+        pointerEvents: 'auto',
+      }}
+    >
+      <AdaptiveDpr pixelated />
 
-export const DoctorScene = () => {
-  return (
-    <div className="w-full h-full">
-      <Canvas
-        gl={{
-          alpha: true,
-          antialias: true,
-          toneMapping: THREE.NoToneMapping,
-        }}
-        dpr={[1, 2]}
-      >
-        <PerspectiveCamera makeDefault fov={34} position={[0, 0, 9]} />
-        <ambientLight intensity={1.4} />
-        <directionalLight position={[3, 4, 5]} intensity={1.8} />
-        <directionalLight position={[-3, 2, 3]} intensity={0.8} />
-        <pointLight position={[-2, 2, 2]} color="#6D4DE0" intensity={1.2} />
-        <pointLight position={[2, 1, 2]} color="#1FC7C0" intensity={1.2} />
+      {/* ──── Lighting ──── */}
+      <ambientLight intensity={0.7} color="#e8e4f0" />
 
-        <FloatingParticles />
+      {/* Indigo rim light — left */}
+      <pointLight
+        position={[-2.5, 1.5, 2]}
+        intensity={2.0}
+        color="#6D4DE0"
+        distance={10}
+        decay={2}
+      />
 
-        <Suspense fallback={null}>
-          <DoctorFigure />
-        </Suspense>
-      </Canvas>
-    </div>
+      {/* Teal rim light — right */}
+      <pointLight
+        position={[2.5, -0.5, 2]}
+        intensity={1.8}
+        color="#1FC7C0"
+        distance={10}
+        decay={2}
+      />
+
+      {/* Soft key light from above */}
+      <directionalLight
+        position={[0, 4, 3]}
+        intensity={0.6}
+        color="#f0eeff"
+      />
+
+      {/* Fill light from below for depth */}
+      <pointLight
+        position={[0, -3, 1]}
+        intensity={0.4}
+        color="#a78bfa"
+        distance={6}
+        decay={2}
+      />
+
+      {/* ──── Scene Content ──── */}
+      <Suspense fallback={null}>
+        {/* DNA Helix — gently floating */}
+        <Float
+          speed={1.2}
+          rotationIntensity={0.12}
+          floatIntensity={0.25}
+          floatingRange={[-0.04, 0.04]}
+        >
+          <MedicalHelix />
+        </Float>
+
+        {/* Orbiting Atoms */}
+        <OrbitingAtoms />
+
+        {/* Ambient sparkle particles — indigo */}
+        <Sparkles
+          count={50}
+          scale={4.5}
+          size={2}
+          speed={0.4}
+          opacity={0.35}
+          color="#8B5CF6"
+        />
+
+        {/* Ambient sparkle particles — teal */}
+        <Sparkles
+          count={25}
+          scale={3.5}
+          size={1.2}
+          speed={0.3}
+          opacity={0.25}
+          color="#1FC7C0"
+        />
+      </Suspense>
+    </Canvas>
   );
 };
 
