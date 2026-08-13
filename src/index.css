@@ -1,0 +1,97 @@
+/* Import Tailwind layers first */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Variables */
+:root {
+  --indigo: #6D4DE0;
+  --violet: #8B5CF6;
+  --teal: #1FC7C0;
+  --teal-light: #3AD9C9;
+  --ink: #141833;
+  --gray: #5C6478;
+  --gray-light: #8A90A3;
+  --bg-top: #F4F2FF;
+  --bg-mid: #EEF2FF;
+  --bg-bot: #EAF9F7;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --line: rgba(20, 24, 51, 0.08);
+  --shadow: 0 20px 50px -18px rgba(80, 60, 200, 0.25);
+  --brand-gradient: linear-gradient(100deg, var(--indigo), var(--teal));
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--ink);
+  background: linear-gradient(160deg, #F4F2FF, #EEF2FF, #EAF9F7, #F0EEFF);
+  background-size: 400% 400%;
+  animation: gradientShift 25s ease infinite;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Gradient text utility */
+.grad-text {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bg-brand-gradient {
+  background: var(--brand-gradient);
+}
+
+/* 3D tilt and cards */
+.tilt-card {
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.tilt-card:hover {
+  transform: perspective(800px) rotateX(3deg) rotateY(-3deg) translateZ(16px) scale(1.02);
+  box-shadow: 0 20px 40px -15px rgba(109, 77, 224, 0.25), 0 8px 16px -6px rgba(109, 77, 224, 0.1);
+}
+
+.shadow-3d {
+  box-shadow: 0 4px 6px -1px rgba(20, 24, 51, 0.05), 0 10px 15px -3px rgba(109, 77, 224, 0.08), 0 20px 40px -10px rgba(109, 77, 224, 0.12);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.shadow-3d:hover {
+  box-shadow: 0 8px 12px -2px rgba(20, 24, 51, 0.07), 0 16px 28px -4px rgba(109, 77, 224, 0.12), 0 24px 48px -12px rgba(109, 77, 224, 0.16);
+}
+
+.glass-section {
+  position: relative;
+}
+
+/* Disabled animations & floating effects on mobile viewports */
+@media (max-width: 1023px) {
+  .hero-anim,
+  .card-float,
+  .animate-pulse,
+  .animate-spin {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+  }
+}

@@ -1,0 +1,43 @@
+# MedAorticX Healthtek
+
+> MedAorticX Healthtek is a healthcare Revenue Cycle Management (RCM) company dedicated to helping healthcare providers simplify complex revenue processes, improve operational efficiency, and strengthen financial performance.
+
+## About
+
+MedAorticX Healthtek provides end-to-end revenue cycle management solutions for hospitals, specialty clinics, and provider groups. We combine deep healthcare domain expertise with modern technology to optimize every stage of the revenue cycle — from patient registration and medical coding to claims management and denial resolution.
+
+## Services
+
+- **Medical Coding**: Specialty-specific coding with 99.8% accuracy rates, covering ICD-10, CPT, and HCPCS code assignment.
+- **Medical Billing**: Clean claim submission, charge entry, charge review, and payment posting.
+- **Claims Management**: End-to-end claims lifecycle management, from submission to follow-up and resolution.
+- **Denial Management**: Root-cause analysis of denied claims, swift appeals, and prevention strategies.
+- **Accounts Receivable (AR) Management**: Systematic follow-up on outstanding balances to accelerate collections.
+- **Charge Review & Audit**: Pre-billing audits to catch errors and ensure coding compliance.
+- **Quality & Compliance Support**: HIPAA-compliant processes aligned with payer and regulatory requirements.
+
+## Solutions
+
+### Hospitals & Health Systems
+Centralized medical coding and billing oversight across departments, claims management and denial resolution with root-cause analysis, and compliance support aligned with regulatory requirements.
+
+### Specialty Clinics & Practices
+Specialty-specific medical coding, eligibility and benefits verification, charge entry and clean claim submission, and denial management tailored per specialty.
+
+### Provider Groups & MSOs
+Group-wide revenue cycle support and performance tracking, standardized coding and billing workflows, payment posting reconciliation, and scalable support.
+
+## Contact
+
+- **Email**: info@medaorticx.com
+- **Phone**: +1 (555) 123-4567
+- **Location**: Business operations across the United States
+
+## Links
+
+- [Home](/)
+- [About Us](/#about)
+- [Services](/#services)
+- [Solutions](/#solutions)
+- [Projects](/#projects)
+- [Contact](/#contact)
