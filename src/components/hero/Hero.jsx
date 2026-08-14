@@ -6,19 +6,22 @@ export const Hero = () => {
   const [useWebGL, setUseWebGL] = useState(false);
   const [DoctorScene, setDoctorScene] = useState(null);
 
-  useEffect(() => {
-    // Only load 3D WebGL scene on desktop screens
-    if (window.innerWidth >= 1024) {
+useEffect(() => {
+  if (window.innerWidth >= 1024) {
+    const load = () => {
       setUseWebGL(true);
       import('../three/DoctorScene')
-        .then((mod) => {
-          setDoctorScene(() => mod.default);
-        })
-        .catch((err) => {
-          console.error("Failed to load DoctorScene:", err);
-        });
+        .then((mod) => setDoctorScene(() => mod.default))
+        .catch((err) => console.error('Failed to load DoctorScene:', err));
+    };
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(load, { timeout: 2000 });
+    } else {
+      setTimeout(load, 200);
     }
-  }, []);
+  }
+}, []);
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
@@ -91,7 +94,7 @@ export const Hero = () => {
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[280px] lg:w-[320px] h-[220px] sm:h-[280px] lg:h-[320px] rounded-full bg-gradient-to-tr from-[#DDF3FF] via-[#E8F0FE] to-[#F1EAFF] border border-white/60 shadow-[inset_0_0_40px_rgba(255,255,255,0.8),0_10px_30px_rgba(99,102,241,0.08)] z-[2]" />
 
               {/* 3D Medical Visual Canvas */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] sm:w-[320px] lg:w-[380px] h-[360px] sm:h-[440px] lg:h-[500px] z-[15]">
+              <div className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 w-[260px] sm:w-[320px] lg:w-[380px] h-[360px] sm:h-[440px] lg:h-[500px] z-[15]">
                 {useWebGL && DoctorScene ? (
                   <Suspense
                     fallback={
@@ -149,14 +152,6 @@ export const Hero = () => {
               {/* Right Column Floating Feature Cards (Desktop / Large Screens) */}
               <div className="hidden lg:block">
                 <FloatingCard3D
-                  title="Denial Management"
-                  sub="Swift Appeals"
-                  icon="💼"
-                  iconBg="#EEF2FF"
-                  positionClass="absolute top-[4%] right-[-10px] xl:right-0 z-[30] scale-75 xl:scale-90 2xl:scale-100 origin-right"
-                  delay={0.2}
-                />
-                <FloatingCard3D
                   title="Billing & Coding"
                   sub="HIPAA Compliant"
                   icon="🛡️"
@@ -203,13 +198,6 @@ export const Hero = () => {
                   icon="📅"
                   iconBg="#EEF2FF"
                   delay={0.2}
-                />
-                <FloatingCard3D
-                  title="Denial Management"
-                  sub="Swift Appeals"
-                  icon="💼"
-                  iconBg="#EEF2FF"
-                  delay={0.4}
                 />
                 <FloatingCard3D
                   title="Billing & Coding"
