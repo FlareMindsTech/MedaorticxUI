@@ -1,23 +1,45 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { AdaptiveDpr, Float, Sparkles } from '@react-three/drei';
-import MedicalHelix from './MedicalHelix';
-import OrbitingAtoms from './OrbitingAtoms';
+import {
+  AdaptiveDpr,
+  Sparkles,
+  Bounds,
+  useGLTF,
+  useAnimations,
+} from '@react-three/drei';
+import * as THREE from 'three';
 
-/**
- * DoctorScene — Main 3D hero visual for MedAorticX.
- *
- * Renders a procedural DNA helix with orbiting medical-themed atoms,
- * ambient particles, and brand-colored lighting. Fully self-contained
- * Canvas component that can be lazy-loaded.
- */
+const DoctorModel = () => {
+  const group = useRef();
+  const { scene, animations } = useGLTF('/models/doctor-optimized.glb');
+  const { actions, names } = useAnimations(animations, group);
+
+  useEffect(() => {
+  if (names.length > 0) {
+    const action = actions[names[0]];
+    action.reset();
+    action.setLoop(THREE.LoopRepeat, Infinity); // force continuous looping
+    action.clampWhenFinished = false;
+    action.fadeIn(0.4).play();
+    return () => action.fadeOut(0.4);
+  }
+}, [actions, names]);
+
+  return (
+    <group ref={group}>
+      <primitive object={scene} rotation={[0, -0.1, 0]} />
+    </group>
+  );
+};
+
+useGLTF.preload('/models/doctor-optimized.glb');
+
 const DoctorScene = () => {
   return (
     <Canvas
-      camera={{ position: [0, 0.2, 4.2], fov: 40 }}
+      camera={{ position: [0, 0, 5], fov: 40 }}
       dpr={[1, 1.25]}
       frameloop="always"
-      resize={{ scroll: false, debounce: { scroll: 0, resize: 0 } }}
       gl={{
         antialias: true,
         alpha: true,
@@ -25,86 +47,24 @@ const DoctorScene = () => {
         depth: true,
         powerPreference: 'high-performance',
       }}
-      style={{
-        width: '100%',
-        height: '100%',
-        background: 'transparent',
-        pointerEvents: 'auto',
-      }}
+      style={{ width: '100%', height: '100%', background: 'transparent' }}
     >
       <AdaptiveDpr pixelated />
 
-      {/* ──── Lighting ──── */}
-      <ambientLight intensity={0.7} color="#e8e4f0" />
+      <ambientLight intensity={1.1} color="#e8e4f0" />
+      <pointLight position={[-2.5, 2, 2]} intensity={2.2} color="#6D4DE0" distance={10} decay={2} />
+      <pointLight position={[2.5, 0, 2]} intensity={2} color="#1FC7C0" distance={10} decay={2} />
+      <directionalLight position={[0, 4, 4]} intensity={1} color="#ffffff" />
+      <pointLight position={[0, 0, 4]} intensity={1} color="#ffffff" distance={8} decay={2} />
 
-      {/* Indigo rim light — left */}
-      <pointLight
-        position={[-2.5, 1.5, 2]}
-        intensity={2.0}
-        color="#6D4DE0"
-        distance={10}
-        decay={2}
-      />
-
-      {/* Teal rim light — right */}
-      <pointLight
-        position={[2.5, -0.5, 2]}
-        intensity={1.8}
-        color="#1FC7C0"
-        distance={10}
-        decay={2}
-      />
-
-      {/* Soft key light from above */}
-      <directionalLight
-        position={[0, 4, 3]}
-        intensity={0.6}
-        color="#f0eeff"
-      />
-
-      {/* Fill light from below for depth */}
-      <pointLight
-        position={[0, -3, 1]}
-        intensity={0.4}
-        color="#a78bfa"
-        distance={6}
-        decay={2}
-      />
-
-      {/* ──── Scene Content ──── */}
       <Suspense fallback={null}>
-        {/* DNA Helix — gently floating */}
-        <Float
-          speed={1.2}
-          rotationIntensity={0.12}
-          floatIntensity={0.25}
-          floatingRange={[-0.04, 0.04]}
-        >
-          <MedicalHelix />
-        </Float>
+        {/* margin lowered from 1.2 → 1.0 so the doctor fills more of the frame */}
+        <Bounds fit clip observe margin={1.0}>
+          <DoctorModel />
+        </Bounds>
 
-        {/* Orbiting Atoms */}
-        <OrbitingAtoms />
-
-        {/* Ambient sparkle particles — indigo */}
-        <Sparkles
-          count={50}
-          scale={4.5}
-          size={2}
-          speed={0.4}
-          opacity={0.35}
-          color="#8B5CF6"
-        />
-
-        {/* Ambient sparkle particles — teal */}
-        <Sparkles
-          count={25}
-          scale={3.5}
-          size={1.2}
-          speed={0.3}
-          opacity={0.25}
-          color="#1FC7C0"
-        />
+        <Sparkles count={35} scale={4} size={1.5} speed={0.25} opacity={0.2} color="#8B5CF6" />
+        <Sparkles count={20} scale={3.5} size={1} speed={0.2} opacity={0.15} color="#1FC7C0" />
       </Suspense>
     </Canvas>
   );
