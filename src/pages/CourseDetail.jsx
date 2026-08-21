@@ -1,37 +1,83 @@
 import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { COURSES } from '../data/courses';
 
-export const CourseDetail = ({ courseId, onBack, onNavigateToContact }) => {
+export const CourseDetail = ({ courseId: propCourseId, onBack: propOnBack, onNavigateToContact: propOnContact }) => {
+  const params = useParams();
+  const navigate = useNavigate();
+  const courseId = propCourseId || params.courseId || 'basic-medical-coding';
   const course = COURSES.find(c => c.id === courseId) || COURSES[0];
   const [activeTab, setActiveTab] = useState('syllabus'); // 'syllabus' | 'highlights' | 'whatYouGet'
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [courseId]);
+    const originalTitle = document.title;
+    document.title = `${course.title} | MedAorticX HealthTek Academy`;
+    return () => {
+      document.title = originalTitle;
+    };
+  }, [course.title]);
 
   const isPurple = course.colorTag === 'purple';
 
+  const handleBack = () => {
+    if (propOnBack) {
+      propOnBack();
+    } else {
+      navigate('/#courses');
+    }
+  };
+
+  const handleContact = () => {
+    if (propOnContact) {
+      propOnContact();
+    } else {
+      navigate('/#contact');
+    }
+  };
+
   return (
-    <main className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 bg-gradient-to-b from-[#F4F2FF] via-[#EEF2FF] to-[#EAF9F7]">
+    <main className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 bg-white">
       <div className="max-w-[1360px] mx-auto px-3 sm:px-5 md:px-6 lg:px-8">
         
         {/* Navigation Breadcrumb & Back Button */}
         <div className="flex items-center justify-between gap-4 mb-8">
           <button
-            onClick={onBack}
+            type="button"
+            onClick={handleBack}
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/90 backdrop-blur-md text-indigo font-bold text-sm shadow-btn-ghost hover:bg-white hover:-translate-x-0.5 transition-all cursor-pointer border border-indigo/10 min-h-[48px]"
             aria-label="Back to all courses"
           >
             ← Back to All Courses
           </button>
 
-          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-500">
-            <span className="cursor-pointer hover:text-indigo" onClick={onBack}>Home</span>
-            <span>/</span>
-            <span className="cursor-pointer hover:text-indigo" onClick={onBack}>Courses</span>
-            <span>/</span>
-            <span className="text-indigo font-bold">{course.title}</span>
-          </div>
+          <nav aria-label="Breadcrumb" className="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-600">
+            <ol className="flex items-center gap-2 list-none p-0 m-0">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => navigate('/#home')}
+                  className="p-0 border-0 bg-transparent text-slate-600 hover:text-indigo transition-colors cursor-pointer font-semibold underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo/40 rounded-sm"
+                >
+                  Home
+                </button>
+              </li>
+              <li aria-hidden="true" className="text-slate-400">/</li>
+              <li>
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className="p-0 border-0 bg-transparent text-slate-600 hover:text-indigo transition-colors cursor-pointer font-semibold underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo/40 rounded-sm"
+                >
+                  Courses
+                </button>
+              </li>
+              <li aria-hidden="true" className="text-slate-400">/</li>
+              <li aria-current="page" className="text-indigo font-bold">
+                {course.title}
+              </li>
+            </ol>
+          </nav>
         </div>
 
         {/* Hero Banner Card */}
@@ -68,7 +114,8 @@ export const CourseDetail = ({ courseId, onBack, onNavigateToContact }) => {
 
             <div className="w-full lg:w-auto shrink-0 flex flex-col gap-3 min-w-[240px]">
               <button
-                onClick={onNavigateToContact}
+                type="button"
+                onClick={handleContact}
                 className="w-full py-4 px-6 rounded-2xl font-bold text-white bg-brand-gradient shadow-btn-primary hover:opacity-95 transition-all text-center text-sm cursor-pointer border-none min-h-[48px]"
               >
                 Enroll / Inquire for this Program →
@@ -78,8 +125,11 @@ export const CourseDetail = ({ courseId, onBack, onNavigateToContact }) => {
         </div>
 
         {/* Tab Navigation for Detailed Sections */}
-        <div className="flex gap-2 sm:gap-3 border-b border-slate-200/80 pb-4 mb-8 overflow-x-auto">
+        <div className="flex gap-2 sm:gap-3 border-b border-slate-200/80 pb-4 mb-8 overflow-x-auto" role="tablist" aria-label="Course curriculum and highlights">
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'syllabus'}
             onClick={() => setActiveTab('syllabus')}
             className={`shrink-0 px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all cursor-pointer border-none min-h-[44px] flex items-center gap-2 ${
               activeTab === 'syllabus'
@@ -87,11 +137,14 @@ export const CourseDetail = ({ courseId, onBack, onNavigateToContact }) => {
                 : 'bg-white/80 backdrop-blur-md text-slate-700 hover:bg-white shadow-btn-ghost'
             }`}
           >
-            <span>📖</span>
+            <span aria-hidden="true">📖</span>
             <span>What You Will Learn ({course.whatYouLearn.length} Modules)</span>
           </button>
 
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'highlights'}
             onClick={() => setActiveTab('highlights')}
             className={`shrink-0 px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all cursor-pointer border-none min-h-[44px] flex items-center gap-2 ${
               activeTab === 'highlights'
@@ -99,11 +152,14 @@ export const CourseDetail = ({ courseId, onBack, onNavigateToContact }) => {
                 : 'bg-white/80 backdrop-blur-md text-slate-700 hover:bg-white shadow-btn-ghost'
             }`}
           >
-            <span>⭐</span>
+            <span aria-hidden="true">⭐</span>
             <span>Course Highlights</span>
           </button>
 
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'whatYouGet'}
             onClick={() => setActiveTab('whatYouGet')}
             className={`shrink-0 px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all cursor-pointer border-none min-h-[44px] flex items-center gap-2 ${
               activeTab === 'whatYouGet'
@@ -111,7 +167,7 @@ export const CourseDetail = ({ courseId, onBack, onNavigateToContact }) => {
                 : 'bg-white/80 backdrop-blur-md text-slate-700 hover:bg-white shadow-btn-ghost'
             }`}
           >
-            <span>🎁</span>
+            <span aria-hidden="true">🎁</span>
             <span>What You Get</span>
           </button>
         </div>
@@ -132,7 +188,7 @@ export const CourseDetail = ({ courseId, onBack, onNavigateToContact }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   {course.whatYouLearn.map((item, idx) => (
                     <div key={idx} className="flex items-start gap-3 bg-slate-50/90 p-4 rounded-2xl border border-slate-100 hover:border-indigo/20 transition-colors">
-                      <span className="w-6 h-6 rounded-full bg-indigo/10 text-indigo flex items-center justify-center text-xs font-extrabold shrink-0 mt-0.5">
+                      <span className="w-6 h-6 rounded-full bg-indigo/10 text-indigo flex items-center justify-center text-xs font-extrabold shrink-0 mt-0.5" aria-hidden="true">
                         {idx + 1}
                       </span>
                       <span className="text-xs sm:text-sm font-bold text-slate-800 leading-snug">{item}</span>
@@ -152,7 +208,7 @@ export const CourseDetail = ({ courseId, onBack, onNavigateToContact }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   {course.highlights.map((hl, idx) => (
                     <div key={idx} className="flex items-center gap-3 bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100">
-                      <span className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                      <span className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0" aria-hidden="true">
                         ✓
                       </span>
                       <span className="text-xs sm:text-sm font-bold text-slate-800">{hl}</span>
@@ -172,7 +228,7 @@ export const CourseDetail = ({ courseId, onBack, onNavigateToContact }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   {course.whatYouGet.map((item, idx) => (
                     <div key={idx} className="flex items-center gap-3 bg-purple-50/60 p-4 rounded-2xl border border-purple-100">
-                      <span className="w-6 h-6 rounded-full bg-violet text-white flex items-center justify-center text-xs font-bold shrink-0">
+                      <span className="w-6 h-6 rounded-full bg-violet text-white flex items-center justify-center text-xs font-bold shrink-0" aria-hidden="true">
                         ★
                       </span>
                       <span className="text-xs sm:text-sm font-bold text-slate-800">{item}</span>
@@ -195,7 +251,8 @@ export const CourseDetail = ({ courseId, onBack, onNavigateToContact }) => {
               </p>
 
               <button
-                onClick={onNavigateToContact}
+                type="button"
+                onClick={handleContact}
                 className="w-full py-3.5 px-6 rounded-xl font-bold text-white bg-brand-gradient shadow-btn-primary hover:opacity-95 transition-all text-center text-sm cursor-pointer border-none min-h-[44px]"
               >
                 Register / Inquire Now →
@@ -205,7 +262,7 @@ export const CourseDetail = ({ courseId, onBack, onNavigateToContact }) => {
             {/* Placement Assistance Badge */}
             <div className="bg-gradient-to-br from-emerald-50 to-teal/10 rounded-[28px] p-6 border border-emerald-200/60 shadow-sm space-y-2.5">
               <div className="flex items-center gap-2 text-emerald-800 font-bold text-sm">
-                <span className="text-xl">🤝</span>
+                <span className="text-xl" aria-hidden="true">🤝</span>
                 <span>Placement Assistance Guaranteed</span>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">

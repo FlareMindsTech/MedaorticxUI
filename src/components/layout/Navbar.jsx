@@ -9,7 +9,9 @@ export const Navbar = ({ onNavigate, isSubpage, subpageActiveSection }) => {
   useEffect(() => {
     if (isSubpage) return;
 
-    const handleScroll = () => {
+    let rafId = null;
+
+    const updateActiveSection = () => {
       setScrolled(window.scrollY > 40);
 
       const sections = NAV_LINKS.map(l => l.href.replace('#', ''));
@@ -20,9 +22,22 @@ export const Navbar = ({ onNavigate, isSubpage, subpageActiveSection }) => {
           break;
         }
       }
+      rafId = null;
     };
+
+    const handleScroll = () => {
+      if (!rafId) {
+        rafId = window.requestAnimationFrame(updateActiveSection);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
   }, [isSubpage]);
 
   const handleLinkClick = (href) => {
@@ -51,29 +66,29 @@ export const Navbar = ({ onNavigate, isSubpage, subpageActiveSection }) => {
         <a 
           href="#home" 
           onClick={(e) => { e.preventDefault(); handleLinkClick('#home'); }} 
-          className="flex items-center group cursor-pointer p-1 min-h-[48px] min-w-[48px] rounded-2xl"
+          className="flex items-center group cursor-pointer p-0.5 no-underline"
           aria-label="MedAorticX HealthTek Homepage"
         >
-          <div className="px-3 py-1.5 rounded-2xl bg-white border border-slate-100/80 shadow-sm transition-transform duration-200 group-hover:scale-105">
+          <div className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200/70 shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center">
             <picture>
               <source srcSet="/logo-nav.webp" type="image/webp" />
               <img
                 src="/logo-nav.png"
                 alt="MedAorticX HealthTek Logo"
-                width="160"
-                height="48"
+                width="180"
+                height="54"
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
-                style={{ aspectRatio: '160/48' }}
-                className="h-8 sm:h-10 w-auto object-contain"
+                style={{ aspectRatio: '180/54' }}
+                className="h-7 sm:h-8 md:h-9 w-auto object-contain transition-transform duration-200"
               />
             </picture>
           </div>
         </a>
 
-        {/* Desktop Nav - Clean Centered Pill Menu */}
-        <nav className="hidden lg:flex items-center gap-1.5 bg-slate-100/70 p-1.5 rounded-full border border-slate-200/50 shadow-inner" aria-label="Main Navigation">
+        {/* Desktop Nav - Clean Centered Pill Menu with 10px spacing */}
+        <nav className="hidden lg:flex items-center gap-1 bg-slate-100/70 p-1.5 rounded-full border border-slate-200/50 shadow-inner" aria-label="Main Navigation">
           {NAV_LINKS.map((link) => {
             const currentSec = link.href.replace('#', '');
             const isActive = isSubpage 
@@ -89,7 +104,7 @@ export const Navbar = ({ onNavigate, isSubpage, subpageActiveSection }) => {
                   handleLinkClick(link.href);
                 }}
                 aria-current={isActive ? 'page' : undefined}
-                className={`relative px-4 py-2.5 text-[0.88rem] xl:text-[0.92rem] font-semibold transition-all duration-200 rounded-full cursor-pointer border-none min-h-[48px] flex items-center justify-center no-underline ${
+                className={`relative px-[10px] py-2 text-[0.88rem] xl:text-[0.92rem] font-semibold transition-all duration-200 rounded-full cursor-pointer border-none flex items-center justify-center no-underline ${
                   isActive 
                     ? 'text-indigo bg-white shadow-sm font-bold scale-[1.02]' 
                     : 'text-slate-600 hover:text-indigo hover:bg-white/50'
@@ -109,21 +124,21 @@ export const Navbar = ({ onNavigate, isSubpage, subpageActiveSection }) => {
               e.preventDefault();
               handleLinkClick('#contact');
             }}
-            className="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full font-bold text-xs sm:text-sm text-white bg-brand-gradient shadow-btn-primary hover:shadow-indigo-500/30 hover:scale-105 transition-all duration-200 cursor-pointer border-none min-h-[48px] no-underline"
+            className="hidden sm:inline-flex items-center justify-center px-5 py-2 sm:px-6 sm:py-2.5 rounded-full font-bold text-xs sm:text-sm text-white bg-brand-gradient shadow-md hover:shadow-lg hover:opacity-95 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer min-h-[42px] no-underline"
           >
             Contact Us →
           </a>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden w-12 h-12 min-w-[48px] min-h-[48px] rounded-xl bg-white/90 flex items-center justify-center shadow-btn-ghost cursor-pointer border border-slate-200/80 p-3"
+            className="lg:hidden w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-white/90 backdrop-blur-md flex items-center justify-center border border-slate-200/80 shadow-sm hover:shadow-md transition-all cursor-pointer p-2.5"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
           >
             <div className="w-5 flex flex-col items-center justify-center gap-1.5" aria-hidden="true">
-              <span className={`block w-5 h-0.5 bg-ink transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[8px]' : ''}`} />
-              <span className={`block w-5 h-0.5 bg-ink transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
-              <span className={`block w-5 h-0.5 bg-ink transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[8px]' : ''}`} />
+              <span className={`block w-5 h-0.5 bg-slate-800 transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[8px]' : ''}`} />
+              <span className={`block w-5 h-0.5 bg-slate-800 transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+              <span className={`block w-5 h-0.5 bg-slate-800 transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[8px]' : ''}`} />
             </div>
           </button>
         </div>
@@ -131,12 +146,13 @@ export const Navbar = ({ onNavigate, isSubpage, subpageActiveSection }) => {
 
       {/* Mobile Drawer */}
       <div
-        className={`lg:hidden bg-white border-b border-ink/10 overflow-hidden shadow-3d transition-all duration-300 ease-in-out ${
-          mobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+        className={`lg:hidden bg-white/95 backdrop-blur-2xl border-b border-slate-200/80 shadow-xl overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileMenuOpen ? 'max-h-[550px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
         }`}
         aria-hidden={!mobileMenuOpen}
+        inert={!mobileMenuOpen ? true : undefined}
       >
-        <div className="px-4 sm:px-6 py-5 flex flex-col gap-2">
+        <div className="px-4 sm:px-6 py-4 flex flex-col gap-2.5">
           {NAV_LINKS.map((link) => {
             const currentSec = link.href.replace('#', '');
             const isActive = isSubpage 
@@ -147,28 +163,34 @@ export const Navbar = ({ onNavigate, isSubpage, subpageActiveSection }) => {
               <a
                 key={link.href}
                 href={link.href}
+                tabIndex={mobileMenuOpen ? 0 : -1}
                 onClick={(e) => {
                   e.preventDefault();
                   handleLinkClick(link.href);
                 }}
                 aria-current={isActive ? 'page' : undefined}
-                className={`min-h-[48px] py-3 flex items-center text-base sm:text-lg font-medium rounded-xl px-4 transition-colors cursor-pointer bg-transparent no-underline ${
+                className={`min-h-[46px] py-2.5 px-4 flex items-center justify-between rounded-xl border transition-all duration-200 cursor-pointer no-underline text-sm sm:text-base font-bold ${
                   isActive
-                    ? 'text-indigo font-bold bg-indigo/5'
-                    : 'text-slate-800 hover:bg-slate-50'
+                    ? 'bg-indigo/10 text-indigo border-indigo/20 shadow-sm font-extrabold'
+                    : 'bg-white/80 text-slate-700 border-slate-200/70 hover:bg-white hover:border-indigo/20'
                 }`}
               >
-                {link.name}
+                <span className="flex items-center gap-2">
+                  {isActive && <span className="w-2 h-2 rounded-full bg-[#6d45e5] animate-pulse" aria-hidden="true" />}
+                  {link.name}
+                </span>
+                <span className="text-slate-600 font-bold text-sm" aria-hidden="true">→</span>
               </a>
             );
           })}
           <a
             href="#contact"
+            tabIndex={mobileMenuOpen ? 0 : -1}
             onClick={(e) => {
               e.preventDefault();
               handleLinkClick('#contact');
             }}
-            className="mt-3 min-h-[48px] py-3.5 w-full flex items-center justify-center rounded-xl font-semibold text-white bg-brand-gradient shadow-btn-primary cursor-pointer border-none no-underline text-base"
+            className="mt-1.5 min-h-[46px] py-3 w-full flex items-center justify-center rounded-xl font-bold text-white bg-brand-gradient shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer no-underline text-sm sm:text-base"
           >
             Contact Us →
           </a>

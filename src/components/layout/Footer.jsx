@@ -1,5 +1,5 @@
 import React from 'react';
-import { NAV_LINKS } from '../../data/nav';
+import { FOOTER_NAV_LINKS } from '../../data/nav';
 
 export const Footer = ({ onNavigate }) => {
   const handleLinkClick = (href) => {
@@ -11,6 +11,9 @@ export const Footer = ({ onNavigate }) => {
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
+
+  const firstColLinks = FOOTER_NAV_LINKS.slice(0, 3);
+  const secondColLinks = FOOTER_NAV_LINKS.slice(3);
 
   return (
     <footer className="bg-white/95 backdrop-blur-sm border-t border-slate-200/60 py-6 sm:py-8" role="contentinfo">
@@ -33,10 +36,11 @@ export const Footer = ({ onNavigate }) => {
                 <img
                   src="/logo-nav.png"
                   alt="MedAorticX HealthTek Logo"
-                  width="112"
-                  height="40"
+                  width="160"
+                  height="48"
                   loading="lazy"
                   decoding="async"
+                  style={{ aspectRatio: '160/48' }}
                   className="h-8 sm:h-9 w-auto object-contain"
                 />
               </picture>
@@ -45,7 +49,7 @@ export const Footer = ({ onNavigate }) => {
           <p className="text-slate-600 text-xs sm:text-sm max-w-md leading-relaxed">
             MedAorticX Healthtek empowers healthcare organizations with premier Medical Coding Academy training, specialized RCM recruitment, and intelligent revenue cycle solutions.
           </p>
-          <div className="text-xs text-slate-500">
+          <div className="text-xs text-slate-600">
             &copy; {new Date().getFullYear()} MedAorticX Healthtek. All rights reserved.
           </div>
         </div>
@@ -55,11 +59,7 @@ export const Footer = ({ onNavigate }) => {
           <h4 className="font-bold text-ink mb-3 text-xs sm:text-sm uppercase tracking-wider">Navigation</h4>
           <div className="grid grid-cols-2 gap-x-6 gap-y-2">
             <ul className="space-y-2 list-none p-0 m-0">
-              {[
-                { name: 'Home', href: '#home' },
-                { name: 'About', href: '#about' },
-                { name: 'Services', href: '#services' },
-              ].map((link) => (
+              {firstColLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
@@ -75,11 +75,7 @@ export const Footer = ({ onNavigate }) => {
               ))}
             </ul>
             <ul className="space-y-2 list-none p-0 m-0">
-              {[
-                { name: 'Courses', href: '#courses' },
-                { name: 'Solutions', href: '#solutions' },
-                { name: 'Contact', href: '#contact' },
-              ].map((link) => (
+              {secondColLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}

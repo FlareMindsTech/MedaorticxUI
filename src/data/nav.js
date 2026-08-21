@@ -5,3 +5,9 @@ export const NAV_LINKS = [
   { name: 'Courses', href: '#courses' },
   { name: 'Solutions', href: '#solutions' },
 ];
+
+export const FOOTER_NAV_LINKS = [
+  ...NAV_LINKS,
+  { name: 'Contact', href: '#contact' },
+];
+

@@ -4,12 +4,14 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    sourcemapIgnoreList: () => true,
     headers: {
       'X-Robots-Tag': 'index, follow',
     }
   },
   esbuild: {
     drop: ['console', 'debugger'],
+    legalComments: 'none',
   },
   build: {
     target: 'es2020',
@@ -17,9 +19,10 @@ export default defineConfig({
     minify: 'esbuild',
     cssCodeSplit: true,
     cssMinify: true,
-    reportCompressedSize: true,
+    reportCompressedSize: false,
     rollupOptions: {
       output: {
+        sourcemap: false,
         manualChunks(id) {
           // Keep React core minimal
           if (id.includes('react-dom') || id.includes('react/')) {

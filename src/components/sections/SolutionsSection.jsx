@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Reveal } from '../common/Reveal';
 
 export const SolutionsSection = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const tabRefs = useRef([]);
 
   const clientSolutions = [
     {
@@ -46,16 +47,40 @@ export const SolutionsSection = () => {
     }
   ];
 
+  const handleKeyDown = (e, index) => {
+    let nextIndex = null;
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      nextIndex = (index + 1) % clientSolutions.length;
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      nextIndex = (index - 1 + clientSolutions.length) % clientSolutions.length;
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      nextIndex = clientSolutions.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      setActiveTab(nextIndex);
+      if (tabRefs.current[nextIndex]) {
+        tabRefs.current[nextIndex].focus();
+      }
+    }
+  };
+
   return (
-    <section id="solutions" className="py-6 sm:py-8 md:py-10 relative overflow-hidden glass-section scroll-mt-16 sm:scroll-mt-20 w-full">
-      <div className="max-w-[1360px] mx-auto px-2 sm:px-4 md:px-5 lg:px-6 relative z-10 w-full box-border">
+    <section id="solutions" className="py-8 sm:py-10 md:py-12 relative overflow-hidden scroll-mt-16 sm:scroll-mt-20 w-full bg-white" aria-labelledby="solutions-heading">
+      <div className="max-w-[1240px] mx-auto px-3 sm:px-5 md:px-8 relative z-10 w-full box-border">
         
         {/* Section Header */}
         <Reveal className="text-center max-w-3xl mx-auto mb-6 sm:mb-8">
           <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-2.5 border border-indigo/10">
-            Tailored Solutions
+            TAILORED SOLUTIONS
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-ink mb-2.5 leading-tight">
+          <h2 id="solutions-heading" className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#161b3d] mb-2.5 leading-tight">
             Built for Your <span className="grad-text">Practice Needs</span>
           </h2>
           <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed">
@@ -63,55 +88,72 @@ export const SolutionsSection = () => {
           </p>
         </Reveal>
 
-        {/* Tab Selection — equal-width buttons */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 sm:mb-8 max-w-3xl mx-auto">
+        {/* Tab Selection — Accessible WAI-ARIA tablist */}
+        <div
+          role="tablist"
+          aria-label="Healthcare Solutions by Setting"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-5xl mx-auto mb-6 sm:mb-8 w-full"
+        >
           {clientSolutions.map((sol, idx) => (
             <button
               key={sol.id}
+              ref={(el) => (tabRefs.current[idx] = el)}
+              role="tab"
+              id={`solution-tab-${sol.id}`}
+              aria-selected={activeTab === idx}
+              aria-controls={`solution-panel-${sol.id}`}
+              tabIndex={activeTab === idx ? 0 : -1}
               onClick={() => setActiveTab(idx)}
-              className={`tab-btn-3d px-4 py-3.5 rounded-xl font-bold text-xs sm:text-sm min-h-[48px] text-center leading-snug ${
+              onKeyDown={(e) => handleKeyDown(e, idx)}
+              className={`tab-btn-3d px-4 sm:px-6 py-3.5 sm:py-4 rounded-2xl font-bold text-xs sm:text-sm md:text-base min-h-[50px] text-center leading-snug flex items-center justify-center gap-2.5 transition-all cursor-pointer ${
                 activeTab === idx
-                  ? 'active bg-brand-gradient text-white'
-                  : 'bg-white text-ink hover:bg-slate-50'
+                  ? 'active text-white'
+                  : 'text-slate-700 hover:text-indigo'
               }`}
             >
-              <span className="shrink-0">{sol.icon}</span>
-              <span>{sol.title}</span>
+              <span className="text-lg sm:text-xl shrink-0" aria-hidden="true">{sol.icon}</span>
+              <span className="truncate sm:whitespace-normal">{sol.title}</span>
             </button>
           ))}
         </div>
 
-        {/* Tab Content */}
+        {/* Tab Content Card — Transparent Glass Layout */}
         <div
+          role="tabpanel"
+          id={`solution-panel-${clientSolutions[activeTab].id}`}
+          aria-labelledby={`solution-tab-${clientSolutions[activeTab].id}`}
+          tabIndex={0}
           key={activeTab}
-          className="box-hover bg-white/85 backdrop-blur-2xl rounded-3xl p-5 sm:p-7 shadow-3d border border-white/80 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 items-center"
+          className="w-full max-w-5xl mx-auto rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 md:p-10 border border-slate-200/80 shadow-xl bg-white/90 backdrop-blur-xl grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center focus:outline-none focus:ring-2 focus:ring-indigo/40"
           style={{ animation: 'fadeSlideUp 0.35s cubic-bezier(0.22,1,0.36,1)' }}
         >
-          <div className="md:col-span-4 text-center md:text-left space-y-2">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-indigo/20 to-teal/20 text-indigo flex items-center justify-center text-2xl sm:text-3xl mx-auto md:mx-0 shadow-inner">
+          <div className="lg:col-span-5 text-center lg:text-left space-y-3 sm:space-y-4">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-indigo/10 border border-indigo/15 text-indigo flex items-center justify-center text-2xl sm:text-3xl mx-auto lg:mx-0 shrink-0 shadow-inner" aria-hidden="true">
               {clientSolutions[activeTab].icon}
             </div>
-            <h3 className="text-lg sm:text-xl font-extrabold text-ink">{clientSolutions[activeTab].title}</h3>
-            <div className="inline-block bg-indigo/10 text-indigo px-3 py-1 rounded-full text-xs font-bold border border-indigo/15">
-              {clientSolutions[activeTab].stats}
+            <div>
+              <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 leading-tight">{clientSolutions[activeTab].title}</h3>
+              <div className="inline-block bg-teal/10 text-tealDark px-3.5 py-1 rounded-full text-xs font-bold border border-teal/25 mt-2">
+                {clientSolutions[activeTab].stats}
+              </div>
             </div>
-            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-medium">
               {clientSolutions[activeTab].tagline}
             </p>
           </div>
 
-          <div className="md:col-span-8 space-y-2">
-            <h4 className="font-bold text-ink text-xs sm:text-sm uppercase tracking-wider">How We Help:</h4>
-            <div className="space-y-1.5">
+          <div className="lg:col-span-7 space-y-3">
+            <h4 className="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wider">How We Help:</h4>
+            <div className="space-y-2.5">
               {clientSolutions[activeTab].benefits.map((b, bIdx) => (
                 <div
                   key={bIdx}
-                  className="flex items-start gap-2.5 bg-white/70 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border border-indigo/10 shadow-sm hover:border-indigo/30 hover:-translate-y-0.5 hover:shadow-md transition-all"
+                  className="flex items-start gap-3 bg-white/80 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl border border-slate-200/70 shadow-sm hover:border-indigo/30 hover:shadow-md hover:-translate-y-0.5 transition-all"
                 >
-                  <span className="w-5 h-5 rounded-full bg-brand-gradient text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-sm">
+                  <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-brand-gradient text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-sm" aria-hidden="true">
                     ✓
                   </span>
-                  <span className="text-xs sm:text-sm font-semibold text-ink leading-snug">{b}</span>
+                  <span className="text-xs sm:text-sm md:text-[0.95rem] font-semibold text-slate-800 leading-snug">{b}</span>
                 </div>
               ))}
             </div>

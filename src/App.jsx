@@ -1,85 +1,126 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
+import { Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { Hero } from './components/hero/Hero';
-// Code-split sub-detail pages & below-the-fold sections for minimal initial JS bundle
-const AboutSection = lazy(() => import('./components/sections/AboutSection').then(m => ({ default: m.AboutSection })));
-const ServicesSection = lazy(() => import('./components/sections/ServicesSection').then(m => ({ default: m.ServicesSection })));
-const CoursesSection = lazy(() => import('./components/sections/CoursesSection').then(m => ({ default: m.CoursesSection })));
-const SolutionsSection = lazy(() => import('./components/sections/SolutionsSection').then(m => ({ default: m.SolutionsSection })));
-const ContactSection = lazy(() => import('./components/sections/ContactSection').then(m => ({ default: m.ContactSection })));
+import { AboutSection } from './components/sections/AboutSection';
+import { ServicesSection } from './components/sections/ServicesSection';
+import { CoursesSection } from './components/sections/CoursesSection';
+import { SolutionsSection } from './components/sections/SolutionsSection';
+import { ContactSection } from './components/sections/ContactSection';
+
+// Code-split subpage detail routes
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail').then(m => ({ default: m.ServiceDetail })));
 const CourseDetail = lazy(() => import('./pages/CourseDetail').then(m => ({ default: m.CourseDetail })));
 
+function HomePage({ onSelectService, onSelectCourse, onNavigateToSection }) {
+  return (
+    <main className="w-full">
+      <div id="home">
+        <Hero />
+      </div>
+
+      <AboutSection />
+      <ServicesSection onSelectService={onSelectService} />
+      <CoursesSection 
+        onSelectCourse={onSelectCourse} 
+        onNavigateToContact={() => onNavigateToSection('contact')}
+      />
+      <SolutionsSection />
+      <ContactSection />
+    </main>
+  );
+}
+
+function ServiceRouteWrapper({ onNavigateToSection }) {
+  const { serviceId } = useParams();
+  return (
+    <ServiceDetail
+      serviceId={serviceId}
+      onBack={() => onNavigateToSection('services')}
+      onNavigateToContact={() => onNavigateToSection('contact')}
+      onNavigateToCourses={() => onNavigateToSection('courses')}
+    />
+  );
+}
+
+function CourseRouteWrapper({ onNavigateToSection }) {
+  const { courseId } = useParams();
+  return (
+    <CourseDetail
+      courseId={courseId}
+      onBack={() => onNavigateToSection('courses')}
+      onNavigateToContact={() => onNavigateToSection('contact')}
+    />
+  );
+}
+
 export default function App() {
-  const [activeServicePage, setActiveServicePage] = useState(null);
-  const [activeCoursePage, setActiveCoursePage] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // Check URL hash on load and hash change
+  // Backward compatibility: Convert legacy URL hashes (#service-*, #course-*) to canonical routes
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash === '#service-rcm-recruitment-services' || hash === '#rcm-recruitment-services') {
-        setActiveServicePage('rcm-recruitment-services');
-        setActiveCoursePage(null);
-      } else if (hash === '#service-medical-coding-academy' || hash === '#medical-coding-academy') {
-        setActiveServicePage('medical-coding-academy');
-        setActiveCoursePage(null);
-      } else if (hash === '#course-basic-medical-coding' || hash === '#basic-medical-coding') {
-        setActiveCoursePage('basic-medical-coding');
-        setActiveServicePage(null);
-      } else if (hash === '#course-advanced-medical-coding' || hash === '#advanced-medical-coding') {
-        setActiveCoursePage('advanced-medical-coding');
-        setActiveServicePage(null);
-      } else {
-        setActiveServicePage(null);
-        setActiveCoursePage(null);
-      }
-    };
-
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
+    const hash = window.location.hash;
+    if (hash.startsWith('#service-') || hash === '#rcm-recruitment-services' || hash === '#medical-coding-academy') {
+      const serviceId = hash.replace('#service-', '').replace('#', '');
+      navigate(`/services/${serviceId}`, { replace: true });
+    } else if (hash.startsWith('#course-') || hash === '#basic-medical-coding' || hash === '#advanced-medical-coding') {
+      const courseId = hash.replace('#course-', '').replace('#', '');
+      navigate(`/courses/${courseId}`, { replace: true });
+    } else if (location.pathname === '/' && hash) {
+      const targetId = hash.replace('#', '');
+      const attemptScroll = (attempts = 0) => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (attempts < 10) {
+          setTimeout(() => attemptScroll(attempts + 1), 30);
+        }
+      };
+      setTimeout(() => attemptScroll(), 20);
+    }
+  }, [location.pathname, location.hash, navigate]);
 
   const handleSelectService = (id) => {
-    setActiveCoursePage(null);
-    setActiveServicePage(id);
-    window.location.hash = `service-${id}`;
+    navigate(`/services/${id}`);
   };
 
   const handleSelectCourse = (id) => {
-    setActiveServicePage(null);
-    setActiveCoursePage(id);
-    window.location.hash = `course-${id}`;
+    navigate(`/courses/${id}`);
   };
 
   const handleNavigateToSection = (targetSection = 'home') => {
     const cleanId = targetSection.replace('#', '');
-    setActiveServicePage(null);
-    setActiveCoursePage(null);
-    window.history.pushState(null, '', `#${cleanId}`);
-
-    const attemptScroll = (attempts = 0) => {
-      const el = document.getElementById(cleanId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else if (attempts < 10) {
-        setTimeout(() => attemptScroll(attempts + 1), 30);
-      }
-    };
-
-    setTimeout(() => attemptScroll(), 10);
+    if (location.pathname !== '/') {
+      navigate(`/#${cleanId}`);
+    } else {
+      window.history.pushState(null, '', `#${cleanId}`);
+      const attemptScroll = (attempts = 0) => {
+        const el = document.getElementById(cleanId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (attempts < 10) {
+          setTimeout(() => attemptScroll(attempts + 1), 30);
+        }
+      };
+      setTimeout(() => attemptScroll(), 10);
+    }
   };
 
-  const isSubpage = Boolean(activeServicePage || activeCoursePage);
+  const isSubpage = location.pathname.startsWith('/services') || location.pathname.startsWith('/courses');
+  const subpageActiveSection = location.pathname.startsWith('/services')
+    ? 'services'
+    : location.pathname.startsWith('/courses')
+    ? 'courses'
+    : null;
 
   return (
     <div className="min-h-screen flex flex-col justify-between selection:bg-indigo selection:text-white">
       <Navbar 
         onNavigate={handleNavigateToSection} 
         isSubpage={isSubpage}
-        subpageActiveSection={activeServicePage ? 'services' : activeCoursePage ? 'courses' : null}
+        subpageActiveSection={subpageActiveSection}
       />
       
       <div className="flex-grow w-full">
@@ -88,37 +129,36 @@ export default function App() {
             <div className="w-8 h-8 rounded-full border-2 border-indigo border-t-transparent animate-spin" />
           </div>
         }>
-          {activeServicePage ? (
-            <ServiceDetail
-              serviceId={activeServicePage}
-              onBack={() => handleNavigateToSection('services')}
-              onNavigateToContact={() => handleNavigateToSection('contact')}
-              onNavigateToCourses={() => handleNavigateToSection('courses')}
-            />
-          ) : activeCoursePage ? (
-            <CourseDetail
-              courseId={activeCoursePage}
-              onBack={() => handleNavigateToSection('courses')}
-              onNavigateToContact={() => handleNavigateToSection('contact')}
-            />
-          ) : (
-            <main className="w-full">
-              <div id="home">
-                <Hero />
-              </div>
-
-              <Suspense fallback={null}>
-                <AboutSection />
-                <ServicesSection onSelectService={handleSelectService} />
-                <CoursesSection 
-                  onSelectCourse={handleSelectCourse} 
-                  onNavigateToContact={() => handleNavigateToSection('contact')}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <HomePage
+                  onSelectService={handleSelectService}
+                  onSelectCourse={handleSelectCourse}
+                  onNavigateToSection={handleNavigateToSection}
                 />
-                <SolutionsSection />
-                <ContactSection />
-              </Suspense>
-            </main>
-          )}
+              }
+            />
+            <Route
+              path="/services/:serviceId"
+              element={<ServiceRouteWrapper onNavigateToSection={handleNavigateToSection} />}
+            />
+            <Route
+              path="/courses/:courseId"
+              element={<CourseRouteWrapper onNavigateToSection={handleNavigateToSection} />}
+            />
+            <Route
+              path="*"
+              element={
+                <HomePage
+                  onSelectService={handleSelectService}
+                  onSelectCourse={handleSelectCourse}
+                  onNavigateToSection={handleNavigateToSection}
+                />
+              }
+            />
+          </Routes>
         </Suspense>
       </div>
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 
 /* ============================================================
    AnimatedDNA — an actual double-helix drawing, not scattered
@@ -10,13 +10,12 @@ import React, { useEffect, useRef } from 'react';
    refs so it stays smooth without re-rendering React.
    ============================================================ */
 const AnimatedDNA = ({
-  pointCount = 46,
-  spacing = 24,     // px between base pairs along the strand's length
-  radius = 60,       // px radius of the helix
-  twistPerPoint = 0.42, // radians — how tight the corkscrew is
-  speed = 0.5,        // radians/sec rotation speed
+  pointCount = 50,
+  spacing = 26,     // px between base pairs along the strand's length
+  radius = 64,       // px radius of the helix
+  twistPerPoint = 0.4, // radians — how tight the corkscrew is
+  speed = 0.35,        // radians/sec rotation speed
   focal = 480,         // perspective focal length (bigger = flatter)
-  className = '',
 }) => {
   const backboneARef = useRef(null);
   const backboneBRef = useRef(null);
@@ -25,24 +24,77 @@ const AnimatedDNA = ({
   const rungRefs = useRef([]);
   const rotationRef = useRef(0);
 
-  const height = (pointCount - 1) * spacing;
-  const width = radius * 2 + 40;
-  const cx = width / 2;
+  const cx = 84;
+
+  const initialPoints = useMemo(() => {
+    const ptsA = [];
+    const ptsB = [];
+    const rungs = [];
+    const nodesA = [];
+    const nodesB = [];
+
+    for (let i = 0; i < pointCount; i++) {
+      const y = i * spacing;
+      const angleA = i * twistPerPoint;
+      const angleB = angleA + Math.PI;
+
+      const xA = Math.cos(angleA) * radius;
+      const zA = Math.sin(angleA) * radius;
+      const xB = Math.cos(angleB) * radius;
+      const zB = Math.sin(angleB) * radius;
+
+      const pA = focal / (focal + zA);
+      const pB = focal / (focal + zB);
+
+      const screenXA = cx + xA * pA;
+      const screenXB = cx + xB * pB;
+
+      ptsA.push(`${screenXA.toFixed(1)},${y}`);
+      ptsB.push(`${screenXB.toFixed(1)},${y}`);
+
+      nodesA.push({
+        cx: screenXA,
+        cy: y,
+        r: (4.5 * pA).toFixed(2),
+        opacity: Math.max(0.3, pA - 0.1).toFixed(2),
+      });
+
+      nodesB.push({
+        cx: screenXB,
+        cy: y,
+        r: (4.5 * pB).toFixed(2),
+        opacity: Math.max(0.3, pB - 0.1).toFixed(2),
+      });
+
+      rungs.push({
+        x1: screenXA,
+        y1: y,
+        x2: screenXB,
+        y2: y,
+        opacity: Math.max(0.08, (pA + pB) / 2 - 0.35).toFixed(2),
+      });
+    }
+
+    return {
+      pointsA: ptsA.join(' '),
+      pointsB: ptsB.join(' '),
+      rungs,
+      nodesA,
+      nodesB,
+    };
+  }, [pointCount, spacing, radius, twistPerPoint, focal, cx]);
 
   useEffect(() => {
     let raf;
     let last = performance.now();
+    let isVisible = true;
     const prefersReduced =
       typeof window !== 'undefined' &&
       window.matchMedia &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const draw = (angleOffset) => {
-      const ptsA = [];
-      const ptsB = [];
-
       for (let i = 0; i < pointCount; i++) {
-        const y = i * spacing;
         const angleA = i * twistPerPoint + angleOffset;
         const angleB = angleA + Math.PI;
 
@@ -57,59 +109,78 @@ const AnimatedDNA = ({
         const screenXA = cx + xA * pA;
         const screenXB = cx + xB * pB;
 
-        ptsA.push(`${screenXA.toFixed(1)},${y}`);
-        ptsB.push(`${screenXB.toFixed(1)},${y}`);
-
         const nodeA = nodeARefs.current[i];
         if (nodeA) {
           nodeA.setAttribute('cx', screenXA);
-          nodeA.setAttribute('cy', y);
           nodeA.setAttribute('r', (4.5 * pA).toFixed(2));
           nodeA.setAttribute('opacity', Math.max(0.3, pA - 0.1).toFixed(2));
         }
         const nodeB = nodeBRefs.current[i];
         if (nodeB) {
           nodeB.setAttribute('cx', screenXB);
-          nodeB.setAttribute('cy', y);
           nodeB.setAttribute('r', (4.5 * pB).toFixed(2));
           nodeB.setAttribute('opacity', Math.max(0.3, pB - 0.1).toFixed(2));
         }
         const rung = rungRefs.current[i];
         if (rung) {
           rung.setAttribute('x1', screenXA);
-          rung.setAttribute('y1', y);
           rung.setAttribute('x2', screenXB);
-          rung.setAttribute('y2', y);
           rung.setAttribute('opacity', Math.max(0.08, (pA + pB) / 2 - 0.35).toFixed(2));
         }
       }
 
-      if (backboneARef.current) backboneARef.current.setAttribute('points', ptsA.join(' '));
-      if (backboneBRef.current) backboneBRef.current.setAttribute('points', ptsB.join(' '));
+      if (backboneARef.current) {
+        let ptsA = [], ptsB = [];
+        for (let i = 0; i < pointCount; i++) {
+          const y = i * spacing;
+          const a = i * twistPerPoint + angleOffset;
+          ptsA.push(`${(cx + Math.cos(a) * radius * (focal / (focal + Math.sin(a) * radius))).toFixed(1)},${y}`);
+          ptsB.push(`${(cx + Math.cos(a + Math.PI) * radius * (focal / (focal + Math.sin(a + Math.PI) * radius))).toFixed(1)},${y}`);
+        }
+        backboneARef.current.setAttribute('points', ptsA.join(' '));
+        backboneBRef.current.setAttribute('points', ptsB.join(' '));
+      }
     };
 
-    draw(0);
     if (prefersReduced) return undefined;
 
     const tick = (now) => {
+      if (!isVisible) return;
       const dt = (now - last) / 1000;
       last = now;
       rotationRef.current += dt * speed;
       draw(rotationRef.current);
       raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+
+    const startAnimation = () => {
+      cancelAnimationFrame(raf);
+      last = performance.now();
+      raf = requestAnimationFrame(tick);
+    };
+
+    const stopAnimation = () => {
+      cancelAnimationFrame(raf);
+    };
+
+    let idleTimer = null;
+    if (typeof requestIdleCallback !== 'undefined') {
+      idleTimer = requestIdleCallback(() => startAnimation(), { timeout: 400 });
+    } else {
+      idleTimer = setTimeout(() => startAnimation(), 400);
+    }
+
+    return () => {
+      stopAnimation();
+      if (idleTimer) {
+        if (typeof cancelIdleCallback !== 'undefined') cancelIdleCallback(idleTimer);
+        else clearTimeout(idleTimer);
+      }
+    };
   }, [pointCount, spacing, radius, twistPerPoint, speed, focal, cx]);
 
   return (
-    <svg
-      className={className}
-      width={width}
-      height={height}
-      viewBox={`0 0 ${width} ${height}`}
-      style={{ overflow: 'visible' }}
-    >
+    <g transform="translate(720, 450) rotate(-80) translate(-84, -637)" opacity="0.5">
       <defs>
         <linearGradient id="dna-strand-a" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#CBD5E1" />
@@ -123,25 +194,60 @@ const AnimatedDNA = ({
         </linearGradient>
       </defs>
 
-      {Array.from({ length: pointCount }).map((_, i) => (
+      {initialPoints.rungs.map((r, i) => (
         <line
           key={`rung-${i}`}
           ref={(el) => (rungRefs.current[i] = el)}
+          x1={r.x1}
+          y1={r.y1}
+          x2={r.x2}
+          y2={r.y2}
           stroke="#94A3B8"
           strokeWidth="1.5"
+          opacity={r.opacity}
         />
       ))}
 
-      <polyline ref={backboneARef} fill="none" stroke="url(#dna-strand-a)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-      <polyline ref={backboneBRef} fill="none" stroke="url(#dna-strand-b)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+      <polyline
+        ref={backboneARef}
+        fill="none"
+        stroke="url(#dna-strand-a)"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        points={initialPoints.pointsA}
+      />
+      <polyline
+        ref={backboneBRef}
+        fill="none"
+        stroke="url(#dna-strand-b)"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        points={initialPoints.pointsB}
+      />
 
-      {Array.from({ length: pointCount }).map((_, i) => (
-        <circle key={`node-a-${i}`} ref={(el) => (nodeARefs.current[i] = el)} fill="#64748B" />
+      {initialPoints.nodesA.map((n, i) => (
+        <circle
+          key={`nodeA-${i}`}
+          ref={(el) => (nodeARefs.current[i] = el)}
+          cx={n.cx}
+          cy={n.cy}
+          r={n.r}
+          fill="#94A3B8"
+          opacity={n.opacity}
+        />
       ))}
-      {Array.from({ length: pointCount }).map((_, i) => (
-        <circle key={`node-b-${i}`} ref={(el) => (nodeBRefs.current[i] = el)} fill="#06B6D4" />
+      {initialPoints.nodesB.map((n, i) => (
+        <circle
+          key={`nodeB-${i}`}
+          ref={(el) => (nodeBRefs.current[i] = el)}
+          cx={n.cx}
+          cy={n.cy}
+          r={n.r}
+          fill="#06B6D4"
+          opacity={n.opacity}
+        />
       ))}
-    </svg>
+    </g>
   );
 };
 
@@ -152,29 +258,18 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative pt-12 sm:pt-16 pb-16 overflow-hidden bg-gradient-to-b from-[#F2F7F9] via-[#EBF3F6] to-[#F5F9FA] text-slate-800 mt-12">
+    <section className="relative pt-24 sm:pt-28 lg:pt-32 pb-8 sm:pb-10 md:pb-12 overflow-hidden bg-white text-slate-800">
 
-      {/* ──── Real animated 3D DNA double helix background — centered, full-width ──── */}
+      {/* ──── Unified full-bleed background SVG (zero layout shifts) ──── */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="absolute"
-          style={{
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%) rotate(-80deg)',
-            opacity: 0.5,
-          }}
-        >
-          <AnimatedDNA pointCount={50} spacing={26} radius={64} twistPerPoint={0.4} speed={0.35} />
-        </div>
-
-        {/* ──── Molecular node clusters (kept from original for texture) ──── */}
         <svg
-          className="absolute w-full h-full opacity-70"
+          className="absolute inset-0 w-full h-full pointer-events-none opacity-80"
           viewBox="0 0 1440 900"
+          preserveAspectRatio="xMidYMid slice"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <AnimatedDNA pointCount={50} spacing={26} radius={64} twistPerPoint={0.4} speed={0.35} />
           <defs>
             <filter id="helix-glow">
               <feGaussianBlur stdDeviation="2" result="coloredBlur" />
@@ -214,74 +309,74 @@ export const Hero = () => {
       </div>
 
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
 
           {/* ──── Left Column — Hero Copy & Metrics ──── */}
-          <div className="lg:col-span-7 xl:col-span-7 space-y-6 text-center lg:text-left">
+          <div className="lg:col-span-7 xl:col-span-7 space-y-3 sm:space-y-4 lg:space-y-4 text-center lg:text-left">
 
-            <div className="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold text-[#161b3d] border-2 border-[#161b3d] shadow-[3px_3px_0_#161b3d]">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#6d45e5] animate-pulse" />
-              Welcome to MedAorticX Healthtek
+            <div className="inline-flex items-center gap-2.5 bg-white/80 backdrop-blur-md px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold text-slate-800 border border-slate-200/80 shadow-sm">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#6d45e5] animate-pulse shrink-0" />
+              <span>Welcome to MedAorticX Healthtek</span>
             </div>
 
-            <h1 className="text-[clamp(2.2rem,4.4vw,3.6rem)] font-extrabold leading-[1.12] tracking-tight text-[#161b3d]">
+            <h1 className="text-[clamp(1.75rem,3.2vw,2.75rem)] font-extrabold leading-[1.12] tracking-tight text-[#0f172a]">
               Powering the Pulse of<br className="hidden sm:inline" />
               <span className="grad-text">
                 {' '}Healthcare Revenue
               </span>
             </h1>
 
-            <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-[520px] mx-auto lg:mx-0 font-semibold">
+            <p className="text-slate-600 text-xs sm:text-sm lg:text-[0.95rem] leading-relaxed max-w-[500px] mx-auto lg:mx-0 font-medium">
               Where healthcare meets intelligent revenue transformation and comprehensive medical coding excellence.
             </p>
 
-            {/* 3D Neo-Brutalist Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 pt-2">
+            {/* Modern Glass Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-0.5 sm:pt-1">
               <button
                 onClick={() => scrollTo('services')}
-                className="btn-3d-primary shadow-btn-primary inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-extrabold text-sm sm:text-base text-white bg-brand-gradient min-h-[48px] cursor-pointer"
+                className="btn-3d-primary shadow-btn-primary inline-flex items-center justify-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm text-white bg-brand-gradient min-h-[44px] cursor-pointer"
               >
-                Explore Services <b className="text-lg leading-none">→</b>
+                Explore Services <b className="text-base leading-none">→</b>
               </button>
               <button
                 onClick={() => scrollTo('courses')}
-                className="btn-3d-ghost shadow-btn-ghost inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-extrabold text-sm sm:text-base text-[#161b3d] bg-white min-h-[48px] cursor-pointer"
+                className="btn-3d-ghost shadow-btn-ghost inline-flex items-center justify-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm text-slate-700 bg-white/80 backdrop-blur-md min-h-[44px] cursor-pointer"
               >
-                Coding Academy <b className="text-lg leading-none">→</b>
+                Coding Academy <b className="text-base leading-none">→</b>
               </button>
             </div>
 
-            {/* 3D Metric Cards */}
-            <div className="pt-6 sm:pt-8 border-t-2 border-slate-200/80">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            {/* Metric Cards — Glassmorphic Transparent Cards */}
+            <div className="pt-2.5 sm:pt-3.5 border-t border-slate-200/60">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
 
-                <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border-2 border-[#161b3d] shadow-[4px_4px_0_#161b3d] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_#161b3d] transition-all">
-                  <div className="w-10 h-10 rounded-xl bg-[#eee9ff] border-2 border-[#161b3d] flex items-center justify-center text-xl shadow-[2px_2px_0_#161b3d] shrink-0">
+                <div className="flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-2xl bg-white/70 backdrop-blur-md border border-slate-200/80 shadow-sm hover:shadow-md hover:border-indigo/30 hover:-translate-y-0.5 transition-all min-w-0">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-purple-50 text-indigo flex items-center justify-center text-lg sm:text-xl shrink-0 shadow-inner" aria-hidden="true">
                     🏥
                   </div>
-                  <div className="text-left">
-                    <div className="text-sm sm:text-base font-extrabold text-[#161b3d] leading-tight">20% Reduction</div>
-                    <div className="text-xs text-slate-500 font-bold mt-0.5">Patient Wait Time</div>
+                  <div className="min-w-0 flex-1 text-left">
+                    <div className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate sm:whitespace-normal">20% Reduction</div>
+                    <div className="text-[10px] sm:text-[11px] text-slate-600 font-semibold mt-0.5 leading-tight">Patient Wait Time</div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border-2 border-[#161b3d] shadow-[4px_4px_0_#161b3d] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_#161b3d] transition-all">
-                  <div className="w-10 h-10 rounded-xl bg-[#e4f8f8] border-2 border-[#161b3d] flex items-center justify-center text-xl shadow-[2px_2px_0_#161b3d] shrink-0">
+                <div className="flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-2xl bg-white/70 backdrop-blur-md border border-slate-200/80 shadow-sm hover:shadow-md hover:border-teal/30 hover:-translate-y-0.5 transition-all min-w-0">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-teal/10 text-teal flex items-center justify-center text-lg sm:text-xl shrink-0 shadow-inner" aria-hidden="true">
                     📋
                   </div>
-                  <div className="text-left">
-                    <div className="text-sm sm:text-base font-extrabold text-[#161b3d] leading-tight">98% Accuracy</div>
-                    <div className="text-xs text-slate-500 font-bold mt-0.5">Documentation</div>
+                  <div className="min-w-0 flex-1 text-left">
+                    <div className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate sm:whitespace-normal">98% Accuracy</div>
+                    <div className="text-[10px] sm:text-[11px] text-slate-600 font-semibold mt-0.5 leading-tight">Documentation</div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border-2 border-[#161b3d] shadow-[4px_4px_0_#161b3d] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_#161b3d] transition-all">
-                  <div className="w-10 h-10 rounded-xl bg-[#fff7ed] border-2 border-[#161b3d] flex items-center justify-center text-xl shadow-[2px_2px_0_#161b3d] shrink-0">
+                <div className="flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-2xl bg-white/70 backdrop-blur-md border border-slate-200/80 shadow-sm hover:shadow-md hover:border-amber-300 hover:-translate-y-0.5 transition-all min-w-0">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg sm:text-xl shrink-0 shadow-inner" aria-hidden="true">
                     ⚡
                   </div>
-                  <div className="text-left">
-                    <div className="text-sm sm:text-base font-extrabold text-[#161b3d] leading-tight">3x Faster</div>
-                    <div className="text-xs text-slate-500 font-bold mt-0.5">Claims Processing</div>
+                  <div className="min-w-0 flex-1 text-left">
+                    <div className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate sm:whitespace-normal">3x Faster</div>
+                    <div className="text-[10px] sm:text-[11px] text-slate-600 font-semibold mt-0.5 leading-tight">Claims Processing</div>
                   </div>
                 </div>
 
@@ -291,77 +386,77 @@ export const Hero = () => {
           </div>
 
           {/* ──── Right Column — Live Dashboard Preview Card ──── */}
-          <div className="lg:col-span-5 xl:col-span-5 relative flex items-center justify-center mt-6 lg:mt-0">
+          <div className="lg:col-span-5 xl:col-span-5 relative flex items-center justify-center mt-3 lg:mt-0">
 
-            <div className="relative w-full max-w-[440px] mx-auto">
+            <div className="relative w-full max-w-[320px] sm:max-w-[360px] lg:max-w-[390px] xl:max-w-[420px] mx-auto">
 
               {/* Soft brand-color glow behind the card for depth */}
               <div
-                className="absolute inset-0 -z-10 rounded-[32px] blur-3xl opacity-30"
+                className="absolute inset-0 -z-10 rounded-[32px] blur-2xl opacity-20"
                 style={{
                   background:
-                    'radial-gradient(circle at 50% 40%, #16a9aa 0%, #6d45e5 50%, transparent 75%)',
+                    'radial-gradient(circle at 50% 40%, #14B8A6 0%, #6D4DE0 50%, transparent 75%)',
                 }}
               />
 
-              {/* 3D Neo-Brutalist Dashboard Preview Card */}
-              <div className="dash-fade-in relative z-10 w-full rounded-[24px] sm:rounded-[28px] bg-white border-[3px] border-[#161b3d] shadow-[8px_8px_0_#161b3d] p-5 sm:p-6">
+              {/* Glassmorphic Dashboard Preview Card */}
+              <div className="dash-fade-in relative z-10 w-full rounded-[24px] sm:rounded-[28px] bg-white/85 backdrop-blur-xl border border-slate-200/80 shadow-xl p-4 sm:p-5 lg:p-6">
 
-                <div className="flex items-center justify-between mb-4">
-                  <div className="text-base font-extrabold text-[#161b3d]">Claims Intelligence</div>
-                  <div className="flex items-center gap-1.5 text-xs font-black text-[#087a7d] bg-[#e4f8f8] px-3 py-1 rounded-full border-2 border-[#161b3d] shadow-[2px_2px_0_#161b3d]">
-                    <span className="dash-live-dot w-2 h-2 rounded-full bg-[#16a9aa]" />
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-sm sm:text-base font-extrabold text-slate-900">Claims Intelligence</div>
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-teal bg-teal/10 px-2.5 py-0.5 rounded-full border border-teal/20">
+                    <span className="dash-live-dot w-1.5 h-1.5 rounded-full bg-teal" />
                     LIVE
                   </div>
                 </div>
 
-                <svg viewBox="0 0 360 120" className="w-full h-auto" preserveAspectRatio="none">
+                <svg viewBox="0 0 360 95" className="w-full h-auto" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#16a9aa" stopOpacity="0.35" />
-                      <stop offset="100%" stopColor="#16a9aa" stopOpacity="0" />
+                      <stop offset="0%" stopColor="#14B8A6" stopOpacity="0.25" />
+                      <stop offset="100%" stopColor="#14B8A6" stopOpacity="0" />
                     </linearGradient>
                     <linearGradient id="chart-line" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#6d45e5" />
-                      <stop offset="100%" stopColor="#16a9aa" />
+                      <stop offset="0%" stopColor="#6D4DE0" />
+                      <stop offset="100%" stopColor="#14B8A6" />
                     </linearGradient>
                   </defs>
 
-                  <line x1="0" y1="30" x2="360" y2="30" stroke="#E2E8F0" strokeWidth="1" />
-                  <line x1="0" y1="65" x2="360" y2="65" stroke="#E2E8F0" strokeWidth="1" />
-                  <line x1="0" y1="100" x2="360" y2="100" stroke="#E2E8F0" strokeWidth="1" />
+                  <line x1="0" y1="25" x2="360" y2="25" stroke="#F1F5F9" strokeWidth="1" />
+                  <line x1="0" y1="52" x2="360" y2="52" stroke="#F1F5F9" strokeWidth="1" />
+                  <line x1="0" y1="80" x2="360" y2="80" stroke="#F1F5F9" strokeWidth="1" />
 
                   <path
-                    d="M0,95 L40,88 L80,92 L120,70 L160,75 L200,50 L240,55 L280,32 L320,38 L360,15 L360,120 L0,120 Z"
+                    d="M0,75 L40,70 L80,73 L120,55 L160,60 L200,40 L240,44 L280,26 L320,30 L360,12 L360,95 L0,95 Z"
                     fill="url(#chart-fill)"
                   />
                   <path
-                    d="M0,95 L40,88 L80,92 L120,70 L160,75 L200,50 L240,55 L280,32 L320,38 L360,15"
+                    d="M0,75 L40,70 L80,73 L120,55 L160,60 L200,40 L240,44 L280,26 L320,30 L360,12"
                     fill="none"
                     stroke="url(#chart-line)"
-                    strokeWidth="3.5"
+                    strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                  <circle cx="360" cy="15" r="6" fill="#16a9aa" stroke="#161b3d" strokeWidth="2" />
+                  <circle cx="360" cy="12" r="5" fill="#14B8A6" stroke="#ffffff" strokeWidth="2" className="shadow-sm" />
                 </svg>
 
-                <div className="flex items-center justify-between mt-2 mb-4 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                <div className="flex items-center justify-between mt-1 mb-2.5 text-[10px] font-bold text-slate-600 uppercase tracking-wider">
                   <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2.5 pt-4 border-t-2 border-slate-100">
-                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-200">
-                    <div className="text-base sm:text-lg font-black text-[#161b3d]">99.8%</div>
-                    <div className="text-[10px] font-extrabold text-slate-500 uppercase">Accuracy</div>
+                <div className="grid grid-cols-3 gap-2 pt-2.5 border-t border-slate-100">
+                  <div className="p-2 rounded-xl bg-slate-50/80 border border-slate-100 text-center">
+                    <div className="text-sm sm:text-base font-black text-slate-900">99.8%</div>
+                    <div className="text-[9px] sm:text-[10px] font-bold text-slate-600 uppercase">Accuracy</div>
                   </div>
-                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-200">
-                    <div className="text-base sm:text-lg font-black text-[#161b3d]">100k+</div>
-                    <div className="text-[10px] font-extrabold text-slate-500 uppercase">Claims/Mo</div>
+                  <div className="p-2 rounded-xl bg-slate-50/80 border border-slate-100 text-center">
+                    <div className="text-sm sm:text-base font-black text-slate-900">100k+</div>
+                    <div className="text-[9px] sm:text-[10px] font-bold text-slate-600 uppercase">Claims/Mo</div>
                   </div>
-                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-200">
-                    <div className="text-base sm:text-lg font-black text-[#161b3d]">3x</div>
-                    <div className="text-[10px] font-extrabold text-slate-500 uppercase">Payouts</div>
+                  <div className="p-2 rounded-xl bg-slate-50/80 border border-slate-100 text-center">
+                    <div className="text-sm sm:text-base font-black text-slate-900">3x</div>
+                    <div className="text-[9px] sm:text-[10px] font-bold text-slate-600 uppercase">Payouts</div>
                   </div>
                 </div>
 

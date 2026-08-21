@@ -26,12 +26,12 @@ export const AboutSection = () => {
   ];
 
   return (
-    <section id="about" className="pt-3 sm:pt-4 pb-6 sm:pb-8 md:pb-10 relative overflow-hidden glass-section scroll-mt-16 sm:scroll-mt-20 w-full">
+    <section id="about" className="py-6 sm:py-8 md:py-10 relative overflow-hidden scroll-mt-16 sm:scroll-mt-20 w-full bg-white" aria-labelledby="about-heading">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 relative z-10 w-full box-border">
         
         {/* Section Header */}
-        <Reveal className="text-center max-w-3xl mx-auto mb-5 sm:mb-7 md:mb-8">
-          <span className="inline-block bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-2.5 border border-indigo/10">
+        <Reveal className="text-center max-w-3xl mx-auto mb-4 sm:mb-6">
+          <span className="inline-block bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-2 border border-indigo/10">
             About Us
           </span>
           <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-ink mb-2.5 leading-tight px-1 sm:px-0">

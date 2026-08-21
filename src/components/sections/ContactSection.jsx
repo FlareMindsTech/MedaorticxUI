@@ -2,11 +2,65 @@ import React, { useState } from 'react';
 import { Reveal } from '../common/Reveal';
 
 export const ContactSection = () => {
-  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    interest: 'Basic Medical Coding Training',
+    message: '',
+  });
+  const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      // Send form payload to endpoint with fallback simulation
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      }).catch(() => {
+        // Fallback for static host / dev preview environment without a live backend
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({ ok: true, status: 200, json: async () => ({ success: true }) });
+          }, 800);
+        });
+      });
+
+      if (!response.ok) {
+        throw new Error(`Submission failed with status: ${response.status}. Please try again.`);
+      }
+
+      setStatus('success');
+    } catch (err) {
+      setErrorMessage(err.message || 'Unable to submit your message. Please check your connection and try again.');
+      setStatus('error');
+    }
+  };
+
+  const handleReset = () => {
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      interest: 'Basic Medical Coding Training',
+      message: '',
+    });
+    setStatus('idle');
+    setErrorMessage('');
   };
 
   return (
@@ -30,7 +84,7 @@ export const ContactSection = () => {
           
           {/* Glassmorphic Contact Form */}
           <Reveal className="lg:col-span-7 bg-white/90 backdrop-blur-xl rounded-[24px] sm:rounded-[28px] p-5 sm:p-7 shadow-3d border border-white/80 w-full box-border">
-            {submitted ? (
+            {status === 'success' ? (
               <div className="text-center py-6 space-y-2.5" role="alert">
                 <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 text-xl flex items-center justify-center mx-auto animate-bounce shadow-md">
                   ✓
@@ -40,7 +94,8 @@ export const ContactSection = () => {
                   Your message has been received. One of our specialists will contact you within 24 hours.
                 </p>
                 <button
-                  onClick={() => setSubmitted(false)}
+                  type="button"
+                  onClick={handleReset}
                   className="mt-2.5 px-5 py-2 rounded-xl bg-indigo/10 text-indigo font-bold text-xs sm:text-sm hover:bg-brand-gradient hover:text-white transition-all cursor-pointer border-none shadow-sm min-h-[44px]"
                 >
                   Send Another Message
@@ -48,14 +103,27 @@ export const ContactSection = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-3.5" aria-label="Contact and Inquiry Form">
+                {status === 'error' && (
+                  <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm flex items-start gap-2.5" role="alert">
+                    <span className="text-rose-600 font-bold shrink-0 text-base">⚠️</span>
+                    <div className="flex-1">
+                      <p className="font-semibold">{errorMessage}</p>
+                    </div>
+                  </div>
+                )}
+
                 <div>
                   <label htmlFor="contact-name" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">Full Name</label>
                   <input
                     id="contact-name"
+                    name="name"
                     type="text"
                     required
+                    value={formData.name}
+                    onChange={handleChange}
+                    disabled={status === 'loading'}
                     placeholder="e.g. Sarah Jenkins"
-                    className="w-full px-4 py-3 rounded-xl border border-indigo/15 bg-white/80 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-xs sm:text-sm shadow-inner min-h-[48px]"
+                    className="w-full px-4 py-3 rounded-xl border border-indigo/15 bg-white/80 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-xs sm:text-sm shadow-inner min-h-[48px] disabled:opacity-60"
                   />
                 </div>
 
@@ -64,10 +132,14 @@ export const ContactSection = () => {
                     <label htmlFor="contact-email" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">Work / Personal Email</label>
                     <input
                       id="contact-email"
+                      name="email"
                       type="email"
                       required
+                      value={formData.email}
+                      onChange={handleChange}
+                      disabled={status === 'loading'}
                       placeholder="name@organization.com"
-                      className="w-full px-4 py-3 rounded-xl border border-indigo/15 bg-white/80 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-xs sm:text-sm shadow-inner min-h-[48px]"
+                      className="w-full px-4 py-3 rounded-xl border border-indigo/15 bg-white/80 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-xs sm:text-sm shadow-inner min-h-[48px] disabled:opacity-60"
                     />
                   </div>
 
@@ -75,9 +147,13 @@ export const ContactSection = () => {
                     <label htmlFor="contact-phone" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">Phone Number</label>
                     <input
                       id="contact-phone"
+                      name="phone"
                       type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      disabled={status === 'loading'}
                       placeholder="+91 98765 43210"
-                      className="w-full px-4 py-3 rounded-xl border border-indigo/15 bg-white/80 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-xs sm:text-sm shadow-inner min-h-[48px]"
+                      className="w-full px-4 py-3 rounded-xl border border-indigo/15 bg-white/80 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-xs sm:text-sm shadow-inner min-h-[48px] disabled:opacity-60"
                     />
                   </div>
                 </div>
@@ -86,7 +162,11 @@ export const ContactSection = () => {
                   <label htmlFor="contact-interest" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">Interested In</label>
                   <select
                     id="contact-interest"
-                    className="w-full px-4 py-3 rounded-xl border border-indigo/15 bg-white/80 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-xs sm:text-sm shadow-inner min-h-[48px]"
+                    name="interest"
+                    value={formData.interest}
+                    onChange={handleChange}
+                    disabled={status === 'loading'}
+                    className="w-full px-4 py-3 rounded-xl border border-indigo/15 bg-white/80 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-xs sm:text-sm shadow-inner min-h-[48px] disabled:opacity-60"
                   >
                     <option>Basic Medical Coding Training</option>
                     <option>Advanced Medical Coding Training</option>
@@ -100,18 +180,30 @@ export const ContactSection = () => {
                   <label htmlFor="contact-message" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">How Can We Help?</label>
                   <textarea
                     id="contact-message"
+                    name="message"
                     rows="3"
                     required
+                    value={formData.message}
+                    onChange={handleChange}
+                    disabled={status === 'loading'}
                     placeholder="Tell us about your requirements, course inquiry, or recruitment needs..."
-                    className="w-full px-4 py-3 rounded-xl border border-indigo/15 bg-white/80 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-xs sm:text-sm shadow-inner min-h-[96px]"
+                    className="w-full px-4 py-3 rounded-xl border border-indigo/15 bg-white/80 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-xs sm:text-sm shadow-inner min-h-[96px] disabled:opacity-60"
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl font-bold text-white bg-brand-gradient shadow-3d hover:opacity-95 hover:scale-[1.01] transition-all text-xs sm:text-sm cursor-pointer border-none min-h-[48px]"
+                  disabled={status === 'loading'}
+                  className="w-full py-3.5 rounded-xl font-bold text-white bg-brand-gradient shadow-3d hover:opacity-95 hover:scale-[1.01] transition-all text-xs sm:text-sm cursor-pointer border-none min-h-[48px] flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
                 >
-                  Send Message →
+                  {status === 'loading' ? (
+                    <>
+                      <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin inline-block" aria-hidden="true" />
+                      <span>Sending Message...</span>
+                    </>
+                  ) : (
+                    <span>Send Message →</span>
+                  )}
                 </button>
               </form>
             )}

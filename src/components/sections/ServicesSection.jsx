@@ -1,114 +1,31 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Reveal } from '../common/Reveal';
+import { TiltCard3D } from '../common/TiltCard3D';
+import { SERVICES } from '../../data/services';
 
-const ServiceCard3D = ({
-  id,
-  cardClass,
-  eyebrow,
-  titleTop,
-  titleBottom,
-  badgeText,
-  description,
-  features,
-  labelStrong,
-  labelSmall,
-  ctaText,
-  onClick,
-}) => {
-  const cardRef = useRef(null);
-
-  const handlePointerMove = (event) => {
-    if (!cardRef.current) return;
-    if (typeof window !== 'undefined' && window.matchMedia('(max-width: 850px)').matches) return;
-
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    const rotateY = ((x / rect.width) - 0.5) * 3.5;
-    const rotateX = ((y / rect.height) - 0.5) * -3.5;
-
-    cardRef.current.style.transform = `translate3d(0,-8px,0) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  };
-
-  const handlePointerLeave = () => {
-    if (cardRef.current) {
-      cardRef.current.style.transform = '';
-      cardRef.current.classList.remove('pressed');
-    }
-  };
-
-  const handlePointerDown = () => {
-    if (cardRef.current) {
-      cardRef.current.classList.add('pressed');
-    }
-  };
-
-  const handlePointerUp = () => {
-    if (cardRef.current) {
-      cardRef.current.classList.remove('pressed');
-    }
-  };
-
-  return (
-    <a
-      ref={cardRef}
-      href={`#service-${id}`}
-      onClick={(e) => onClick(e, id)}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerLeave}
-      className={`service-card-3d ${cardClass}`}
-      aria-label={`Open ${titleTop} ${titleBottom}`}
-    >
-      <div className="card-top">
-        <div>
-          <span className="eyebrow">{eyebrow}</span>
-          <h2>
-            {titleTop}
-            <br />
-            {titleBottom}
-          </h2>
-        </div>
-        <span className="premium-badge">{badgeText}</span>
-      </div>
-
-      <div className="card-body">
-        <p className="description">{description}</p>
-
-        <div className="key-title">KEY AREAS</div>
-
-        <div className="feature-grid">
-          {features.map((feat, fIdx) => (
-            <div key={fIdx} className="feature">
-              <span className="feature-icon">{feat.icon}</span>
-              <span>{feat.text}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="card-divider" />
-
-        <div className="card-footer">
-          <div className="service-label">
-            <strong>{labelStrong}</strong>
-            <small>{labelSmall}</small>
-          </div>
-
-          <span className="cta-3d">
-            {ctaText} <b>→</b>
-          </span>
-        </div>
-
-        {/* Decorative elements */}
-        <div className="decor decor-1" />
-        <div className="decor decor-2" />
-        <div className="decor-line" />
-      </div>
-    </a>
-  );
+const SERVICE_META = {
+  'rcm-recruitment-services': {
+    cardClass: 'rcm-card-theme',
+    eyebrow: 'HEALTHCARE',
+    titleTop: 'RCM',
+    titleBottom: 'Recruitment Services',
+    badgeText: 'RCM',
+    labelStrong: 'RCM',
+    labelSmall: 'Recruitment',
+    ctaText: 'VIEW DETAILS',
+    featureIcons: ['▣', '▣', 'T', '✦'],
+  },
+  'medical-coding-academy': {
+    cardClass: 'academy-card-theme',
+    eyebrow: 'EDUCATION',
+    titleTop: 'Medical',
+    titleBottom: 'Coding Academy',
+    badgeText: 'ACADEMY',
+    labelStrong: 'ACADEMY',
+    labelSmall: 'Medical Coding',
+    ctaText: 'VIEW DETAILS',
+    featureIcons: ['▤', '♙', '</>', '▣'],
+  },
 };
 
 export const ServicesSection = ({ onSelectService }) => {
@@ -122,69 +39,53 @@ export const ServicesSection = ({ onSelectService }) => {
   };
 
   return (
-    <section id="services" className="py-8 sm:py-12 md:py-16 relative overflow-hidden scroll-mt-16 sm:scroll-mt-20 w-full" aria-labelledby="services-heading">
+    <section id="services" className="py-6 sm:py-8 md:py-10 relative overflow-hidden scroll-mt-16 sm:scroll-mt-20 w-full bg-white" aria-labelledby="services-heading">
       <div className="max-w-[1240px] mx-auto px-3 sm:px-5 md:px-8 relative z-10 w-full box-border">
         
-        {/* Section Heading */}
-        <Reveal className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
-          <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-[#6d45e5] uppercase shadow-btn-ghost mb-2.5 border border-[#6d45e5]/10">
-            OUR SERVICES
+        {/* Section Header */}
+        <Reveal className="text-center max-w-3xl mx-auto mb-5 sm:mb-6">
+          <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-2 border border-indigo/10">
+            OUR CORE SERVICES
           </span>
-          <h2 id="services-heading" className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#161b3d] mb-2.5 leading-tight">
-            Healthcare <span className="grad-text">Services</span>
+          <h2 id="services-heading" className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#161b3d] mb-2 leading-tight">
+            Comprehensive <span className="grad-text">Healthcare Solutions</span>
           </h2>
           <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed">
-            Explore our services — the entire card is clickable.
+            Choose from our specialized services — the entire card is clickable.
           </p>
         </Reveal>
 
         {/* Services 3D Grid */}
         <div className="services-3d-grid max-w-5xl mx-auto">
-          {/* RCM CARD */}
-          <Reveal delay={0.05} className="w-full flex">
-            <ServiceCard3D
-              id="rcm-recruitment-services"
-              cardClass="rcm-card-theme"
-              eyebrow="HEALTHCARE"
-              titleTop="RCM"
-              titleBottom="Recruitment Services"
-              badgeText="RCM"
-              description="Building skilled teams for the healthcare revenue cycle industry. Specialized recruitment solutions for RCM companies, identifying and hiring qualified billing, coding, and operations professionals."
-              features={[
-                { icon: '▣', text: 'Medical Coders' },
-                { icon: '▣', text: 'Medical Billers' },
-                { icon: 'T', text: 'AR Callers & AR Analysts' },
-                { icon: '✦', text: 'Denial Management' },
-              ]}
-              labelStrong="RCM"
-              labelSmall="Recruitment"
-              ctaText="VIEW DETAILS"
-              onClick={handleCardClick}
-            />
-          </Reveal>
+          {SERVICES.map((service, idx) => {
+            const meta = SERVICE_META[service.id] || {};
+            const cardFeatures = service.features.slice(0, 4).map((featText, fIdx) => ({
+              icon: (meta.featureIcons && meta.featureIcons[fIdx]) || '▣',
+              text: featText,
+            }));
 
-          {/* MEDICAL CODING CARD */}
-          <Reveal delay={0.12} className="w-full flex">
-            <ServiceCard3D
-              id="medical-coding-academy"
-              cardClass="academy-card-theme"
-              eyebrow="EDUCATION"
-              titleTop="Medical"
-              titleBottom="Coding Academy"
-              badgeText="ACADEMY"
-              description="Learn medical coding. Build a career in healthcare. Industry-oriented training providing practical knowledge of medical terminology, anatomy, coding concepts, and documentation."
-              features={[
-                { icon: '▤', text: 'Medical Terminology' },
-                { icon: '♙', text: 'Human Anatomy & Physiology' },
-                { icon: '</>', text: 'ICD Coding' },
-                { icon: '▣', text: 'CPT & HCPCS Coding' },
-              ]}
-              labelStrong="ACADEMY"
-              labelSmall="Medical Coding"
-              ctaText="VIEW DETAILS"
-              onClick={handleCardClick}
-            />
-          </Reveal>
+            return (
+              <Reveal key={service.id} delay={0.05 + idx * 0.07} className="w-full flex">
+                <TiltCard3D
+                  id={service.id}
+                  cardClass={meta.cardClass}
+                  eyebrow={meta.eyebrow}
+                  titleTop={meta.titleTop}
+                  titleBottom={meta.titleBottom}
+                  badgeText={meta.badgeText}
+                  description={service.shortDesc}
+                  features={cardFeatures}
+                  keyTitle="KEY AREAS"
+                  labelStrong={meta.labelStrong}
+                  labelSmall={meta.labelSmall}
+                  ctaText={meta.ctaText}
+                  href={`/services/${service.id}`}
+                  onClick={handleCardClick}
+                  titleTag="h3"
+                />
+              </Reveal>
+            );
+          })}
         </div>
 
         <p className="interaction-note-3d">
@@ -195,4 +96,3 @@ export const ServicesSection = ({ onSelectService }) => {
     </section>
   );
 };
-

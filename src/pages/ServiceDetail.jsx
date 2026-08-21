@@ -1,37 +1,96 @@
 import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { SERVICES } from '../data/services';
 import { COURSES } from '../data/courses';
 
-export const ServiceDetail = ({ serviceId, onBack, onNavigateToContact, onNavigateToCourses }) => {
+export const ServiceDetail = ({
+  serviceId: propServiceId,
+  onBack: propOnBack,
+  onNavigateToContact: propOnContact,
+  onNavigateToCourses: propOnCourses,
+}) => {
+  const params = useParams();
+  const navigate = useNavigate();
+  const serviceId = propServiceId || params.serviceId || 'rcm-recruitment-services';
   const service = SERVICES.find(s => s.id === serviceId) || SERVICES[0];
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [serviceId]);
+    const originalTitle = document.title;
+    document.title = `${service.title} | MedAorticX HealthTek`;
+    return () => {
+      document.title = originalTitle;
+    };
+  }, [service.title]);
 
   const isRecruitment = service.id === 'rcm-recruitment-services';
 
+  const handleBack = () => {
+    if (propOnBack) {
+      propOnBack();
+    } else {
+      navigate('/#services');
+    }
+  };
+
+  const handleContact = () => {
+    if (propOnContact) {
+      propOnContact();
+    } else {
+      navigate('/#contact');
+    }
+  };
+
+  const handleCourses = () => {
+    if (propOnCourses) {
+      propOnCourses();
+    } else {
+      navigate('/#courses');
+    }
+  };
+
   return (
-    <main className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 bg-gradient-to-b from-[#F4F2FF] via-[#EEF2FF] to-[#EAF9F7]">
+    <main className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 bg-white">
       <div className="max-w-[1360px] mx-auto px-3 sm:px-5 md:px-6 lg:px-8">
         
         {/* Navigation Breadcrumb & Back Button */}
         <div className="flex items-center justify-between gap-4 mb-8">
           <button
-            onClick={onBack}
+            type="button"
+            onClick={handleBack}
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/90 backdrop-blur-md text-indigo font-bold text-sm shadow-btn-ghost hover:bg-white hover:-translate-x-0.5 transition-all cursor-pointer border border-indigo/10 min-h-[48px]"
             aria-label="Back to all services"
           >
             ← Back to All Services
           </button>
 
-          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-500">
-            <span className="cursor-pointer hover:text-indigo" onClick={onBack}>Home</span>
-            <span>/</span>
-            <span className="cursor-pointer hover:text-indigo" onClick={onBack}>Services</span>
-            <span>/</span>
-            <span className="text-indigo font-bold">{service.title}</span>
-          </div>
+          <nav aria-label="Breadcrumb" className="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-600">
+            <ol className="flex items-center gap-2 list-none p-0 m-0">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => navigate('/#home')}
+                  className="p-0 border-0 bg-transparent text-slate-600 hover:text-indigo transition-colors cursor-pointer font-semibold underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo/40 rounded-sm"
+                >
+                  Home
+                </button>
+              </li>
+              <li aria-hidden="true" className="text-slate-400">/</li>
+              <li>
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className="p-0 border-0 bg-transparent text-slate-600 hover:text-indigo transition-colors cursor-pointer font-semibold underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo/40 rounded-sm"
+                >
+                  Services
+                </button>
+              </li>
+              <li aria-hidden="true" className="text-slate-400">/</li>
+              <li aria-current="page" className="text-indigo font-bold">
+                {service.title}
+              </li>
+            </ol>
+          </nav>
         </div>
 
         {/* Hero Header Card */}
@@ -41,7 +100,7 @@ export const ServiceDetail = ({ serviceId, onBack, onNavigateToContact, onNaviga
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
             <div className="space-y-4 max-w-3xl">
               <div className="inline-flex items-center gap-2 bg-indigo/10 text-indigo font-bold text-xs uppercase tracking-wider px-3.5 py-1.5 rounded-full border border-indigo/15">
-                <span>{service.icon}</span>
+                <span aria-hidden="true">{service.icon}</span>
                 <span>{isRecruitment ? 'Specialized Healthcare Staffing' : 'Professional Healthcare Academy'}</span>
               </div>
 
@@ -59,7 +118,7 @@ export const ServiceDetail = ({ serviceId, onBack, onNavigateToContact, onNaviga
 
               {service.tagline && (
                 <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 text-ink font-bold text-sm sm:text-base flex items-center gap-2 shadow-inner">
-                  <span className="text-indigo text-lg">✨</span>
+                  <span className="text-indigo text-lg" aria-hidden="true">✨</span>
                   <span>{service.tagline}</span>
                 </div>
               )}
@@ -67,15 +126,17 @@ export const ServiceDetail = ({ serviceId, onBack, onNavigateToContact, onNaviga
 
             <div className="w-full lg:w-auto shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3 min-w-[240px]">
               <button
-                onClick={onNavigateToContact}
+                type="button"
+                onClick={handleContact}
                 className="w-full py-4 px-6 rounded-2xl font-bold text-white bg-brand-gradient shadow-btn-primary hover:opacity-95 transition-all text-center text-sm cursor-pointer border-none min-h-[48px] flex items-center justify-center gap-2"
               >
                 {isRecruitment ? 'Hire RCM Talent →' : 'Enroll in Academy →'}
               </button>
               
-              {!isRecruitment && onNavigateToCourses && (
+              {!isRecruitment && (
                 <button
-                  onClick={onNavigateToCourses}
+                  type="button"
+                  onClick={handleCourses}
                   className="w-full py-3.5 px-6 rounded-2xl font-bold text-indigo bg-indigo/10 hover:bg-indigo hover:text-white transition-all text-center text-sm cursor-pointer border-none min-h-[44px] flex items-center justify-center gap-2"
                 >
                   View Coding Courses 📖
@@ -92,7 +153,7 @@ export const ServiceDetail = ({ serviceId, onBack, onNavigateToContact, onNaviga
           <div className="lg:col-span-7 space-y-8">
             <div className="box-hover bg-white/90 backdrop-blur-xl rounded-[28px] p-6 sm:p-8 md:p-10 shadow-3d border border-white/80">
               <h2 className="text-xl sm:text-2xl font-extrabold text-ink mb-6 flex items-center gap-3">
-                <span className="w-10 h-10 rounded-xl bg-indigo/10 text-indigo flex items-center justify-center text-xl font-bold">
+                <span className="w-10 h-10 rounded-xl bg-indigo/10 text-indigo flex items-center justify-center text-xl font-bold" aria-hidden="true">
                   {isRecruitment ? '👥' : '📚'}
                 </span>
                 <span>{isRecruitment ? 'Our Recruitment Expertise & Roles' : "What You'll Learn at the Academy"}</span>
@@ -108,7 +169,7 @@ export const ServiceDetail = ({ serviceId, onBack, onNavigateToContact, onNaviga
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {service.features.map((feat, idx) => (
                   <div key={idx} className="flex items-center gap-3 bg-slate-50/80 p-3.5 rounded-2xl border border-slate-100/90 hover:border-indigo/20 transition-colors">
-                    <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">
+                    <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0" aria-hidden="true">
                       ✓
                     </span>
                     <span className="text-xs sm:text-sm font-bold text-slate-800">{feat}</span>
@@ -117,11 +178,11 @@ export const ServiceDetail = ({ serviceId, onBack, onNavigateToContact, onNaviga
               </div>
             </div>
 
-            {/* If Academy, show Courses overview block without fee/duration chips */}
+            {/* If Academy, show Courses overview block */}
             {!isRecruitment && (
               <div className="box-hover bg-white/90 backdrop-blur-xl rounded-[28px] p-6 sm:p-8 md:p-10 shadow-3d border border-white/80">
                 <h2 className="text-xl sm:text-2xl font-extrabold text-ink mb-4 flex items-center gap-3">
-                  <span className="w-10 h-10 rounded-xl bg-purple-50 text-violet flex items-center justify-center text-xl font-bold">
+                  <span className="w-10 h-10 rounded-xl bg-purple-50 text-violet flex items-center justify-center text-xl font-bold" aria-hidden="true">
                     🎓
                   </span>
                   <span>Available Medical Coding Training Programs</span>
@@ -148,7 +209,7 @@ export const ServiceDetail = ({ serviceId, onBack, onNavigateToContact, onNaviga
             {service.whyChoose && (
               <div className="box-hover bg-white/90 backdrop-blur-xl rounded-[28px] p-6 sm:p-8 shadow-3d border border-white/80 space-y-4">
                 <h2 className="text-xl font-extrabold text-ink flex items-center gap-3">
-                  <span className="w-10 h-10 rounded-xl bg-teal/10 text-teal flex items-center justify-center text-xl font-bold">
+                  <span className="w-10 h-10 rounded-xl bg-teal/10 text-teal flex items-center justify-center text-xl font-bold" aria-hidden="true">
                     🏆
                   </span>
                   <span>Why Choose Our Recruitment Services?</span>
@@ -170,14 +231,14 @@ export const ServiceDetail = ({ serviceId, onBack, onNavigateToContact, onNaviga
 
             {service.eligibility && (
               <div className="box-hover bg-gradient-to-br from-teal/10 via-white to-indigo/5 backdrop-blur-xl rounded-[28px] p-6 sm:p-8 shadow-3d border border-teal/20 space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-teal text-white flex items-center justify-center text-xl font-bold shadow-sm">
+                <div className="w-10 h-10 rounded-xl bg-teal text-white flex items-center justify-center text-xl font-bold shadow-sm" aria-hidden="true">
                   🎯
                 </div>
                 <h2 className="text-xl font-extrabold text-ink">Who Can Join?</h2>
                 <p className="text-sm text-slate-700 leading-relaxed font-medium">
                   {service.eligibility}
                 </p>
-                <div className="pt-2 text-xs text-slate-500 font-semibold">
+                <div className="pt-2 text-xs text-slate-700 font-semibold">
                   • Life Sciences • Nursing • Pharmacy • B.Sc / M.Sc • Any Graduate
                 </div>
               </div>
@@ -190,7 +251,8 @@ export const ServiceDetail = ({ serviceId, onBack, onNavigateToContact, onNaviga
                 Connect with our team today to discuss your staffing requirements or enroll in our upcoming batch.
               </p>
               <button
-                onClick={onNavigateToContact}
+                type="button"
+                onClick={handleContact}
                 className="w-full py-3.5 px-6 rounded-xl font-bold text-indigo bg-white shadow-md hover:bg-slate-50 transition-all text-sm cursor-pointer border-none min-h-[44px]"
               >
                 Inquire Now →
