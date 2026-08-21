@@ -58,13 +58,13 @@ const DoctorScene = () => {
       <pointLight position={[0, 0, 4]} intensity={1} color="#ffffff" distance={8} decay={2} />
 
       <Suspense fallback={null}>
-        {/* margin lowered from 1.2 → 1.0 so the doctor fills more of the frame */}
-        <Bounds fit clip observe margin={1.0}>
+        {/* margin 1.15 provides natural framing for head and feet */}
+        <Bounds fit clip observe margin={1.15}>
           <DoctorModel />
         </Bounds>
 
-        <Sparkles count={35} scale={4} size={1.5} speed={0.25} opacity={0.2} color="#8B5CF6" />
-        <Sparkles count={20} scale={3.5} size={1} speed={0.2} opacity={0.15} color="#1FC7C0" />
+        <Sparkles count={30} scale={4} size={1.5} speed={0.25} opacity={0.2} color="#8B5CF6" />
+        <Sparkles count={18} scale={3.5} size={1} speed={0.2} opacity={0.15} color="#1FC7C0" />
       </Suspense>
     </Canvas>
   );

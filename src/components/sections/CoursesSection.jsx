@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Reveal } from '../common/Reveal';
 
-const ServiceCard3D = ({
+const CourseCard3D = ({
   id,
   cardClass,
   eyebrow,
@@ -10,8 +10,8 @@ const ServiceCard3D = ({
   badgeText,
   description,
   features,
-  labelStrong,
-  labelSmall,
+  price,
+  durationMeta,
   ctaText,
   onClick,
 }) => {
@@ -53,7 +53,7 @@ const ServiceCard3D = ({
   return (
     <a
       ref={cardRef}
-      href={`#service-${id}`}
+      href={`#course-${id}`}
       onClick={(e) => onClick(e, id)}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
@@ -61,7 +61,7 @@ const ServiceCard3D = ({
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerLeave}
       className={`service-card-3d ${cardClass}`}
-      aria-label={`Open ${titleTop} ${titleBottom}`}
+      aria-label={`Open ${titleTop} ${titleBottom} Syllabus`}
     >
       <div className="card-top">
         <div>
@@ -78,7 +78,7 @@ const ServiceCard3D = ({
       <div className="card-body">
         <p className="description">{description}</p>
 
-        <div className="key-title">KEY AREAS</div>
+        <div className="key-title">PROGRAM HIGHLIGHTS</div>
 
         <div className="feature-grid">
           {features.map((feat, fIdx) => (
@@ -93,8 +93,8 @@ const ServiceCard3D = ({
 
         <div className="card-footer">
           <div className="service-label">
-            <strong>{labelStrong}</strong>
-            <small>{labelSmall}</small>
+            <strong>{price}</strong>
+            <small>{durationMeta}</small>
           </div>
 
           <span className="cta-3d">
@@ -111,84 +111,84 @@ const ServiceCard3D = ({
   );
 };
 
-export const ServicesSection = ({ onSelectService }) => {
-  const handleCardClick = (e, serviceId) => {
+export const CoursesSection = ({ onSelectCourse }) => {
+  const handleCardClick = (e, courseId) => {
     e.preventDefault();
-    if (onSelectService) {
-      onSelectService(serviceId);
+    if (onSelectCourse) {
+      onSelectCourse(courseId);
     } else {
-      window.location.hash = `service-${serviceId}`;
+      window.location.hash = `course-${courseId}`;
     }
   };
 
   return (
-    <section id="services" className="py-8 sm:py-12 md:py-16 relative overflow-hidden scroll-mt-16 sm:scroll-mt-20 w-full" aria-labelledby="services-heading">
+    <section id="courses" className="py-8 sm:py-12 md:py-16 relative overflow-hidden scroll-mt-16 sm:scroll-mt-20 w-full" aria-labelledby="courses-heading">
       <div className="max-w-[1240px] mx-auto px-3 sm:px-5 md:px-8 relative z-10 w-full box-border">
         
-        {/* Section Heading */}
+        {/* Section Header */}
         <Reveal className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
-          <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-[#6d45e5] uppercase shadow-btn-ghost mb-2.5 border border-[#6d45e5]/10">
-            OUR SERVICES
+          <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-[#16a9aa] uppercase shadow-btn-ghost mb-2.5 border border-[#16a9aa]/20">
+            MEDICAL CODING ACADEMY
           </span>
-          <h2 id="services-heading" className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#161b3d] mb-2.5 leading-tight">
-            Healthcare <span className="grad-text">Services</span>
+          <h2 id="courses-heading" className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#161b3d] mb-2.5 leading-tight">
+            Medical Coding <span className="grad-text">Training Programs</span>
           </h2>
           <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed">
-            Explore our services — the entire card is clickable.
+            Choose from our specialized programs — the entire card is clickable.
           </p>
         </Reveal>
 
-        {/* Services 3D Grid */}
+        {/* 2 Course 3D Cards Grid */}
         <div className="services-3d-grid max-w-5xl mx-auto">
-          {/* RCM CARD */}
+          {/* BASIC COURSE CARD */}
           <Reveal delay={0.05} className="w-full flex">
-            <ServiceCard3D
-              id="rcm-recruitment-services"
-              cardClass="rcm-card-theme"
-              eyebrow="HEALTHCARE"
-              titleTop="RCM"
-              titleBottom="Recruitment Services"
-              badgeText="RCM"
-              description="Building skilled teams for the healthcare revenue cycle industry. Specialized recruitment solutions for RCM companies, identifying and hiring qualified billing, coding, and operations professionals."
+            <CourseCard3D
+              id="basic-medical-coding"
+              cardClass="academy-card-theme"
+              eyebrow="FOUNDATION COURSE"
+              titleTop="Basic Medical"
+              titleBottom="Coding Training"
+              badgeText="FOUNDATION"
+              description="Designed for freshers to learn the fundamentals of medical coding from scratch and build a solid foundation for a successful healthcare career."
               features={[
-                { icon: '▣', text: 'Medical Coders' },
-                { icon: '▣', text: 'Medical Billers' },
-                { icon: 'T', text: 'AR Callers & AR Analysts' },
-                { icon: '✦', text: 'Denial Management' },
+                { icon: '📘', text: 'Foundation-level training' },
+                { icon: '▣', text: '30–50 coding cases' },
+                { icon: '▤', text: 'Assessments & mock tests' },
+                { icon: '✦', text: 'Placement assistance' },
               ]}
-              labelStrong="RCM"
-              labelSmall="Recruitment"
-              ctaText="VIEW DETAILS"
+              price="₹7,500/-"
+              durationMeta="6–8 WEEKS • 2 HRS/DAY • ONLINE / OFFLINE"
+              ctaText="VIEW SYLLABUS"
               onClick={handleCardClick}
             />
           </Reveal>
 
-          {/* MEDICAL CODING CARD */}
+          {/* ADVANCED COURSE CARD */}
           <Reveal delay={0.12} className="w-full flex">
-            <ServiceCard3D
-              id="medical-coding-academy"
-              cardClass="academy-card-theme"
-              eyebrow="EDUCATION"
-              titleTop="Medical"
-              titleBottom="Coding Academy"
-              badgeText="ACADEMY"
-              description="Learn medical coding. Build a career in healthcare. Industry-oriented training providing practical knowledge of medical terminology, anatomy, coding concepts, and documentation."
+            <CourseCard3D
+              id="advanced-medical-coding"
+              cardClass="rcm-card-theme"
+              eyebrow="JOB-READY ADVANCED"
+              titleTop="Advanced Medical"
+              titleBottom="Coding Training"
+              badgeText="ADVANCED"
+              description="Advanced training covering real-time scenarios, specialty coding, modifiers, E/M coding, live chart reviews, and mock client interviews."
               features={[
-                { icon: '▤', text: 'Medical Terminology' },
-                { icon: '♙', text: 'Human Anatomy & Physiology' },
-                { icon: '</>', text: 'ICD Coding' },
-                { icon: '▣', text: 'CPT & HCPCS Coding' },
+                { icon: '🏆', text: 'Job-ready advanced training' },
+                { icon: '▣', text: '200–500+ real cases' },
+                { icon: '▤', text: 'Weekly exams & chart reviews' },
+                { icon: '✦', text: 'Mock client interviews' },
               ]}
-              labelStrong="ACADEMY"
-              labelSmall="Medical Coding"
-              ctaText="VIEW DETAILS"
+              price="₹15,000/-"
+              durationMeta="10–12 WEEKS • 2 HRS/DAY • ONLINE / OFFLINE"
+              ctaText="VIEW SYLLABUS"
               onClick={handleCardClick}
             />
           </Reveal>
         </div>
 
         <p className="interaction-note-3d">
-          <b>3D INTERACTION:</b> Hover anywhere on a card • click anywhere to open the service page
+          <b>3D INTERACTION:</b> Hover anywhere on a card • click anywhere to view complete course syllabus
         </p>
 
       </div>

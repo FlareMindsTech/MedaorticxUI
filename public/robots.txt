@@ -4,5 +4,4 @@
 User-agent: *
 Allow: /
 
-# Sitemap (uncomment and update when deployed to production)
-# Sitemap: https://www.medaorticx.com/sitemap.xml
+Sitemap: https://www.medaorticx.com/sitemap.xml

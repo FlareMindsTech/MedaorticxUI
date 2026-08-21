@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Reveal } from '../common/Reveal';
 
 export const SolutionsSection = () => {
@@ -42,90 +41,82 @@ export const SolutionsSection = () => {
         'Group-wide revenue cycle support and performance tracking',
         'Standardized coding and billing workflows across providers',
         'Payment posting reconciliation and A/R management',
-        'Scalable support that adapts to changing operational needs'
+        'Scalable recruitment support that adapts to staffing needs'
       ]
     }
   ];
 
   return (
-    <section id="solutions" className="py-24 relative overflow-hidden glass-section">
-      {/* Section Content */}
-
-      <div className="max-w-[1360px] mx-auto px-6 md:px-12 relative z-10">
+    <section id="solutions" className="py-6 sm:py-8 md:py-10 relative overflow-hidden glass-section scroll-mt-16 sm:scroll-mt-20 w-full">
+      <div className="max-w-[1360px] mx-auto px-2 sm:px-4 md:px-5 lg:px-6 relative z-10 w-full box-border">
         
         {/* Section Header */}
-        <Reveal variant="scaleRotate" className="text-center max-w-3xl mx-auto mb-16">
-          <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-4 border border-indigo/10">
+        <Reveal className="text-center max-w-3xl mx-auto mb-6 sm:mb-8">
+          <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-2.5 border border-indigo/10">
             Tailored Solutions
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-ink mb-2.5 leading-tight">
             Built for Your <span className="grad-text">Practice Needs</span>
           </h2>
+          <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed">
+            Scalable revenue cycle management, medical coding, and staffing solutions configured for every healthcare setting.
+          </p>
         </Reveal>
 
-        {/* Tab Selection */}
-        <div className="flex justify-center gap-3 flex-wrap mb-12">
+        {/* Tab Selection — equal-width buttons */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 sm:mb-8 max-w-3xl mx-auto">
           {clientSolutions.map((sol, idx) => (
             <button
               key={sol.id}
               onClick={() => setActiveTab(idx)}
-              className={`px-6 py-3.5 rounded-2xl font-bold text-sm transition-all duration-300 flex items-center gap-2.5 cursor-pointer border-none ${
+              className={`tab-btn-3d px-4 py-3.5 rounded-xl font-bold text-xs sm:text-sm min-h-[48px] text-center leading-snug ${
                 activeTab === idx
-                  ? 'bg-brand-gradient text-white shadow-3d scale-105'
-                  : 'bg-white/80 backdrop-blur-md text-ink shadow-btn-ghost hover:bg-white hover:scale-[1.02]'
+                  ? 'active bg-brand-gradient text-white'
+                  : 'bg-white text-ink hover:bg-slate-50'
               }`}
             >
-              <span>{sol.icon}</span>
+              <span className="shrink-0">{sol.icon}</span>
               <span>{sol.title}</span>
             </button>
           ))}
         </div>
 
-        {/* Animated Tab Content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, rotateX: 12, y: 20 }}
-            animate={{ opacity: 1, rotateX: 0, y: 0 }}
-            exit={{ opacity: 0, rotateX: -12, y: -20 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            style={{ transformStyle: 'preserve-3d' }}
-            className="bg-white/85 backdrop-blur-2xl rounded-3xl p-8 sm:p-12 shadow-3d border border-white/80 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-center"
-          >
-            <div className="md:col-span-4 text-center md:text-left space-y-4">
-              <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-indigo/20 to-teal/20 text-indigo flex items-center justify-center text-4xl mx-auto md:mx-0 shadow-inner">
-                {clientSolutions[activeTab].icon}
-              </div>
-              <h3 className="text-2xl font-extrabold text-ink">{clientSolutions[activeTab].title}</h3>
-              <div className="inline-block bg-indigo/10 text-indigo px-3 py-1 rounded-full text-xs font-bold border border-indigo/15">
-                {clientSolutions[activeTab].stats}
-              </div>
-              <p className="text-muted text-sm leading-relaxed">
-                {clientSolutions[activeTab].tagline}
-              </p>
+        {/* Tab Content */}
+        <div
+          key={activeTab}
+          className="box-hover bg-white/85 backdrop-blur-2xl rounded-3xl p-5 sm:p-7 shadow-3d border border-white/80 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 items-center"
+          style={{ animation: 'fadeSlideUp 0.35s cubic-bezier(0.22,1,0.36,1)' }}
+        >
+          <div className="md:col-span-4 text-center md:text-left space-y-2">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-indigo/20 to-teal/20 text-indigo flex items-center justify-center text-2xl sm:text-3xl mx-auto md:mx-0 shadow-inner">
+              {clientSolutions[activeTab].icon}
             </div>
+            <h3 className="text-lg sm:text-xl font-extrabold text-ink">{clientSolutions[activeTab].title}</h3>
+            <div className="inline-block bg-indigo/10 text-indigo px-3 py-1 rounded-full text-xs font-bold border border-indigo/15">
+              {clientSolutions[activeTab].stats}
+            </div>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              {clientSolutions[activeTab].tagline}
+            </p>
+          </div>
 
-            <div className="md:col-span-8 space-y-4">
-              <h4 className="font-bold text-ink text-sm uppercase tracking-wider">How We Help:</h4>
-              <div className="space-y-3">
-                {clientSolutions[activeTab].benefits.map((b, bIdx) => (
-                  <motion.div
-                    key={bIdx}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: bIdx * 0.08 }}
-                    className="flex items-start gap-3 bg-white/70 backdrop-blur-md p-4 rounded-2xl border border-indigo/10 shadow-sm hover:border-indigo/30 transition-colors"
-                  >
-                    <span className="w-6 h-6 rounded-full bg-brand-gradient text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-sm">
-                      ✓
-                    </span>
-                    <span className="text-sm font-semibold text-ink leading-snug">{b}</span>
-                  </motion.div>
-                ))}
-              </div>
+          <div className="md:col-span-8 space-y-2">
+            <h4 className="font-bold text-ink text-xs sm:text-sm uppercase tracking-wider">How We Help:</h4>
+            <div className="space-y-1.5">
+              {clientSolutions[activeTab].benefits.map((b, bIdx) => (
+                <div
+                  key={bIdx}
+                  className="flex items-start gap-2.5 bg-white/70 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border border-indigo/10 shadow-sm hover:border-indigo/30 hover:-translate-y-0.5 hover:shadow-md transition-all"
+                >
+                  <span className="w-5 h-5 rounded-full bg-brand-gradient text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-sm">
+                    ✓
+                  </span>
+                  <span className="text-xs sm:text-sm font-semibold text-ink leading-snug">{b}</span>
+                </div>
+              ))}
             </div>
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        </div>
 
       </div>
     </section>

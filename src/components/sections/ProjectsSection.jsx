@@ -39,20 +39,9 @@ export const ProjectsSection = () => {
     ? caseStudies
     : caseStudies.filter(c => c.category === activeFilter);
 
-  const handleMouseMove = (e) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    card.style.setProperty('--shine-x', `${x}%`);
-    card.style.setProperty('--shine-y', `${y}%`);
-  };
-
   return (
     <section id="projects" className="py-24 relative overflow-hidden">
-      {/* Section Content */}
-
-      <div className="max-w-[1360px] mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
         
         {/* Section Header */}
         <Reveal variant="scaleRotate" className="text-center max-w-3xl mx-auto mb-16">
@@ -94,8 +83,7 @@ export const ProjectsSection = () => {
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
               >
                 <div
-                  onMouseMove={handleMouseMove}
-                  className="tilt-card card-shine bg-white/85 backdrop-blur-xl rounded-3xl overflow-hidden shadow-3d border border-white/80 flex flex-col justify-between h-full cursor-pointer group"
+                  className="box-hover bg-white/85 backdrop-blur-xl rounded-3xl overflow-hidden shadow-3d border border-white/80 flex flex-col justify-between h-full cursor-pointer group transition-all duration-300"
                 >
                   <div>
                     <div className={`h-3 bg-gradient-to-r ${cs.gradient}`} />

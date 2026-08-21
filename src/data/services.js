@@ -1,92 +1,52 @@
 export const SERVICES = [
   {
-    id: 'medical-coding',
-    title: 'Medical Coding',
-    shortDesc: 'Accurate ICD-10, CPT, and HCPCS coding to maintain compliance and optimize reimbursement.',
-    fullDesc: 'Comprehensive medical coding support across specialties, ensuring high accuracy, regulatory compliance, and seamless revenue flow.',
-    icon: '📊',
+    id: 'rcm-recruitment-services',
+    title: 'RCM Recruitment Services',
+    subtitle: 'Building Skilled Teams for the Healthcare Revenue Cycle Industry',
+    shortDesc: 'Specialized recruitment solutions for Revenue Cycle Management (RCM) companies, identifying and hiring qualified billing, coding, and operations professionals.',
+    fullDesc: 'We provide specialized recruitment solutions for Revenue Cycle Management (RCM) companies, helping organizations identify and hire qualified professionals across healthcare billing, coding, and revenue cycle operations. Our recruitment approach focuses on understanding your operational requirements and sourcing candidates with the right combination of industry knowledge, technical skills, communication abilities, and process expertise.',
+    icon: '👥',
     gradient: 'linear-gradient(135deg, #DCE4FF, #C7D2FF)',
-    features: ['ICD-10 & CPT Coding', 'Specialty-Specific Coding', 'Compliance Audits', 'Documentation Review']
+    tagline: 'Right Talent. Right Process. Better RCM Performance.',
+    features: [
+      'Medical Coders',
+      'Medical Billers',
+      'AR Callers & AR Analysts',
+      'Denial Management Professionals',
+      'Payment Posting Executives',
+      'Charge Entry Specialists',
+      'Insurance Verification Executives',
+      'Claims Processing Professionals',
+      'Quality Analysts',
+      'Team Leaders & Process Managers',
+      'RCM Operations & Support Roles'
+    ],
+    whyChoose: [
+      'Industry-Focused Hiring: We understand the specific talent requirements of healthcare RCM operations.',
+      'Role-Based Screening: Candidates are evaluated based on their relevant skills, experience, communication, and process knowledge.',
+      'Faster Talent Acquisition: Our structured sourcing and screening process helps businesses reduce hiring time and maintain operational continuity.',
+      'Scalable Recruitment Support: Whether you need a few professionals or a complete team, we can support your recruitment requirements based on your business needs.'
+    ]
   },
   {
-    id: 'medical-billing',
-    title: 'Medical Billing',
-    shortDesc: 'Streamlined billing operations to accelerate payment cycles and reduce claim rejections.',
-    fullDesc: 'End-to-end medical billing workflows designed to simplify administrative processes and maximize collections.',
-    icon: '💰',
+    id: 'medical-coding-academy',
+    title: 'Medical Coding Academy',
+    subtitle: 'Learn Medical Coding. Build a Career in Healthcare.',
+    shortDesc: 'Industry-oriented training providing practical knowledge of medical terminology, anatomy, coding concepts, and healthcare documentation.',
+    fullDesc: 'Our Medical Coding Academy provides industry-oriented training for individuals looking to build a career in the healthcare information management and medical coding sector. The program focuses on developing practical knowledge of medical terminology, anatomy, coding concepts, and healthcare documentation.',
+    icon: '🎓',
     gradient: 'linear-gradient(135deg, #EAD9FF, #D8C2FF)',
-    features: ['Claim Submission', 'Payer Follow-up', 'Patient Statements', 'Billing Reconciliation']
-  },
-  {
-    id: 'claims-management',
-    title: 'Claims Management',
-    shortDesc: 'End-to-end oversight from submission to resolution to prevent delayed revenues.',
-    fullDesc: 'Proactive management of claim life cycles to identify bottlenecks, resolve holds, and secure timely payments.',
-    icon: '📋',
-    gradient: 'linear-gradient(135deg, #D6F0FF, #C0E4FF)',
-    features: ['Claim Scrubbing', 'Clearinghouse Management', 'Submission Tracking', 'Rejection Resolution']
-  },
-  {
-    id: 'denial-management',
-    title: 'Denial Management',
-    shortDesc: 'Root-cause analysis and swift appeals to recover denied revenue.',
-    fullDesc: 'Specialized denial analysis and appeal strategies to turn rejections into paid revenue.',
-    icon: '🛡️',
-    gradient: 'linear-gradient(135deg, #FFE3D6, #FFD0C2)',
-    features: ['Root-Cause Analysis', 'Appeal Filing', 'Denial Tracking', 'Preventative Workflows']
-  },
-  {
-    id: 'ar-management',
-    title: 'Accounts Receivable Management',
-    shortDesc: 'Targeted follow-ups to resolve outstanding balances and increase cash flow.',
-    fullDesc: 'Dedicated A/R tracking and recovery strategies to reduce aging receivables and improve liquidity.',
-    icon: '📈',
-    gradient: 'linear-gradient(135deg, #DCE9FF, #C7DAFF)',
-    features: ['Aging A/R Recovery', 'Payer Escalations', 'Payment Tracking', 'Cash Flow Optimization']
-  },
-  {
-    id: 'charge-entry-review',
-    title: 'Charge Entry & Charge Review',
-    shortDesc: 'Meticulous review of charges prior to billing to ensure full revenue capture.',
-    fullDesc: 'Rigorous validation of clinical documentation and charge entries to eliminate missing or incorrect codes.',
-    icon: '✍️',
-    gradient: 'linear-gradient(135deg, #E0F5FF, #C9EAFF)',
-    features: ['Charge Validation', 'Missing Charge Audits', 'Fee Schedule Check', 'Pre-Bill Auditing']
-  },
-  {
-    id: 'payment-posting',
-    title: 'Payment Posting',
-    shortDesc: 'Fast and precise posting of ERAs, EOBs, and patient payments.',
-    fullDesc: 'Automated and manual posting of electronic and paper payments to maintain transparent ledger records.',
-    icon: '💳',
-    gradient: 'linear-gradient(135deg, #EAE0FF, #D6C2FF)',
-    features: ['ERA & EOB Posting', 'Contractual Adjustment Checks', 'Patient Co-pay Posting', 'Balance Reconciliation']
-  },
-  {
-    id: 'eligibility-verification',
-    title: 'Eligibility & Benefits Verification',
-    shortDesc: 'Front-end verification of patient insurance to prevent claim denials.',
-    fullDesc: 'Pre-service verification of coverage, co-pays, deductibles, and pre-authorizations.',
-    icon: '🔍',
-    gradient: 'linear-gradient(135deg, #D6F7FF, #BEEFFF)',
-    features: ['Insurance Verification', 'Prior Authorization Check', 'Coverage Details Audit', 'Co-pay & Deductible Capture']
-  },
-  {
-    id: 'rcm-support',
-    title: 'Revenue Cycle Support',
-    shortDesc: 'Flexible administrative and operational assistance tailored to provider workflows.',
-    fullDesc: 'Scalable support teams providing specialized revenue cycle management assistance.',
-    icon: '⚙️',
-    gradient: 'linear-gradient(135deg, #FFEBD6, #FFDBB8)',
-    features: ['Operational Alignment', 'Workflow Automation', 'Staff Augmentation', 'Process Optimization']
-  },
-  {
-    id: 'quality-compliance',
-    title: 'Quality & Compliance Support',
-    shortDesc: 'Continuous audits and regulatory adherence to protect practice integrity.',
-    fullDesc: 'Rigorous compliance checking and quality standards ensuring adherence to U.S. healthcare guidelines.',
-    icon: '🏆',
-    gradient: 'linear-gradient(135deg, #E6FBF6, #C5F7EC)',
-    features: ['HIPAA Adherence', 'Coding Quality Audits', 'Regulatory Updates', 'Performance Monitoring']
+    tagline: 'Learn the Fundamentals. Develop Industry-Ready Skills. Start Your Healthcare Career.',
+    features: [
+      'Medical Terminology',
+      'Human Anatomy & Physiology',
+      'ICD Coding',
+      'CPT & HCPCS Coding',
+      'Healthcare Documentation',
+      'Medical Coding Guidelines',
+      'Practical Coding Exercises',
+      'Industry-Oriented Training'
+    ],
+    eligibility: 'Our programs are suitable for graduates, healthcare students, life-science graduates, and individuals looking to start or transition into a career in medical coding.'
   }
 ];

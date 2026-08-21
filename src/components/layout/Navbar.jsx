@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { NAV_LINKS } from '../../data/nav';
 
-export const Navbar = () => {
+export const Navbar = ({ onNavigate, isSubpage, subpageActiveSection }) => {
   const [activeSection, setActiveSection] = useState('#home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    if (isSubpage) return;
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
 
       const sections = NAV_LINKS.map(l => l.href.replace('#', ''));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
-        if (el && el.getBoundingClientRect().top <= 150) {
+        if (el && el.getBoundingClientRect().top <= 160) {
           setActiveSection(`#${sections[i]}`);
           break;
         }
@@ -21,119 +23,155 @@ export const Navbar = () => {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isSubpage]);
 
-  const scrollTo = (href) => {
-    const id = href.replace('#', '');
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  const handleLinkClick = (href) => {
     setMobileMenuOpen(false);
+    if (onNavigate) {
+      onNavigate(href);
+    } else {
+      const id = href.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/90 backdrop-blur-xl shadow-[0_10px_30px_-10px_rgba(109,77,224,0.15)] border-b border-white/80 py-1.5'
-          : 'bg-transparent py-2.5'
+        scrolled || isSubpage || mobileMenuOpen
+          ? 'bg-white/95 backdrop-blur-xl shadow-[0_8px_30px_-8px_rgba(109,77,224,0.12)] border-b border-slate-200/60 py-2 sm:py-2.5'
+          : 'bg-white/60 backdrop-blur-md border-b border-white/50 py-2.5 sm:py-3'
       }`}
+      role="banner"
     >
-      <div className="max-w-[1360px] mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 flex items-center justify-between">
 
         {/* Logo Container */}
         <a 
           href="#home" 
-          onClick={(e) => { e.preventDefault(); scrollTo('#home'); }} 
-          className="flex items-center group cursor-pointer"
+          onClick={(e) => { e.preventDefault(); handleLinkClick('#home'); }} 
+          className="flex items-center group cursor-pointer p-1 min-h-[48px] min-w-[48px] rounded-2xl"
+          aria-label="MedAorticX HealthTek Homepage"
         >
-          <div className="px-3 py-1.5 rounded-2xl bg-white/90 backdrop-blur-md border border-white/90 shadow-sm transition-all duration-300 group-hover:scale-105">
+          <div className="px-3 py-1.5 rounded-2xl bg-white border border-slate-100/80 shadow-sm transition-transform duration-200 group-hover:scale-105">
             <picture>
               <source srcSet="/logo-nav.webp" type="image/webp" />
               <img
                 src="/logo-nav.png"
                 alt="MedAorticX HealthTek Logo"
                 width="160"
-                height="56"
+                height="48"
                 loading="eager"
+                fetchPriority="high"
                 decoding="async"
-                className="h-11 sm:h-13 max-w-[170px] sm:max-w-[200px] w-auto object-contain"
-                style={{ mixBlendMode: 'multiply' }}
+                style={{ aspectRatio: '160/48' }}
+                className="h-8 sm:h-10 w-auto object-contain"
               />
             </picture>
           </div>
         </a>
 
-        {/* Desktop Nav - Floating Glass Bar */}
-        <nav className="hidden lg:flex items-center gap-1.5 bg-white/80 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/90 shadow-sm">
+        {/* Desktop Nav - Clean Centered Pill Menu */}
+        <nav className="hidden lg:flex items-center gap-1.5 bg-slate-100/70 p-1.5 rounded-full border border-slate-200/50 shadow-inner" aria-label="Main Navigation">
           {NAV_LINKS.map((link) => {
-            const isActive = activeSection === link.href;
+            const currentSec = link.href.replace('#', '');
+            const isActive = isSubpage 
+              ? subpageActiveSection === currentSec
+              : activeSection === link.href;
+
             return (
-              <button
+              <a
                 key={link.href}
-                onClick={() => scrollTo(link.href)}
-                className={`relative px-4 py-2 text-[0.95rem] font-semibold transition-all rounded-full cursor-pointer border-none ${
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLinkClick(link.href);
+                }}
+                aria-current={isActive ? 'page' : undefined}
+                className={`relative px-4 py-2.5 text-[0.88rem] xl:text-[0.92rem] font-semibold transition-all duration-200 rounded-full cursor-pointer border-none min-h-[48px] flex items-center justify-center no-underline ${
                   isActive 
-                    ? 'text-indigo bg-white shadow-sm font-bold' 
-                    : 'text-slate-600 hover:text-indigo hover:bg-white/60'
+                    ? 'text-indigo bg-white shadow-sm font-bold scale-[1.02]' 
+                    : 'text-slate-600 hover:text-indigo hover:bg-white/50'
                 }`}
               >
                 {link.name}
-              </button>
+              </a>
             );
           })}
         </nav>
 
         {/* Right Side CTA */}
-        <div className="flex items-center gap-3.5">
-          <button
-            onClick={() => scrollTo('#contact')}
-            className="hidden sm:inline-flex items-center justify-center px-6 py-3.5 rounded-2xl font-bold text-sm text-white bg-brand-gradient shadow-3d hover:scale-105 transition-all duration-300 cursor-pointer border-none"
+        <div className="flex items-center gap-3">
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick('#contact');
+            }}
+            className="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full font-bold text-xs sm:text-sm text-white bg-brand-gradient shadow-btn-primary hover:shadow-indigo-500/30 hover:scale-105 transition-all duration-200 cursor-pointer border-none min-h-[48px] no-underline"
           >
             Contact Us →
-          </button>
+          </a>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden w-11 h-11 rounded-2xl bg-white/90 backdrop-blur-md flex items-center justify-center shadow-btn-ghost cursor-pointer border border-white/80"
-            aria-label="Toggle Menu"
+            className="lg:hidden w-12 h-12 min-w-[48px] min-h-[48px] rounded-xl bg-white/90 flex items-center justify-center shadow-btn-ghost cursor-pointer border border-slate-200/80 p-3"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
           >
-            <div className="w-4 flex flex-col items-center justify-center gap-1">
-              <span className={`block w-4 h-0.5 bg-ink transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[6px]' : ''}`} />
-              <span className={`block w-4 h-0.5 bg-ink transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
-              <span className={`block w-4 h-0.5 bg-ink transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[6px]' : ''}`} />
+            <div className="w-5 flex flex-col items-center justify-center gap-1.5" aria-hidden="true">
+              <span className={`block w-5 h-0.5 bg-ink transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[8px]' : ''}`} />
+              <span className={`block w-5 h-0.5 bg-ink transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+              <span className={`block w-5 h-0.5 bg-ink transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[8px]' : ''}`} />
             </div>
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer — CSS transition instead of framer-motion */}
+      {/* Mobile Drawer */}
       <div
-        className={`lg:hidden bg-white/95 backdrop-blur-2xl border-b border-ink/10 overflow-hidden shadow-3d transition-all duration-300 ease-in-out ${
+        className={`lg:hidden bg-white border-b border-ink/10 overflow-hidden shadow-3d transition-all duration-300 ease-in-out ${
           mobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
         }`}
+        aria-hidden={!mobileMenuOpen}
       >
-        <div className="px-6 py-6 flex flex-col gap-2">
-          {NAV_LINKS.map((link) => (
-            <button
-              key={link.href}
-              onClick={() => scrollTo(link.href)}
-              className={`min-h-[48px] flex items-center text-lg font-medium rounded-xl px-4 transition-colors cursor-pointer bg-transparent border-none ${
-                activeSection === link.href
-                  ? 'text-indigo font-bold bg-indigo/5'
-                  : 'text-ink hover:bg-gray-50'
-              }`}
-            >
-              {link.name}
-            </button>
-          ))}
-          <button
-            onClick={() => scrollTo('#contact')}
-            className="mt-3 min-h-[48px] w-full flex items-center justify-center rounded-xl font-semibold text-white bg-brand-gradient shadow-3d cursor-pointer border-none"
+        <div className="px-4 sm:px-6 py-5 flex flex-col gap-2">
+          {NAV_LINKS.map((link) => {
+            const currentSec = link.href.replace('#', '');
+            const isActive = isSubpage 
+              ? subpageActiveSection === currentSec
+              : activeSection === link.href;
+
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLinkClick(link.href);
+                }}
+                aria-current={isActive ? 'page' : undefined}
+                className={`min-h-[48px] py-3 flex items-center text-base sm:text-lg font-medium rounded-xl px-4 transition-colors cursor-pointer bg-transparent no-underline ${
+                  isActive
+                    ? 'text-indigo font-bold bg-indigo/5'
+                    : 'text-slate-800 hover:bg-slate-50'
+                }`}
+              >
+                {link.name}
+              </a>
+            );
+          })}
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick('#contact');
+            }}
+            className="mt-3 min-h-[48px] py-3.5 w-full flex items-center justify-center rounded-xl font-semibold text-white bg-brand-gradient shadow-btn-primary cursor-pointer border-none no-underline text-base"
           >
             Contact Us →
-          </button>
+          </a>
         </div>
       </div>
     </header>

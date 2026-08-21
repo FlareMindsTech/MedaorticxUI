@@ -1,65 +1,114 @@
 import React from 'react';
 import { NAV_LINKS } from '../../data/nav';
 
-export const Footer = () => {
-  const scrollTo = (href) => {
-    const el = document.getElementById(href.replace('#', ''));
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+export const Footer = ({ onNavigate }) => {
+  const handleLinkClick = (href) => {
+    if (onNavigate) {
+      onNavigate(href);
+    } else {
+      const id = href.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   return (
-    <footer className="bg-white/90 backdrop-blur-sm border-t border-ink/5 pt-16 pb-12">
-      <div className="max-w-[1360px] mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-10">
+    <footer className="bg-white/95 backdrop-blur-sm border-t border-slate-200/60 py-6 sm:py-8" role="contentinfo">
+      <div className="max-w-[1360px] mx-auto px-3 sm:px-5 md:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-8 items-start">
 
-        <div className="md:col-span-2 space-y-4">
+        {/* Company Info */}
+        <div className="md:col-span-2 space-y-2.5">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-2xl bg-white border border-slate-100 shadow-sm inline-block">
+            <a 
+              href="#home"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick('#home');
+              }}
+              className="p-1.5 min-h-[48px] min-w-[48px] rounded-xl bg-white border border-slate-100 shadow-sm inline-flex items-center cursor-pointer"
+              aria-label="MedAorticX HealthTek Home"
+            >
               <picture>
                 <source srcSet="/logo-footer.webp" type="image/webp" />
                 <img
                   src="/logo-nav.png"
                   alt="MedAorticX HealthTek Logo"
                   width="112"
-                  height="56"
+                  height="40"
                   loading="lazy"
                   decoding="async"
-                  className="h-12 sm:h-14 w-auto object-contain"
-                  style={{ mixBlendMode: 'multiply' }}
+                  className="h-8 sm:h-9 w-auto object-contain"
                 />
               </picture>
-            </div>
+            </a>
           </div>
-          <p className="text-muted text-sm max-w-md leading-relaxed">
-            We are a healthcare Revenue Cycle Management company dedicated to helping healthcare providers and organizations simplify complex revenue processes, improve operational efficiency, and strengthen financial performance.
+          <p className="text-slate-600 text-xs sm:text-sm max-w-md leading-relaxed">
+            MedAorticX Healthtek empowers healthcare organizations with premier Medical Coding Academy training, specialized RCM recruitment, and intelligent revenue cycle solutions.
           </p>
-          <div className="text-xs text-grayLight">
+          <div className="text-xs text-slate-500">
             &copy; {new Date().getFullYear()} MedAorticX Healthtek. All rights reserved.
           </div>
         </div>
 
-        <div>
-          <h4 className="font-bold text-ink mb-4 text-sm uppercase tracking-wider">Navigation</h4>
-          <ul className="space-y-2.5">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <button
-                  onClick={() => scrollTo(link.href)}
-                  className="text-sm text-muted hover:text-indigo transition-colors cursor-pointer bg-transparent border-none p-0"
-                >
-                  {link.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Navigation Links - 2 Columns of 3 links */}
+        <nav aria-label="Footer Navigation" className="md:col-span-1">
+          <h4 className="font-bold text-ink mb-3 text-xs sm:text-sm uppercase tracking-wider">Navigation</h4>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+            <ul className="space-y-2 list-none p-0 m-0">
+              {[
+                { name: 'Home', href: '#home' },
+                { name: 'About', href: '#about' },
+                { name: 'Services', href: '#services' },
+              ].map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick(link.href);
+                    }}
+                    className="text-xs sm:text-sm font-medium text-slate-600 hover:text-indigo transition-colors cursor-pointer py-2 px-1 min-h-[40px] inline-flex items-center text-left no-underline"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <ul className="space-y-2 list-none p-0 m-0">
+              {[
+                { name: 'Courses', href: '#courses' },
+                { name: 'Solutions', href: '#solutions' },
+                { name: 'Contact', href: '#contact' },
+              ].map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick(link.href);
+                    }}
+                    className="text-xs sm:text-sm font-medium text-slate-600 hover:text-indigo transition-colors cursor-pointer py-2 px-1 min-h-[40px] inline-flex items-center text-left no-underline"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
 
+        {/* Contact & Support */}
         <div>
-          <h4 className="font-bold text-ink mb-4 text-sm uppercase tracking-wider">Contact</h4>
-          <ul className="space-y-2.5 text-sm text-muted">
-            <li>📍 100 Healthtek Boulevard, Suite 400</li>
-            <li>✉️ contact@medaorticx.com</li>
-            <li>📞 +1 (800) 555-M3D-TECH</li>
-            <li className="pt-2 text-indigo font-semibold">24/7 Global Clinical Support</li>
+          <h4 className="font-bold text-ink mb-3 text-xs sm:text-sm uppercase tracking-wider">Contact & Support</h4>
+          <ul className="space-y-2 text-xs sm:text-sm text-slate-600 list-none p-0 m-0">
+            <li className="py-1">📍 100 Healthtek Boulevard, Suite 400</li>
+            <li className="py-1">
+              ✉️ <a href="mailto:contact@medaorticx.com" className="text-slate-600 hover:text-indigo transition-colors py-1.5 px-1 inline-flex items-center">contact@medaorticx.com</a>
+            </li>
+            <li className="py-1">
+              📞 <a href="tel:+18005556338" className="text-slate-600 hover:text-indigo transition-colors py-1.5 px-1 inline-flex items-center">+1 (800) 555-M3D-TECH</a>
+            </li>
+            <li className="pt-2 text-indigo font-bold text-xs">24/7 Clinical & Academic Support</li>
           </ul>
         </div>
 
