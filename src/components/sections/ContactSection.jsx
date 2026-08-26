@@ -23,7 +23,7 @@ export const ContactSection = () => {
     setErrorMessage('');
 
     try {
-      // Send form payload to endpoint with fallback simulation
+      // TODO: Replace '/api/contact' with the production endpoint / form service (e.g., Resend, Formspree, Serverless function)
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -31,17 +31,10 @@ export const ContactSection = () => {
           'Accept': 'application/json',
         },
         body: JSON.stringify(formData),
-      }).catch(() => {
-        // Fallback for static host / dev preview environment without a live backend
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve({ ok: true, status: 200, json: async () => ({ success: true }) });
-          }, 800);
-        });
       });
 
       if (!response.ok) {
-        throw new Error(`Submission failed with status: ${response.status}. Please try again.`);
+        throw new Error(`Submission failed with status: ${response.status}. Please check backend endpoint configuration or try again later.`);
       }
 
       setStatus('success');
@@ -235,7 +228,7 @@ export const ContactSection = () => {
                   </div>
                   <div className="min-w-0">
                     <div className="text-xs text-slate-700 font-bold uppercase tracking-wider">Phone Line</div>
-                    <div className="text-xs sm:text-sm font-bold text-ink">+1 (800) 555-M3D-TECH</div>
+                    <a href="tel:+18005556338" className="text-xs sm:text-sm font-bold text-ink hover:text-indigo transition-colors no-underline">+1 (800) 555-M3D-TECH</a>
                   </div>
                 </div>
 

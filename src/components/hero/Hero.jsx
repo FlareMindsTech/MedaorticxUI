@@ -163,6 +163,18 @@ const AnimatedDNA = ({
       cancelAnimationFrame(raf);
     };
 
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        isVisible = false;
+        stopAnimation();
+      } else {
+        isVisible = true;
+        startAnimation();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     let idleTimer = null;
     if (typeof requestIdleCallback !== 'undefined') {
       idleTimer = requestIdleCallback(() => startAnimation(), { timeout: 400 });
@@ -171,6 +183,7 @@ const AnimatedDNA = ({
     }
 
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       stopAnimation();
       if (idleTimer) {
         if (typeof cancelIdleCallback !== 'undefined') cancelIdleCallback(idleTimer);

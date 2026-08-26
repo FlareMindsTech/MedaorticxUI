@@ -24,7 +24,6 @@ function HomePage({ onSelectService, onSelectCourse, onNavigateToSection }) {
       <ServicesSection onSelectService={onSelectService} />
       <CoursesSection 
         onSelectCourse={onSelectCourse} 
-        onNavigateToContact={() => onNavigateToSection('contact')}
       />
       <SolutionsSection />
       <ContactSection />
