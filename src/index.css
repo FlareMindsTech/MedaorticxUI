@@ -5,15 +5,9 @@
 
 /* Custom Variables with WCAG 2.1 AA Compliant Contrast Ratios */
 :root {
-  --navy: transparent;
-  --navy-dark: transparent;
-  --card-border: transparent;
-  --card-shadow: transparent;
   --card-bg-light: #ffffff;
-  --purple: #6d45e5;
   --purple-dark: #4821b9;
   --purple-soft: #eee9ff;
-  --teal-card: #0D7A75;
   --teal-dark: #087a7d;
   --teal-soft: #e4f8f8;
   --paper: #ffffff;
@@ -292,7 +286,7 @@ a.shadow-btn-ghost:focus-visible,
 }
 
 .service-card-3d {
-  --accent: var(--purple);
+  --accent: var(--indigo);
   --accent-dark: var(--purple-dark);
   --soft: var(--purple-soft);
 
@@ -326,13 +320,13 @@ a.shadow-btn-ghost:focus-visible,
 }
 
 .service-card-3d.rcm-card-theme {
-  --accent: var(--purple);
+  --accent: var(--indigo);
   --accent-dark: var(--purple-dark);
   --soft: var(--purple-soft);
 }
 
 .service-card-3d.academy-card-theme {
-  --accent: var(--teal-card);
+  --accent: var(--teal);
   --accent-dark: var(--teal-dark);
   --soft: var(--teal-soft);
 }
@@ -612,7 +606,7 @@ a.shadow-btn-ghost:focus-visible,
 }
 
 .interaction-note-3d b {
-  color: var(--purple);
+  color: var(--indigo);
   letter-spacing: .7px;
 }
 
@@ -635,9 +629,7 @@ a.shadow-btn-ghost:focus-visible,
 
   .service-card-3d {
     min-height: 520px;
-    box-shadow:
-      7px 7px 0 var(--navy),
-      0 18px 30px rgba(26,31,69,.13);
+    box-shadow: 0 18px 30px rgba(26,31,69,.13);
   }
 
   .service-card-3d .card-top {

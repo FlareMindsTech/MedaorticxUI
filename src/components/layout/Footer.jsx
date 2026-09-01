@@ -97,12 +97,26 @@ export const Footer = ({ onNavigate }) => {
         <div>
           <h4 className="font-bold text-ink mb-3 text-xs sm:text-sm uppercase tracking-wider">Contact & Support</h4>
           <ul className="space-y-2 text-xs sm:text-sm text-slate-600 list-none p-0 m-0">
-            <li className="py-1">📍 100 Healthtek Boulevard, Suite 400</li>
-            <li className="py-1">
-              ✉️ <a href="mailto:contact@medaorticx.com" className="text-slate-600 hover:text-indigo transition-colors py-1.5 px-1 inline-flex items-center">contact@medaorticx.com</a>
+            <li className="py-1 flex items-start gap-2">
+              <svg className="w-4 h-4 text-indigo mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span>Room No.302, State Bank of India Building, 3rd Floor, Avinashi Road, Anupparpalayam, Tirupur - 641 652.</span>
             </li>
-            <li className="py-1">
-              📞 <a href="tel:+18005556338" className="text-slate-600 hover:text-indigo transition-colors py-1.5 px-1 inline-flex items-center">+1 (800) 555-M3D-TECH</a>
+            <li className="py-1 flex items-center gap-2">
+              {/* TEMP: replace with permanent domain email when ready */}
+              <svg className="w-4 h-4 text-indigo shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+              <a href="mailto:medaorticx@gmail.com" className="text-slate-600 hover:text-indigo transition-colors py-1.5 px-0 inline-flex items-center">medaorticx@gmail.com</a>
+            </li>
+            <li className="py-1 flex items-center gap-2">
+              <svg className="w-4 h-4 text-indigo shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <a href="tel:+919791300897" className="text-slate-600 hover:text-indigo transition-colors py-1.5 px-0 inline-flex items-center">+91 97913 00897</a>
             </li>
             <li className="pt-2 text-indigo font-bold text-xs">24/7 Clinical & Academic Support</li>
           </ul>

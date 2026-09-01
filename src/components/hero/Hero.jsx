@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 /* ============================================================
    PulseNetworkAnimation — Edge-to-Edge & Zoom-Responsive ECG
@@ -85,7 +85,13 @@ const PulseNetworkAnimation = () => {
       ctx.stroke();
     };
 
+    let isRunning = false;
+
     const animate = () => {
+      if (!container || container.clientWidth === 0 || container.clientHeight === 0) {
+        isRunning = false;
+        return;
+      }
       ctx.clearRect(0, 0, width, height);
       pulseOffset += 1.2;
 
@@ -129,9 +135,17 @@ const PulseNetworkAnimation = () => {
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    animate();
+    const startAnimation = () => {
+      if (!isRunning && container.clientWidth > 0 && container.clientHeight > 0) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+
+    startAnimation();
 
     return () => {
+      isRunning = false;
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
       resizeObserver.disconnect();
@@ -149,6 +163,21 @@ const PulseNetworkAnimation = () => {
    Hero Section Component
    ============================================================ */
 export const Hero = () => {
+  const [isLg, setIsLg] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1024px)').matches;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    const handler = (e) => setIsLg(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -222,7 +251,7 @@ export const Hero = () => {
 
           {/* Right Column — Snug alignment directly beside left column */}
           <div className="hidden lg:flex lg:col-span-6 relative items-center justify-start h-full min-h-[460px] w-full">
-            <PulseNetworkAnimation />
+            {isLg && <PulseNetworkAnimation />}
           </div>
 
         </div>

@@ -127,7 +127,7 @@ export const SolutionsSection = () => {
           className="w-full max-w-5xl mx-auto rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 md:p-10 border border-slate-200/80 shadow-xl bg-white/90 backdrop-blur-xl grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center focus:outline-none focus:ring-2 focus:ring-indigo/40"
           style={{ animation: 'fadeSlideUp 0.35s cubic-bezier(0.22,1,0.36,1)' }}
         >
-          <div className="lg:col-span-5 text-center lg:text-left space-y-3 sm:space-y-4">
+          <div className="lg:col-span-4 text-center lg:text-left space-y-3 sm:space-y-4">
             <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-indigo/10 border border-indigo/15 text-indigo flex items-center justify-center text-2xl sm:text-3xl mx-auto lg:mx-0 shrink-0 shadow-inner" aria-hidden="true">
               {clientSolutions[activeTab].icon}
             </div>
@@ -142,7 +142,7 @@ export const SolutionsSection = () => {
             </p>
           </div>
 
-          <div className="lg:col-span-7 space-y-3">
+          <div className="lg:col-span-8 space-y-3">
             <h4 className="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wider">How We Help:</h4>
             <div className="space-y-2.5">
               {clientSolutions[activeTab].benefits.map((b, bIdx) => (

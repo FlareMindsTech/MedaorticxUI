@@ -23,8 +23,9 @@ export const ContactSection = () => {
     setErrorMessage('');
 
     try {
-      // TODO: Replace '/api/contact' with the production endpoint / form service (e.g., Resend, Formspree, Serverless function)
-      const response = await fetch('/api/contact', {
+      // Formspree static form service endpoint (Configurable via VITE_FORMSPREE_ENDPOINT or form ID)
+      const endpoint = import.meta.env?.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/xldgqzkq';
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,7 +35,8 @@ export const ContactSection = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Submission failed with status: ${response.status}. Please check backend endpoint configuration or try again later.`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Submission failed with status: ${response.status}. Please verify your Formspree endpoint or contact us directly.`);
       }
 
       setStatus('success');
@@ -207,34 +209,43 @@ export const ContactSection = () => {
             <div className="bg-white/85 backdrop-blur-xl p-5 sm:p-6 rounded-3xl shadow-3d border border-white/80 space-y-4 w-full box-border">
               <h3 className="text-base sm:text-lg font-bold text-ink">Global Headquarters</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                100 Healthtek Boulevard, Suite 400<br />
-                San Francisco, CA 94107
+                Room No.302, State Bank of India Building, 3rd Floor, Avinashi Road,<br />
+                Anupparpalayam, Tirupur - 641 652.
               </p>
 
               <div className="border-t border-indigo/10 pt-3.5 space-y-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo/20 to-violet/20 text-indigo flex items-center justify-center text-sm shadow-sm shrink-0" aria-hidden="true">
-                    ✉️
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo/20 to-violet/20 text-indigo flex items-center justify-center shadow-sm shrink-0" aria-hidden="true">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="20" height="16" x="2" y="4" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
                   </div>
                   <div className="min-w-0">
                     <div className="text-xs text-slate-700 font-bold uppercase tracking-wider">Direct Email</div>
-                    <div className="text-xs sm:text-sm font-bold text-ink break-all">contact@medaorticx.com</div>
+                    {/* TEMP: replace with permanent domain email when ready */}
+                    <div className="text-xs sm:text-sm font-bold text-ink break-all">medaorticx@gmail.com</div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal/20 to-teal-light/20 text-teal flex items-center justify-center text-sm shadow-sm shrink-0" aria-hidden="true">
-                    📞
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal/20 to-teal-light/20 text-teal flex items-center justify-center shadow-sm shrink-0" aria-hidden="true">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
                   </div>
                   <div className="min-w-0">
                     <div className="text-xs text-slate-700 font-bold uppercase tracking-wider">Phone Line</div>
-                    <a href="tel:+18005556338" className="text-xs sm:text-sm font-bold text-ink hover:text-indigo transition-colors no-underline">+1 (800) 555-M3D-TECH</a>
+                    <a href="tel:+919791300897" className="text-xs sm:text-sm font-bold text-ink hover:text-indigo transition-colors no-underline">+91 97913 00897</a>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm shadow-sm shrink-0" aria-hidden="true">
-                    🎧
+                  <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shadow-sm shrink-0" aria-hidden="true">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+                      <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
+                    </svg>
                   </div>
                   <div className="min-w-0">
                     <div className="text-xs text-slate-700 font-bold uppercase tracking-wider">Support SLA</div>
