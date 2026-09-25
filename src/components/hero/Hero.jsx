@@ -170,9 +170,9 @@ export const Hero = () => {
             </div>
 
             <h1 className="text-[clamp(2.4rem,4.2vw,3.8rem)] font-extrabold leading-[1.12] tracking-tight text-[#0B1E36]">
-              Powering the Pulse of<br className="hidden sm:inline" />
+            Empowering Healthcare Through<br className="hidden sm:inline" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#003B5C] via-[#06B6D4] to-[#10B981]">
-                {' '}Healthcare Revenue
+                {' '}Accurate Coding
               </span>
             </h1>
 

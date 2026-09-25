@@ -7,8 +7,8 @@ const SERVICE_META = {
   'rcm-recruitment-services': {
     cardClass: 'rcm-card-theme',
     eyebrow: 'HEALTHCARE',
-    titleTop: 'RCM',
-    titleBottom: 'Recruitment Services',
+    titleTop: 'Career',
+    titleBottom: ' & Recruitment Support',
     badgeText: 'RCM',
     labelStrong: 'RCM',
     labelSmall: 'Recruitment',
