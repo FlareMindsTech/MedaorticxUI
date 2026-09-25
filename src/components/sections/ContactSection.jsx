@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Reveal } from '../common/Reveal';
 
@@ -17,32 +18,35 @@ export const ContactSection = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus('loading');
-    setErrorMessage('');
+  const handleSubmit = (e) => {
+  e.preventDefault();
 
-    try {
-      // TODO: Replace '/api/contact' with the production endpoint / form service (e.g., Resend, Formspree, Serverless function)
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+  const whatsappNumber = "919791300897";
 
-      if (!response.ok) {
-        throw new Error(`Submission failed with status: ${response.status}. Please check backend endpoint configuration or try again later.`);
-      }
+  const whatsappMessage = `
+Hello MedAorticx Healthtek,
 
-      setStatus('success');
-    } catch (err) {
-      setErrorMessage(err.message || 'Unable to submit your message. Please check your connection and try again.');
-      setStatus('error');
-    }
-  };
+I would like to make an inquiry.
+
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Interested In: ${formData.interest}
+
+Message:
+${formData.message}
+
+Thank you.
+  `.trim();
+
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+    whatsappMessage
+  )}`;
+
+  window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+  setStatus("success");
+};
 
   const handleReset = () => {
     setFormData({
@@ -65,9 +69,11 @@ export const ContactSection = () => {
           <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-2.5 border border-indigo/10">
             Get In Touch
           </span>
+
           <h2 id="contact-heading" className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-ink mb-2.5">
             Let's Optimize Your <span className="grad-text">Healthcare Revenue</span>
           </h2>
+
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
             Contact us for course enrollment, RCM recruitment, or tailored revenue cycle operations support.
           </p>
@@ -82,10 +88,15 @@ export const ContactSection = () => {
                 <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 text-xl flex items-center justify-center mx-auto animate-bounce shadow-md">
                   ✓
                 </div>
-                <h3 className="text-lg font-bold text-ink">Thank You for Reaching Out!</h3>
+
+                <h3 className="text-lg font-bold text-ink">
+                  Thank You for Reaching Out!
+                </h3>
+
                 <p className="text-slate-600 text-xs sm:text-sm max-w-md mx-auto">
                   Your message has been received. One of our specialists will contact you within 24 hours.
                 </p>
+
                 <button
                   type="button"
                   onClick={handleReset}
@@ -99,6 +110,7 @@ export const ContactSection = () => {
                 {status === 'error' && (
                   <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm flex items-start gap-2.5" role="alert">
                     <span className="text-rose-600 font-bold shrink-0 text-base">⚠️</span>
+
                     <div className="flex-1">
                       <p className="font-semibold">{errorMessage}</p>
                     </div>
@@ -106,7 +118,10 @@ export const ContactSection = () => {
                 )}
 
                 <div>
-                  <label htmlFor="contact-name" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">Full Name</label>
+                  <label htmlFor="contact-name" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
+                    Full Name
+                  </label>
+
                   <input
                     id="contact-name"
                     name="name"
@@ -122,7 +137,10 @@ export const ContactSection = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label htmlFor="contact-email" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">Work / Personal Email</label>
+                    <label htmlFor="contact-email" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
+                      Work / Personal Email
+                    </label>
+
                     <input
                       id="contact-email"
                       name="email"
@@ -137,7 +155,10 @@ export const ContactSection = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="contact-phone" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">Phone Number</label>
+                    <label htmlFor="contact-phone" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
+                      Phone Number
+                    </label>
+
                     <input
                       id="contact-phone"
                       name="phone"
@@ -145,14 +166,17 @@ export const ContactSection = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       disabled={status === 'loading'}
-                      placeholder="+91 98765 43210"
+                      placeholder="+91 97913 00897"
                       className="w-full px-4 py-3 rounded-xl border border-indigo/15 bg-white/80 backdrop-blur-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo transition-all text-ink text-xs sm:text-sm shadow-inner min-h-[48px] disabled:opacity-60"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="contact-interest" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">Interested In</label>
+                  <label htmlFor="contact-interest" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
+                    Interested In
+                  </label>
+
                   <select
                     id="contact-interest"
                     name="interest"
@@ -170,7 +194,10 @@ export const ContactSection = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="contact-message" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">How Can We Help?</label>
+                  <label htmlFor="contact-message" className="block text-xs sm:text-sm font-bold text-slate-800 mb-1.5">
+                    How Can We Help?
+                  </label>
+
                   <textarea
                     id="contact-message"
                     name="message"
@@ -205,20 +232,32 @@ export const ContactSection = () => {
           {/* Contact Details Card */}
           <Reveal className="lg:col-span-5 space-y-4 w-full box-border">
             <div className="bg-white/85 backdrop-blur-xl p-5 sm:p-6 rounded-3xl shadow-3d border border-white/80 space-y-4 w-full box-border">
-              <h3 className="text-base sm:text-lg font-bold text-ink">Global Headquarters</h3>
+              
+              <h3 className="text-base sm:text-lg font-bold text-ink">
+                MedAorticx Healthtek
+              </h3>
+
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                100 Healthtek Boulevard, Suite 400<br />
-                San Francisco, CA 94107
+                Room No. 302, State Bank of India Building, 3rd Floor<br />
+                Avinashi Road, Anupparpalayam<br />
+                Tirupur - 641 652
               </p>
 
               <div className="border-t border-indigo/10 pt-3.5 space-y-3">
+                
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo/20 to-violet/20 text-indigo flex items-center justify-center text-sm shadow-sm shrink-0" aria-hidden="true">
                     ✉️
                   </div>
+
                   <div className="min-w-0">
-                    <div className="text-xs text-slate-700 font-bold uppercase tracking-wider">Direct Email</div>
-                    <div className="text-xs sm:text-sm font-bold text-ink break-all">contact@medaorticx.com</div>
+                    <div className="text-xs text-slate-700 font-bold uppercase tracking-wider">
+                      Direct Email
+                    </div>
+
+                    <div className="text-xs sm:text-sm font-bold text-ink break-all">
+                      medaorticx@gmail.com
+                    </div>
                   </div>
                 </div>
 
@@ -226,9 +265,18 @@ export const ContactSection = () => {
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal/20 to-teal-light/20 text-teal flex items-center justify-center text-sm shadow-sm shrink-0" aria-hidden="true">
                     📞
                   </div>
+
                   <div className="min-w-0">
-                    <div className="text-xs text-slate-700 font-bold uppercase tracking-wider">Phone Line</div>
-                    <a href="tel:+18005556338" className="text-xs sm:text-sm font-bold text-ink hover:text-indigo transition-colors no-underline">+1 (800) 555-M3D-TECH</a>
+                    <div className="text-xs text-slate-700 font-bold uppercase tracking-wider">
+                      Phone Line
+                    </div>
+
+                    <a
+                      href="tel:+919791300897"
+                      className="text-xs sm:text-sm font-bold text-ink hover:text-indigo transition-colors no-underline"
+                    >
+                      +91 97913 00897
+                    </a>
                   </div>
                 </div>
 
@@ -236,11 +284,18 @@ export const ContactSection = () => {
                   <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm shadow-sm shrink-0" aria-hidden="true">
                     🎧
                   </div>
+
                   <div className="min-w-0">
-                    <div className="text-xs text-slate-700 font-bold uppercase tracking-wider">Support SLA</div>
-                    <div className="text-xs sm:text-sm font-bold text-ink">24/7 Clinical & Academy Desk</div>
+                    <div className="text-xs text-slate-700 font-bold uppercase tracking-wider">
+                      Support SLA
+                    </div>
+
+                    <div className="text-xs sm:text-sm font-bold text-ink">
+                      24/7 Clinical & Academy Desk
+                    </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </Reveal>
@@ -251,3 +306,4 @@ export const ContactSection = () => {
     </section>
   );
 };
+

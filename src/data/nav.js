@@ -4,6 +4,7 @@ export const NAV_LINKS = [
   { name: 'Services', href: '#services' },
   { name: 'Courses', href: '#courses' },
   { name: 'Solutions', href: '#solutions' },
+ { name: 'Career', href: '/careers' } 
 ];
 
 export const FOOTER_NAV_LINKS = [

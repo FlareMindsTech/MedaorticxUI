@@ -3,12 +3,24 @@ import { FOOTER_NAV_LINKS } from '../../data/nav';
 
 export const Footer = ({ onNavigate }) => {
   const handleLinkClick = (href) => {
+    // Route navigation
+    if (href.startsWith('/')) {
+      window.location.href = href;
+      return;
+    }
+
     if (onNavigate) {
       onNavigate(href);
     } else {
       const id = href.replace('#', '');
       const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (el) {
+        el.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
     }
   };
 
@@ -16,13 +28,16 @@ export const Footer = ({ onNavigate }) => {
   const secondColLinks = FOOTER_NAV_LINKS.slice(3);
 
   return (
-    <footer className="bg-white/95 backdrop-blur-sm border-t border-slate-200/60 py-6 sm:py-8" role="contentinfo">
-      <div className="max-w-[1360px] mx-auto px-3 sm:px-5 md:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-8 items-start">
+    <footer
+      className="bg-white/95 backdrop-blur-sm border-t border-slate-200/60 py-6 sm:py-8"
+      role="contentinfo"
+    >
+      <div className="max-w-[1360px] mx-auto px-3 sm:px-5 md:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-5 gap-5 md:gap-8 items-start">
 
         {/* Company Info */}
         <div className="md:col-span-2 space-y-2.5">
           <div className="flex items-center gap-3">
-            <a 
+            <a
               href="#home"
               onClick={(e) => {
                 e.preventDefault();
@@ -33,6 +48,7 @@ export const Footer = ({ onNavigate }) => {
             >
               <picture>
                 <source srcSet="/logo-footer.webp" type="image/webp" />
+
                 <img
                   src="/logo-nav.png"
                   alt="MedAorticX HealthTek Logo"
@@ -46,17 +62,37 @@ export const Footer = ({ onNavigate }) => {
               </picture>
             </a>
           </div>
+
           <p className="text-slate-600 text-xs sm:text-sm max-w-md leading-relaxed">
-            MedAorticX Healthtek empowers healthcare organizations with premier Medical Coding Academy training, specialized RCM recruitment, and intelligent revenue cycle solutions.
+            MedAorticX Healthtek empowers healthcare organizations with
+            premier Medical Coding Academy training, specialized career & Recuriment
+            Support, and intelligent revenue cycle solutions.
           </p>
-          <div className="text-xs text-slate-600">
-            &copy; {new Date().getFullYear()} MedAorticX Healthtek. All rights reserved.
+
+          <div className="space-y-1">
+            <div className="text-xs text-slate-600">
+              &copy; {new Date().getFullYear()} MedAorticX Healthtek. All rights
+              reserved.
+            </div>
+
+            <div className="text-xs text-slate-500">
+              Developed by{' '}
+              <span className="font-semibold text-slate-700">
+                FlareMinds Technology Private Limited
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Navigation Links - 2 Columns of 3 links */}
-        <nav aria-label="Footer Navigation" className="md:col-span-1">
-          <h4 className="font-bold text-ink mb-3 text-xs sm:text-sm uppercase tracking-wider">Navigation</h4>
+        {/* Navigation Links */}
+        <nav
+          aria-label="Footer Navigation"
+          className="md:col-span-1"
+        >
+          <h4 className="font-bold text-ink mb-3 text-xs sm:text-sm uppercase tracking-wider">
+            Navigation
+          </h4>
+
           <div className="grid grid-cols-2 gap-x-6 gap-y-2">
             <ul className="space-y-2 list-none p-0 m-0">
               {firstColLinks.map((link) => (
@@ -74,6 +110,7 @@ export const Footer = ({ onNavigate }) => {
                 </li>
               ))}
             </ul>
+
             <ul className="space-y-2 list-none p-0 m-0">
               {secondColLinks.map((link) => (
                 <li key={link.href}>
@@ -93,18 +130,66 @@ export const Footer = ({ onNavigate }) => {
           </div>
         </nav>
 
+        {/* Legal */}
+        <div>
+          <h4 className="font-bold text-ink mb-3 text-xs sm:text-sm uppercase tracking-wider">
+            Legal
+          </h4>
+
+          <div className="space-y-2">
+            <a
+              href="/privacy-policy"
+              className="text-xs sm:text-sm font-medium text-slate-600 hover:text-indigo transition-colors py-2 px-1 min-h-[40px] inline-flex items-center no-underline"
+            >
+              Privacy Policy
+            </a>
+
+            <a
+              href="/terms"
+              className="text-xs sm:text-sm font-medium text-slate-600 hover:text-indigo transition-colors py-2 px-1 min-h-[40px] inline-flex items-center no-underline"
+            >
+              Terms of Use
+            </a>
+          </div>
+        </div>
+
         {/* Contact & Support */}
         <div>
-          <h4 className="font-bold text-ink mb-3 text-xs sm:text-sm uppercase tracking-wider">Contact & Support</h4>
+          <h4 className="font-bold text-ink mb-3 text-xs sm:text-sm uppercase tracking-wider">
+            Contact & Support
+          </h4>
+
           <ul className="space-y-2 text-xs sm:text-sm text-slate-600 list-none p-0 m-0">
-            <li className="py-1">📍 100 Healthtek Boulevard, Suite 400</li>
+
             <li className="py-1">
-              ✉️ <a href="mailto:contact@medaorticx.com" className="text-slate-600 hover:text-indigo transition-colors py-1.5 px-1 inline-flex items-center">contact@medaorticx.com</a>
+              📍 Room No. 302, State Bank of India Building, 3rd Floor,
+              Avinashi Road, Anupparpalayam, Tirupur - 641 652
             </li>
+
             <li className="py-1">
-              📞 <a href="tel:+18005556338" className="text-slate-600 hover:text-indigo transition-colors py-1.5 px-1 inline-flex items-center">+1 (800) 555-M3D-TECH</a>
+              ✉️{' '}
+              <a
+                href="mailto:medaorticx@gmail.com"
+                className="text-slate-600 hover:text-indigo transition-colors py-1.5 px-1 inline-flex items-center"
+              >
+                medaorticx@gmail.com
+              </a>
             </li>
-            <li className="pt-2 text-indigo font-bold text-xs">24/7 Clinical & Academic Support</li>
+
+            <li className="py-1">
+              📞{' '}
+              <a
+                href="tel:+919791300897"
+                className="text-slate-600 hover:text-indigo transition-colors py-1.5 px-1 inline-flex items-center"
+              >
+                +91 97913 00897
+              </a>
+            </li>
+
+            <li className="pt-2 text-indigo font-bold text-xs">
+              24/7 Clinical & Academic Support
+            </li>
+
           </ul>
         </div>
 
