@@ -64,8 +64,8 @@ export const Footer = ({ onNavigate }) => {
           </div>
 
           <p className="text-slate-600 text-xs sm:text-sm max-w-md leading-relaxed">
-           MedAorticX Healthtek empowers healthcare organizations with premier Medical Coding Academy training, specialized career and recruitment support, and intelligent revenue cycle management solutions.
-</p>
+            MedAorticX HealthTek empowers healthcare organizations and aspiring healthcare professionals through expert medical coding training, specialized career and recruitment support, and intelligent revenue cycle management solutions.
+           </p>
 
           <div className="space-y-1">
             <div className="text-xs text-slate-600">
