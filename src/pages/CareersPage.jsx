@@ -165,14 +165,14 @@ export default function CareersPage() {
                 </span>
               </div>
 
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-[-0.045em] leading-[0.98] text-[#14243D]">
-                Build your
-                <br />
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-[-0.045em] leading-[0.98] text-[#14243D]">
+  Build your
+  <br />
 
-                <span className="bg-gradient-to-r from-[#08779B] via-[#12B5D0] to-[#18B99A] bg-clip-text text-transparent">
-                  future in healthcare.
-                </span>
-              </h1>
+  <span className="bg-gradient-to-r from-[#003B5C] via-[#06B6D4] to-[#10B981] bg-clip-text text-transparent">
+    future in healthcare.
+  </span>
+</h1>
 
               <p className="mt-7 text-lg sm:text-xl leading-relaxed text-slate-600 max-w-2xl">
                 Join a growing team working across healthcare RCM,
@@ -355,12 +355,12 @@ export default function CareersPage() {
                 Life at MedAorticx
               </span>
 
-              <h2 className="mt-4 text-4xl sm:text-5xl font-bold leading-tight text-[#14243D]">
-                Work that connects
-                <span className="block text-[#12B5D0]">
-                  people to purpose.
-                </span>
-              </h2>
+             <h2 className="mt-4 text-4xl sm:text-5xl font-bold leading-tight text-[#14243D]">
+  Work that connects
+  <span className="block bg-gradient-to-r from-[#003B5C] via-[#06B6D4] to-[#10B981] bg-clip-text text-transparent">
+    people to purpose.
+  </span>
+</h2>
 
             </div>
 
@@ -495,12 +495,12 @@ export default function CareersPage() {
                 Learning & Development
               </span>
 
-              <h2 className="mt-4 text-4xl sm:text-5xl font-bold text-[#14243D] leading-tight">
-                Grow your skills.
-                <span className="block text-[#12B5D0]">
-                  Expand your possibilities.
-                </span>
-              </h2>
+            <h2 className="mt-4 text-4xl sm:text-5xl font-bold text-[#14243D] leading-tight">
+  Grow your skills.
+  <span className="block bg-gradient-to-r from-[#003B5C] via-[#06B6D4] to-[#10B981] bg-clip-text text-transparent">
+    Expand your possibilities.
+  </span>
+</h2>
 
               <p className="mt-6 text-lg leading-8 text-slate-600">
                 Whether you're starting your healthcare career or

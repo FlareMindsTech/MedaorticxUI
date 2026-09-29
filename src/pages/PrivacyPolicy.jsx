@@ -109,18 +109,18 @@ export default function PrivacyPolicy() {
 
                 </div>
 
-                <div>
-                  <div className="text-sm font-bold uppercase tracking-[0.2em] text-[#18B99A] mb-2">
-                    MedAorticX HealthTek
-                  </div>
+            <div>
+  <div className="text-sm font-bold uppercase tracking-[0.2em] text-[#18B99A] mb-2">
+    MedAorticX HealthTek
+  </div>
 
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#14243D] leading-[1.05]">
-                    Privacy
-                    <span className="block text-[#12B5D0]">
-                      Policy
-                    </span>
-                  </h1>
-                </div>
+  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#14243D] leading-[1.05]">
+    Privacy
+    <span className="block bg-gradient-to-r from-[#003B5C] via-[#06B6D4] to-[#10B981] bg-clip-text text-transparent">
+      Policy
+    </span>
+  </h1>
+</div>
 
               </div>
 

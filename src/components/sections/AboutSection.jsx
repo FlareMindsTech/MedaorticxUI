@@ -42,9 +42,12 @@ export const AboutSection = () => {
           <span className="inline-block bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-bold tracking-widest text-[#00A8CC] uppercase shadow-xs mb-3 border border-[#00A8CC]/20">
             About Us
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 leading-tight">
-            Empowering Healthcare Through <span className="bg-gradient-to-r from-[#00A8CC] to-[#00C989] bg-clip-text text-transparent">Accurate Coding</span>
-          </h2>
+         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 leading-tight">
+  Empowering Healthcare Through{' '}
+  <span className="bg-gradient-to-r from-[#003B5C] via-[#06B6D4] to-[#10B981] bg-clip-text text-transparent">
+    Accurate Coding
+  </span>
+</h2>
           <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed">
             We provide comprehensive Revenue Cycle Management, Medical Coding solutions, career support, and professional training built on hands-on U.S. healthcare experience.
           </p>

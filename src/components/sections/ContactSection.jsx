@@ -70,9 +70,12 @@ Thank you.
             Get In Touch
           </span>
 
-          <h2 id="contact-heading" className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-ink mb-2.5">
-            Let's Optimize Your <span className="grad-text">Healthcare Revenue</span>
-          </h2>
+         <h2 id="contact-heading" className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-ink mb-2.5">
+  Let's Optimize Your{' '}
+  <span className="bg-gradient-to-r from-[#003B5C] via-[#06B6D4] to-[#10B981] bg-clip-text text-transparent">
+    Healthcare Revenue
+  </span>
+</h2>
 
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
             Contact us for course enrollment, RCM recruitment, or tailored revenue cycle operations support.
@@ -212,19 +215,19 @@ Thank you.
                 </div>
 
                 <button
-                  type="submit"
-                  disabled={status === 'loading'}
-                  className="w-full py-3.5 rounded-xl font-bold text-white bg-brand-gradient shadow-3d hover:opacity-95 hover:scale-[1.01] transition-all text-xs sm:text-sm cursor-pointer border-none min-h-[48px] flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
-                >
-                  {status === 'loading' ? (
-                    <>
-                      <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin inline-block" aria-hidden="true" />
-                      <span>Sending Message...</span>
-                    </>
-                  ) : (
-                    <span>Send Message →</span>
-                  )}
-                </button>
+  type="submit"
+  disabled={status === 'loading'}
+  className="w-full py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-[#06B6D4] to-[#10B981] shadow-3d hover:opacity-95 hover:scale-[1.01] transition-all text-xs sm:text-sm cursor-pointer border-none min-h-[48px] flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
+>
+  {status === 'loading' ? (
+    <>
+      <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin inline-block" aria-hidden="true" />
+      <span>Sending Message...</span>
+    </>
+  ) : (
+    <span>Send Message →</span>
+  )}
+</button>
               </form>
             )}
           </Reveal>
