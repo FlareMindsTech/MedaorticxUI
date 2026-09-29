@@ -220,16 +220,16 @@ export const Navbar = ({
         <div className="flex items-center gap-3">
 
           {/* Desktop Contact */}
-          <a
-            href="#contact"
-            onClick={(event) => {
-              event.preventDefault();
-              handleLinkClick('#contact');
-            }}
-            className="hidden sm:inline-flex items-center justify-center px-5 py-2 sm:px-6 sm:py-2.5 rounded-full font-bold text-xs sm:text-sm text-white bg-brand-gradient shadow-md hover:shadow-lg hover:opacity-95 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer min-h-[42px] no-underline"
-          >
-            Contact Us →
-          </a>
+        <a
+  href="#contact"
+  onClick={(event) => {
+    event.preventDefault();
+    handleLinkClick('#contact');
+  }}
+  className="hidden sm:inline-flex items-center justify-center px-5 py-2 sm:px-6 sm:py-2.5 rounded-full font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-[#06B6D4] to-[#10B981] shadow-md hover:shadow-lg hover:opacity-95 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer min-h-[42px] no-underline"
+>
+  Contact Us →
+</a>
 
           {/* Mobile Menu Button */}
           <button

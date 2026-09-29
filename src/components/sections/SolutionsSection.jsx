@@ -103,12 +103,15 @@ export const SolutionsSection = () => {
             REVENUE CYCLE MANAGEMENT
           </span>
 
-          <h2
-            id="solutions-heading"
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#161b3d] mb-2.5 leading-tight"
-          >
-            Specialized RCM <span className="grad-text">Services</span>
-          </h2>
+         <h2
+  id="solutions-heading"
+  className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#161b3d] mb-2.5 leading-tight"
+>
+  Specialized RCM{' '}
+  <span className="bg-gradient-to-r from-[#003B5C] via-[#06B6D4] to-[#10B981] bg-clip-text text-transparent">
+    Services
+  </span>
+</h2>
 
           <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed">
             Mid-cycle, back-end, and revenue optimization services covering the full healthcare revenue cycle.

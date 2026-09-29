@@ -47,9 +47,12 @@ export const ServicesSection = ({ onSelectService }) => {
           <span className="inline-block bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-indigo uppercase shadow-btn-ghost mb-2 border border-indigo/10">
             OUR CORE SERVICES
           </span>
-          <h2 id="services-heading" className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#161b3d] mb-2 leading-tight">
-            Comprehensive <span className="grad-text">Healthcare Solutions</span>
-          </h2>
+        <h2 id="services-heading" className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#161b3d] mb-2 leading-tight">
+  Comprehensive{' '}
+  <span className="bg-gradient-to-r from-[#003B5C] via-[#06B6D4] to-[#10B981] bg-clip-text text-transparent">
+    Healthcare Solutions
+  </span>
+</h2>
           <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed">
             Choose from our specialized services — the entire card is clickable.
           </p>
@@ -88,9 +91,7 @@ export const ServicesSection = ({ onSelectService }) => {
           })}
         </div>
 
-        <p className="interaction-note-3d">
-          <b>3D INTERACTION:</b> Hover anywhere on a card • click anywhere to open the service page
-        </p>
+   
 
       </div>
     </section>
